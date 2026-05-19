@@ -34,6 +34,13 @@ gym.register(
 )
 
 gym.register(
+    id="OmniReset-UR5eRobotiq2f85-ObjectAnywhereEEAnywhere-LabRightArm-v0",
+    entry_point="isaaclab.envs:ManagerBasedRLEnv",
+    disable_env_checker=True,
+    kwargs={"env_cfg_entry_point": f"{__name__}.reset_states_cfg:LabRightArmObjectAnywhereEEAnywhereResetStatesCfg"},
+)
+
+gym.register(
     id="OmniReset-UR5eRobotiq2f85-ObjectRestingEEGrasped-v0",
     entry_point="isaaclab.envs:ManagerBasedRLEnv",
     disable_env_checker=True,
@@ -75,6 +82,13 @@ gym.register(
     entry_point="isaaclab.envs:ManagerBasedRLEnv",
     disable_env_checker=True,
     kwargs={"env_cfg_entry_point": f"{__name__}.camera_align_cfg:CameraAlignEnvCfg"},
+)
+
+gym.register(
+    id="OmniReset-Ur5eRobotiq2f85-CameraAlign-LabRightArm-v0",
+    entry_point="isaaclab.envs:ManagerBasedRLEnv",
+    disable_env_checker=True,
+    kwargs={"env_cfg_entry_point": f"{__name__}.camera_align_cfg:LabRightArmCameraAlignEnvCfg"},
 )
 
 # Register RL state environments

@@ -26,6 +26,17 @@ from uwlab_tasks.manager_based.manipulation.omnireset.config.ur5e_robotiq_2f85.a
 )
 
 from ... import mdp as task_mdp
+from .lab_layout_cfg import (
+    LAB_RIGHT_ARM_RESET_X_RANGE,
+    LAB_RIGHT_ARM_RESET_Y_RANGE,
+    LAB_RIGHT_ARM_ROBOT_POS,
+    LAB_RIGHT_ARM_ROBOT_ROT,
+    LAB_TABLETOP_TOP_Z,
+    LAB_VENTION_POS,
+    LAB_VENTION_ROT,
+    LAB_VENTION_SCALE,
+    LAB_VENTION_USD_PATH,
+)
 
 
 @configclass
@@ -100,6 +111,44 @@ class ResetStatesSceneCfg(InteractiveSceneCfg):
             intensity=10000.0,
             texture_file=f"{ISAAC_NUCLEUS_DIR}/Materials/Textures/Skies/PolyHaven/kloofendal_43d_clear_puresky_4k.hdr",
         ),
+    )
+
+
+@configclass
+class LabRightArmResetStatesSceneCfg(ResetStatesSceneCfg):
+    """Reset-state scene using the lab Vention frame and selected right arm."""
+
+    robot = IMPLICIT_UR5E_ROBOTIQ_2F85.replace(prim_path="{ENV_REGEX_NS}/Robot")
+    robot.init_state.pos = LAB_RIGHT_ARM_ROBOT_POS
+    robot.init_state.rot = LAB_RIGHT_ARM_ROBOT_ROT
+
+    table = RigidObjectCfg(
+        prim_path="{ENV_REGEX_NS}/Table",
+        init_state=RigidObjectCfg.InitialStateCfg(pos=LAB_VENTION_POS, rot=LAB_VENTION_ROT),
+        spawn=sim_utils.UsdFileCfg(
+            usd_path=LAB_VENTION_USD_PATH,
+            scale=LAB_VENTION_SCALE,
+            rigid_props=sim_utils.RigidBodyPropertiesCfg(kinematic_enabled=True),
+        ),
+    )
+
+    # Preserve the old scene entity name as a hidden logical anchor while lab
+    # reset sampling moves to world/tabletop coordinates.
+    ur5_metal_support = RigidObjectCfg(
+        prim_path="{ENV_REGEX_NS}/UR5MetalSupport",
+        init_state=RigidObjectCfg.InitialStateCfg(pos=LAB_RIGHT_ARM_ROBOT_POS, rot=LAB_RIGHT_ARM_ROBOT_ROT),
+        spawn=sim_utils.CuboidCfg(
+            size=(0.01, 0.01, 0.01),
+            visible=False,
+            rigid_props=sim_utils.RigidBodyPropertiesCfg(kinematic_enabled=True),
+            collision_props=sim_utils.CollisionPropertiesCfg(collision_enabled=False),
+        ),
+    )
+
+    ground = AssetBaseCfg(
+        prim_path="/World/GroundPlane",
+        init_state=AssetBaseCfg.InitialStateCfg(pos=(0.0, 0.0, 0.0)),
+        spawn=sim_utils.GroundPlaneCfg(),
     )
 
 
@@ -226,6 +275,64 @@ class ObjectAnywhereEEAnywhereEventCfg(ResetStatesBaseEventCfg):
             "robot_ik_cfg": SceneEntityCfg(
                 "robot", joint_names=["shoulder.*", "elbow.*", "wrist.*"], body_names="robotiq_base_link"
             ),
+        },
+    )
+
+
+@configclass
+class LabRightArmObjectAnywhereEEAnywhereEventCfg(ObjectAnywhereEEAnywhereEventCfg):
+    """Object-anywhere reset using the lab tabletop reachable rectangle."""
+
+    reset_robot_pose = EventTerm(
+        func=task_mdp.reset_root_states_uniform,
+        mode="reset",
+        params={
+            "pose_range": {
+                "x": (0.0, 0.0),
+                "y": (0.0, 0.0),
+                "z": (0.0, 0.0),
+                "roll": (0.0, 0.0),
+                "pitch": (0.0, 0.0),
+                "yaw": (0.0, 0.0),
+            },
+            "velocity_range": {},
+            "asset_cfgs": {"robot": SceneEntityCfg("robot"), "ur5_metal_support": SceneEntityCfg("ur5_metal_support")},
+        },
+    )
+
+    reset_receptive_object_pose = EventTerm(
+        func=task_mdp.reset_root_states_uniform,
+        mode="reset",
+        params={
+            "pose_range": {
+                "x": LAB_RIGHT_ARM_RESET_X_RANGE,
+                "y": LAB_RIGHT_ARM_RESET_Y_RANGE,
+                "z": (LAB_TABLETOP_TOP_Z, LAB_TABLETOP_TOP_Z),
+                "roll": (0.0, 0.0),
+                "pitch": (0.0, 0.0),
+                "yaw": (-np.pi / 12, np.pi / 12),
+            },
+            "velocity_range": {},
+            "asset_cfgs": {"receptive_object": SceneEntityCfg("receptive_object")},
+            "use_bottom_offset": True,
+        },
+    )
+
+    reset_insertive_object_pose = EventTerm(
+        func=task_mdp.reset_root_states_uniform,
+        mode="reset",
+        params={
+            "pose_range": {
+                "x": LAB_RIGHT_ARM_RESET_X_RANGE,
+                "y": LAB_RIGHT_ARM_RESET_Y_RANGE,
+                "z": (LAB_TABLETOP_TOP_Z, LAB_TABLETOP_TOP_Z + 0.3),
+                "roll": (-np.pi, np.pi),
+                "pitch": (-np.pi, np.pi),
+                "yaw": (-np.pi, np.pi),
+            },
+            "velocity_range": {},
+            "asset_cfgs": {"insertive_object": SceneEntityCfg("insertive_object")},
+            "use_bottom_offset": True,
         },
     )
 
@@ -559,6 +666,17 @@ class ObjectAnywhereEEAnywhereResetStatesCfg(UR5eRobotiq2f85ResetStatesCfg):
     def __post_init__(self):
         super().__post_init__()
         self.terminations.success.params["max_object_pos_deviation"] = np.inf
+
+
+@configclass
+class LabRightArmObjectAnywhereEEAnywhereResetStatesCfg(UR5eRobotiq2f85ResetStatesCfg):
+    scene: LabRightArmResetStatesSceneCfg = LabRightArmResetStatesSceneCfg(num_envs=1, env_spacing=1.5)
+    events: LabRightArmObjectAnywhereEEAnywhereEventCfg = LabRightArmObjectAnywhereEEAnywhereEventCfg()
+
+    def __post_init__(self):
+        super().__post_init__()
+        self.terminations.success.params["max_object_pos_deviation"] = np.inf
+        self.terminations.success.params["pos_z_threshold"] = LAB_TABLETOP_TOP_Z - 0.03
 
 
 @configclass

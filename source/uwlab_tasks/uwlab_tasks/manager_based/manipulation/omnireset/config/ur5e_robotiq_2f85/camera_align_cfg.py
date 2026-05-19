@@ -24,7 +24,7 @@ Mirrors the sysid pattern:
 from __future__ import annotations
 
 import isaaclab.sim as sim_utils
-from isaaclab.assets import RigidObjectCfg
+from isaaclab.assets import AssetBaseCfg, RigidObjectCfg
 from isaaclab.envs import ManagerBasedRLEnvCfg
 from isaaclab.managers import ObservationGroupCfg as ObsGroup
 from isaaclab.managers import ObservationTermCfg as ObsTerm
@@ -37,6 +37,15 @@ from uwlab_assets.robots.ur5e_robotiq_gripper import EXPLICIT_UR5E_ROBOTIQ_2F85
 
 from ... import mdp as task_mdp
 from .actions import Ur5eRobotiq2f85SysidOSCAction
+from .lab_layout_cfg import (
+    LAB_RIGHT_ARM_ROBOT_POS,
+    LAB_RIGHT_ARM_ROBOT_ROT,
+    LAB_TABLETOP_TOP_Z,
+    LAB_VENTION_POS,
+    LAB_VENTION_ROT,
+    LAB_VENTION_SCALE,
+    LAB_VENTION_USD_PATH,
+)
 from .rl_state_cfg import RlStateSceneCfg
 
 # Same sim dt as sysid / finetune (500 Hz)
@@ -131,6 +140,76 @@ class CameraAlignSceneCfg(RlStateSceneCfg):
     )
 
 
+@configclass
+class LabRightArmCameraAlignSceneCfg(CameraAlignSceneCfg):
+    """Camera alignment scene using the lab Vention frame and selected right arm."""
+
+    robot = EXPLICIT_UR5E_ROBOTIQ_2F85.replace(prim_path="{ENV_REGEX_NS}/Robot")
+    robot.init_state.pos = LAB_RIGHT_ARM_ROBOT_POS
+    robot.init_state.rot = LAB_RIGHT_ARM_ROBOT_ROT
+
+    curtain_left = RigidObjectCfg(
+        prim_path="{ENV_REGEX_NS}/CurtainLeft",
+        init_state=RigidObjectCfg.InitialStateCfg(pos=(0.0, 0.0, 0.0), rot=(1.0, 0.0, 0.0, 0.0)),
+        spawn=sim_utils.CuboidCfg(
+            size=(0.01, 0.01, 0.01),
+            visible=False,
+            rigid_props=sim_utils.RigidBodyPropertiesCfg(kinematic_enabled=True),
+            collision_props=sim_utils.CollisionPropertiesCfg(collision_enabled=False),
+        ),
+    )
+
+    curtain_back = RigidObjectCfg(
+        prim_path="{ENV_REGEX_NS}/CurtainBack",
+        init_state=RigidObjectCfg.InitialStateCfg(pos=(0.0, 0.0, 0.0), rot=(1.0, 0.0, 0.0, 0.0)),
+        spawn=sim_utils.CuboidCfg(
+            size=(0.01, 0.01, 0.01),
+            visible=False,
+            rigid_props=sim_utils.RigidBodyPropertiesCfg(kinematic_enabled=True),
+            collision_props=sim_utils.CollisionPropertiesCfg(collision_enabled=False),
+        ),
+    )
+
+    curtain_right = RigidObjectCfg(
+        prim_path="{ENV_REGEX_NS}/CurtainRight",
+        init_state=RigidObjectCfg.InitialStateCfg(pos=(0.0, 0.0, 0.0), rot=(1.0, 0.0, 0.0, 0.0)),
+        spawn=sim_utils.CuboidCfg(
+            size=(0.01, 0.01, 0.01),
+            visible=False,
+            rigid_props=sim_utils.RigidBodyPropertiesCfg(kinematic_enabled=True),
+            collision_props=sim_utils.CollisionPropertiesCfg(collision_enabled=False),
+        ),
+    )
+
+    table = RigidObjectCfg(
+        prim_path="{ENV_REGEX_NS}/Table",
+        init_state=RigidObjectCfg.InitialStateCfg(pos=LAB_VENTION_POS, rot=LAB_VENTION_ROT),
+        spawn=sim_utils.UsdFileCfg(
+            usd_path=LAB_VENTION_USD_PATH,
+            scale=LAB_VENTION_SCALE,
+            rigid_props=sim_utils.RigidBodyPropertiesCfg(kinematic_enabled=True),
+        ),
+    )
+
+    # Keep the old scene entity name available without drawing the old flat plate.
+    ur5_metal_support = RigidObjectCfg(
+        prim_path="{ENV_REGEX_NS}/UR5MetalSupport",
+        init_state=RigidObjectCfg.InitialStateCfg(pos=LAB_RIGHT_ARM_ROBOT_POS, rot=LAB_RIGHT_ARM_ROBOT_ROT),
+        spawn=sim_utils.CuboidCfg(
+            size=(0.01, 0.01, 0.01),
+            visible=False,
+            rigid_props=sim_utils.RigidBodyPropertiesCfg(kinematic_enabled=True),
+            collision_props=sim_utils.CollisionPropertiesCfg(collision_enabled=False),
+        ),
+    )
+
+    ground = AssetBaseCfg(
+        prim_path="/World/GroundPlane",
+        init_state=AssetBaseCfg.InitialStateCfg(pos=(0.0, 0.0, 0.0)),
+        spawn=sim_utils.GroundPlaneCfg(),
+    )
+
+
 # ---------------------------------------------------------------------------
 # Minimal MDP (camera alignment only needs RGB obs + joint_pos action)
 # ---------------------------------------------------------------------------
@@ -216,3 +295,26 @@ class CameraAlignEnvCfg(ManagerBasedRLEnvCfg):
 
         # rerender on reset
         self.num_rerenders_on_reset = 1
+
+
+@configclass
+class LabRightArmCameraAlignEnvCfg(CameraAlignEnvCfg):
+    """Camera alignment env with the lab Vention frame and selected right arm."""
+
+    scene: LabRightArmCameraAlignSceneCfg = LabRightArmCameraAlignSceneCfg(num_envs=1, env_spacing=2.0)
+
+    def __post_init__(self) -> None:
+        super().__post_init__()
+
+        self.scene.robot.init_state.pos = LAB_RIGHT_ARM_ROBOT_POS
+        self.scene.robot.init_state.rot = LAB_RIGHT_ARM_ROBOT_ROT
+        self.scene.ur5_metal_support.init_state.pos = LAB_RIGHT_ARM_ROBOT_POS
+        self.scene.ur5_metal_support.init_state.rot = LAB_RIGHT_ARM_ROBOT_ROT
+        self.scene.ground.init_state.pos = (0.0, 0.0, 0.0)
+
+        print(
+            "[INFO]: Lab right-arm camera-align scene: "
+            f"tabletop top z ~= {LAB_TABLETOP_TOP_Z:.5f} m, "
+            f"robot pos={LAB_RIGHT_ARM_ROBOT_POS}, rot={LAB_RIGHT_ARM_ROBOT_ROT}",
+            flush=True,
+        )
