@@ -1,0 +1,23 @@
+# Minimal map / IK / sphere and source-hull checks; separate from Isaac Sim.
+numpy==2.4.6
+scipy==1.17.1
+trimesh==4.12.2
+PyYAML==6.0.3
+warp-lang==1.17.0
+cuda-core==1.2.0
+cuda-bindings==12.9.7
+cuda-pathfinder==1.8.1
+nvidia-cuda-runtime-cu12==12.9.79
+nvidia-cuda-nvrtc-cu12==12.9.86
+nvidia-cuda-nvcc-cu12==12.9.86
+python-fcl==0.7.0.11
+yourdfpy==0.0.60
+usd-core==26.5
+matplotlib==3.11.1
+networkx==3.6.1
+importlib_resources==7.1.0
+setuptools-scm==10.2.3
+tqdm==4.70.1
+viser==1.1.0
+toml==0.10.2
+

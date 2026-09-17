@@ -4,6 +4,7 @@ No cuRobo runtime dependency is needed inside Isaac Sim. Sphere radii, link-pair
 exclusions, and all 33 oriented lab boxes come directly from the accepted model.
 Native body poses allow the same spheres to follow moving fingers and base jitter.
 """
+import os
 import json
 from pathlib import Path
 
@@ -12,7 +13,7 @@ from scipy.spatial.transform import Rotation
 import torch
 import yaml
 
-ROOT = Path('/data/kanth042/datasets/umi_reset_from_defaults_20260911')
+ROOT = Path(os.environ.get('UWLAB_DATA_ROOT', '/data/kanth042/datasets/umi_reset_from_defaults_20260911'))
 ATLAS = ROOT / '49_clearance_and_placement/atlas'
 
 

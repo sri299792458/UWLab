@@ -1,0 +1,108 @@
+<div id="umi-sphere-atlas">
+  <style>
+    #umi-sphere-atlas { color-scheme:light; --background:#fff; --foreground:#20252b; --border:#cbd3dc; --popover:#fff; --popover-foreground:#20252b; --viz-series-1:#196cb6; color:var(--foreground); }
+    #umi-sphere-atlas .plot-host { position:relative; width:100%; }
+    #umi-sphere-atlas .atlas-plot { display:block; width:100%; }
+    #umi-sphere-atlas .atlas-plot text { fill:var(--foreground); font-size:12px; }
+    #umi-sphere-atlas .tooltip { position:absolute; pointer-events:none; background:var(--popover); color:var(--popover-foreground); }
+    #umi-sphere-atlas .legend-strip { width:160px; height:12px; background:linear-gradient(to right,var(--background),var(--viz-series-1)); }
+  </style>
+  <h3>Full-table reachability · accepted sphere model</h3>
+  <div class="viz-controls">
+    <label class="form-label">Height above tabletop: <span data-height class="tabular-nums">30 cm</span>
+      <input class="form-range" data-height-input type="range" min="0" max="29" value="14" step="1" aria-label="Height above tabletop">
+    </label>
+    <label class="form-label">Hand-axis tilt from downward
+      <select class="form-select" data-tilt>
+        <option value="0">All 504 orientations</option>
+        <option value="1">0° · downward · 12 orientations</option>
+        <option value="2">30° · 96 orientations</option>
+        <option value="3">60° · 96 orientations</option>
+        <option value="4">90° · horizontal · 96 orientations</option>
+        <option value="5">120° · 96 orientations</option>
+        <option value="6">150° · 96 orientations</option>
+        <option value="7">180° · upward · 12 orientations</option>
+      </select>
+    </label>
+  </div>
+  <div class="plot-host">
+    <svg class="atlas-plot" role="img" aria-label="Computed fraction of sampled orientations with a sphere-clear inverse-kinematics solution across the physical tabletop"></svg>
+    <div class="tooltip" role="tooltip" hidden></div>
+  </div>
+  <div class="viz-row text-small"><span>0%</span><span class="legend-strip" aria-hidden="true"></span><span>100% of sampled orientations</span></div>
+  <div data-detail class="text-small tabular-nums" aria-live="polite">Loading computed grid…</div>
+  <script type="application/json" data-atlas>ATLAS_DATA_PLACEHOLDER</script>
+  <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+  <script>
+  (async()=>{
+    const root=document.getElementById('umi-sphere-atlas');
+    const data=JSON.parse(root.querySelector('[data-atlas]').textContent);
+    const bytes=Uint8Array.from(atob(data.counts_gzip_base64),c=>c.charCodeAt(0));
+    const stream=new Blob([bytes]).stream().pipeThrough(new DecompressionStream('gzip'));
+    const raw=await new Response(stream).arrayBuffer();
+    const counts=new Uint16Array(raw);
+    const height=root.querySelector('[data-height-input]'),tilt=root.querySelector('[data-tilt]');
+    const host=root.querySelector('.plot-host'),svg=d3.select(root.querySelector('svg'));
+    const tooltip=root.querySelector('.tooltip'),detail=root.querySelector('[data-detail]');
+    const nx=data.x.length,ny=data.y.length,nh=data.heights.length;
+    const xs=data.x,ys=data.y,denominators=data.orientation_counts;
+    let selected=null;
+    const xedge=[xs[0],...xs.slice(1).map((v,i)=>(v+xs[i])/2),xs.at(-1)];
+    const yedge=[ys[0],...ys.slice(1).map((v,i)=>(v+ys[i])/2),ys.at(-1)];
+    const countAt=(h,g,j,i)=>counts[((g*nh+h)*ny+j)*nx+i];
+    function draw(){
+      const h=+height.value,g=+tilt.value,n=denominators[g];
+      root.querySelector('[data-height]').textContent=`${Math.round(data.heights[h]*100)} cm`;
+      const width=host.getBoundingClientRect().width;
+      const left=70,right=18,top=18,bottom=55;
+      const inner=Math.max(120,width-left-right),plotHeight=inner*(ys.at(-1)-ys[0])/(xs.at(-1)-xs[0]);
+      const H=top+plotHeight+bottom;
+      svg.attr('viewBox',`0 0 ${width} ${H}`).attr('height',H);svg.selectAll('*').remove();
+      const x=d3.scaleLinear().domain(d3.extent(xs)).range([left,width-right]);
+      const y=d3.scaleLinear().domain(d3.extent(ys)).range([top+plotHeight,top]);
+      const style=getComputedStyle(root);
+      const color=d3.interpolateRgb(style.getPropertyValue('--background').trim(),style.getPropertyValue('--viz-series-1').trim());
+      const cells=[];let any=0;
+      for(let j=0;j<ny;j++)for(let i=0;i<nx;i++){const c=countAt(h,g,j,i);cells.push({i,j,c});if(c>0)any++;}
+      svg.append('g').selectAll('rect').data(cells).join('rect')
+        .attr('x',d=>x(xedge[d.i])).attr('y',d=>y(yedge[d.j+1]))
+        .attr('width',d=>Math.max(0,x(xedge[d.i+1])-x(xedge[d.i])))
+        .attr('height',d=>Math.max(0,y(yedge[d.j])-y(yedge[d.j+1])))
+        .attr('fill',d=>color(d.c/n));
+      svg.append('rect').attr('data-chart-frame','').attr('x',left).attr('y',top)
+        .attr('width',inner).attr('height',plotHeight).attr('fill','none').attr('stroke','var(--border)');
+      svg.append('g').attr('transform',`translate(0,${top+plotHeight})`).call(d3.axisBottom(x).ticks(width<500?4:7).tickFormat(d3.format('.2f')));
+      svg.append('g').attr('transform',`translate(${left},0)`).call(d3.axisLeft(y).ticks(4).tickFormat(d3.format('.2f')));
+      svg.append('text').attr('class','axis-title').attr('data-axis','x').attr('x',left+inner/2).attr('y',H-9).attr('text-anchor','middle').text('World X (m)');
+      svg.append('text').attr('class','axis-title').attr('data-axis','y').attr('transform',`translate(15,${top+plotHeight/2}) rotate(-90)`).attr('text-anchor','middle').text('World Y (m)');
+      const defaultDetail=`${any.toLocaleString()} / ${(nx*ny).toLocaleString()} grid positions have at least one accepted orientation at this height.`;
+      detail.textContent=defaultDetail;
+      const hit=svg.append('rect').attr('data-chart-hit','').attr('x',left).attr('y',top).attr('width',inner).attr('height',plotHeight).attr('fill','transparent');
+      function inspect(event,pin){
+        const [px,py]=d3.pointer(event,svg.node());
+        const i=d3.bisector(v=>v).center(xs,x.invert(px)),j=d3.bisector(v=>v).center(ys,y.invert(py));
+        const c=countAt(h,g,j,i),label=`X ${xs[i].toFixed(3)} m · Y ${ys[j].toFixed(3)} m · ${c}/${n} orientations (${(100*c/n).toFixed(1)}%)`;
+        if(pin){selected={i,j};detail.textContent=label;}
+        tooltip.hidden=false;tooltip.textContent=label;
+        tooltip.style.left=Math.max(0,Math.min(px+10,width-tooltip.offsetWidth-4))+'px';
+        tooltip.style.top=Math.max(0,py-tooltip.offsetHeight-10)+'px';
+      }
+      hit.on('pointermove',event=>inspect(event,false)).on('click',event=>inspect(event,true)).on('pointerleave',()=>{tooltip.hidden=true;});
+      // Optional tick labels are removed if their measured bounds touch.
+      requestAnimationFrame(()=>{
+        const labels=[...svg.node().querySelectorAll('.tick text')];
+        let kept=[];
+        for(const label of labels){const b=label.getBoundingClientRect();
+          if(kept.some(a=>b.left<a.right+4&&b.right>a.left-4&&b.top<a.bottom+4&&b.bottom>a.top-4)){label.style.visibility='hidden';}
+          else kept.push(b);
+        }
+      });
+    }
+    height.addEventListener('input',draw);tilt.addEventListener('change',draw);
+    new ResizeObserver(draw).observe(host);draw();
+  })().catch(error=>{
+    const root=document.getElementById('umi-sphere-atlas');root.querySelector('[data-detail]').textContent='Unable to display grid: '+error.message;
+    root.querySelector('[data-detail]').setAttribute('role','alert');
+  });
+  </script>
+</div>

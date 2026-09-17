@@ -1,0 +1,15 @@
+{
+  "passed": true,
+  "data_root": "/data/kanth042/datasets/thunder_portable_core_test_v1/data",
+  "lab_boxes": 33,
+  "robot_hulls": 17,
+  "robot_spheres": 239,
+  "lookup_shape": null,
+  "reset_counts": {},
+  "collection_endpoint_hull_clear": true,
+  "gpu_checked": true,
+  "scope": "Input and endpoint verification only; no route or physical robot validation.",
+  "curobo_position_error_m": 8.500020172182452e-08,
+  "gpu_sphere_endpoint_clear": true,
+  "curobo_checker_created": true
+}

@@ -1,5 +1,9 @@
 # Thunder / UMI state-policy sim-to-real
 
+For the **complete portable lab, calibrated assets, cuRobo map and software setup**, start with
+[portable/README.md](portable/README.md). The default core download is 223 MB; the full
+map/reset dataset is optional. The robot-side agent handoff is included there.
+
 This branch prepares UWLab's Stage-2 state-policy fine-tuning for Thunder and
 provides a standalone package for the robot workstation. The current Stage-1
 training run remains in its original checkout. No real-robot data has been

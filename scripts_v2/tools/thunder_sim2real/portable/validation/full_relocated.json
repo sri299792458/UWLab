@@ -1,0 +1,26 @@
+{
+  "passed": true,
+  "data_root": "/data/kanth042/datasets/thunder_portable_relocation_test_v1/data",
+  "lab_boxes": 33,
+  "robot_hulls": 17,
+  "robot_spheres": 239,
+  "lookup_shape": [
+    61,
+    73,
+    149,
+    504,
+    6
+  ],
+  "reset_counts": {
+    "resets_ObjectAnywhereEEAnywhere": 10644,
+    "resets_ObjectAnywhereEEGrasped": 10049,
+    "resets_ObjectPartiallyAssembledEEGrasped": 10029,
+    "resets_ObjectRestingEEGrasped": 10010
+  },
+  "collection_endpoint_hull_clear": true,
+  "gpu_checked": true,
+  "scope": "Input and endpoint verification only; no route or physical robot validation.",
+  "curobo_position_error_m": 8.500020172182452e-08,
+  "gpu_sphere_endpoint_clear": true,
+  "curobo_checker_created": true
+}

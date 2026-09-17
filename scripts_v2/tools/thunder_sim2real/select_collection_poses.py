@@ -1,4 +1,5 @@
 """Rank existing collision-clear cuRobo atlas seeds for a collection preview."""
+import os
 import argparse
 import json
 from pathlib import Path
@@ -13,7 +14,7 @@ from motion_geometry import REPO, UmiSphereGeometry, clearances
 sys.path.insert(0, str(REPO / "scripts_v2/tools/curobo_umi"))
 from reachability_geometry import batch_fk, SourceCollisionChecker
 
-ROOT = Path("/data/kanth042/datasets/umi_reset_from_defaults_20260911")
+ROOT = Path(os.environ.get('UWLAB_DATA_ROOT', '/data/kanth042/datasets/umi_reset_from_defaults_20260911'))
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument("--output", required=True, type=Path)
 parser.add_argument("--count", type=int, default=12)

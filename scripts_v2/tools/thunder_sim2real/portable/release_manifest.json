@@ -1,0 +1,17 @@
+{
+  "schema": 1,
+  "tag": "thunder-lab-20260917-v1",
+  "repository": "sri299792458/UWLab",
+  "profile": "core",
+  "archive_sha256": "b7d48c483f56cc2e2a5962946a75f524bfff403c688eeaae0346650e1b362a79",
+  "archive_bytes": 222662520,
+  "manifest_sha256": "36be57bfa7c4cbf54458964eeb0f4332c92d897deb139a86d3e8ef60bbc119f6",
+  "extracted_bytes": 334392714,
+  "parts": [
+    {
+      "name": "thunder-lab-core.tar.gz.part000",
+      "bytes": 222662520,
+      "sha256": "b7d48c483f56cc2e2a5962946a75f524bfff403c688eeaae0346650e1b362a79"
+    }
+  ]
+}

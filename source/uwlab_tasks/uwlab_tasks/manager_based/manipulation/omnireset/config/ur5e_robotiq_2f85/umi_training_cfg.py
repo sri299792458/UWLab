@@ -5,13 +5,14 @@ success, sampling, and PPO configuration remain inherited from upstream. The gai
 selected with nominal lift/carry/release trials at 120 Hz; policy validation and
 training remain separate from that controller capability test.
 """
+import os
 from isaaclab.managers import EventTermCfg
 from isaaclab.utils import configclass
 
 from . import rl_state_cfg as state
 from .umi_reset_cfg import _configure_hardware, _configure_osc
 
-TRAIN_DATASET_DIR = "/data/kanth042/datasets/umi_reset_from_defaults_20260911/49_clearance_and_placement/OmniReset"
+TRAIN_DATASET_DIR = os.environ.get('UWLAB_DATA_ROOT', '/data/kanth042/datasets/umi_reset_from_defaults_20260911') + '/49_clearance_and_placement/OmniReset'
 
 
 def _configure_training(cfg):

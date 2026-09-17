@@ -1,4 +1,5 @@
 """Check saved native body poses against the source collision hulls and lab boxes."""
+import os
 import argparse
 import itertools
 import json
@@ -12,7 +13,7 @@ REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(REPO / "scripts_v2/tools/curobo_umi"))
 from reachability_geometry import SourceCollisionChecker, exact_pair_gap, set_transform
 
-ROOT = Path("/data/kanth042/datasets/umi_reset_from_defaults_20260911")
+ROOT = Path(os.environ.get('UWLAB_DATA_ROOT', '/data/kanth042/datasets/umi_reset_from_defaults_20260911'))
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument("--preview", type=Path, required=True)
 parser.add_argument("--candidate", type=int)

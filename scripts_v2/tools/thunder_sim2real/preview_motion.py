@@ -1,4 +1,5 @@
 """Replay the collection waveform for atlas poses in the complete static lab."""
+import os
 import argparse
 import copy
 import json
@@ -51,7 +52,7 @@ def main():
     offsets = collect_thunder.generate_offsets(motion)
     collect_thunder.install_calibration()
     record = synthetic_record(len(offsets))
-    metadata = yaml.safe_load(Path("/data/kanth042/converted_assets/thunder_d405_umi_rigid_asset/metadata.yaml").read_text())
+    metadata = yaml.safe_load(Path(os.environ.get('UWLAB_ASSET_ROOT', '/data/kanth042/converted_assets') + '/thunder_d405_umi_rigid_asset/metadata.yaml').read_text())
     nominal = metadata["sysid"]
     ref = np.array(sum([nominal[k] for k in ("armature", "static_friction", "dynamic_ratio", "viscous_friction")], []))
     variants = [{"name": "zero_added_friction_inertia_delay", "params": np.zeros(25).tolist()},

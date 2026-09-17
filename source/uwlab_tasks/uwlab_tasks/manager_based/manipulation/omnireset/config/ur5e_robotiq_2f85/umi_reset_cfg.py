@@ -4,6 +4,7 @@ Upstream height/orientation proposals and contact settings are retained.
 Cube placements use full-table map coverage and 50 mm edge clearance. Arm IK
 is seeded from the atlas; final states use its column and collision checks.
 """
+import os
 
 from copy import deepcopy
 from math import sqrt
@@ -18,13 +19,13 @@ from . import grasp_sampling_cfg as grasp
 from . import partial_assemblies_cfg as partial
 from . import reset_states_cfg as resets
 
-UMI_ROBOT_USD = "/data/kanth042/converted_assets/thunder_d405_umi_rigid_asset/ur5e_robotiq_d405_umi_rigid_thunder.usd"
-UMI_HAND_USD = "/data/kanth042/converted_assets/thunder_d405_umi_gripper_asset/robotiq_d405_umi_rigid.usd"
-CUBE_DIR = "/data/kanth042/converted_assets/aprilcube_60mm_rounded"
+UMI_ROBOT_USD = os.environ.get('UWLAB_ASSET_ROOT', '/data/kanth042/converted_assets') + '/thunder_d405_umi_rigid_asset/ur5e_robotiq_d405_umi_rigid_thunder.usd'
+UMI_HAND_USD = os.environ.get('UWLAB_ASSET_ROOT', '/data/kanth042/converted_assets') + '/thunder_d405_umi_gripper_asset/robotiq_d405_umi_rigid.usd'
+CUBE_DIR = os.environ.get('UWLAB_ASSET_ROOT', '/data/kanth042/converted_assets') + '/aprilcube_60mm_rounded'
 INSERTIVE_USD = f"{CUBE_DIR}/InsertiveAprilCube60/aprilcube_60.usd"
 RECEPTIVE_USD = f"{CUBE_DIR}/ReceptiveAprilCube60/aprilcube_60.usd"
-DATASET_DIR = "/data/kanth042/datasets/umi_reset_from_defaults_20260911/49_clearance_and_placement/OmniReset"
-TABLE_USD = "/data/kanth042/converted_assets/lab_vention_asset_v60/lab_vention.usd"
+DATASET_DIR = os.environ.get('UWLAB_DATA_ROOT', '/data/kanth042/datasets/umi_reset_from_defaults_20260911') + '/49_clearance_and_placement/OmniReset'
+TABLE_USD = os.environ.get('UWLAB_ASSET_ROOT', '/data/kanth042/converted_assets') + '/lab_vention_asset_v60/lab_vention.usd'
 TABLE_POS = (1.793445, 0.340075, -0.030851)
 TABLE_ROT = (0.5, 0.5, 0.5, 0.5)
 TABLE_Z = 0.84235
