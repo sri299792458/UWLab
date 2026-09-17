@@ -149,6 +149,17 @@ have changed its signature, so the recorder checks the installed version.
 The supplied payload fields are deliberately empty; they must describe the
 actual mounted Thunder tool rather than UWLab's reference payload.
 
+For comparison, the current simulation's open, empty tool has mass
+**1.002607 kg** and center of gravity **[-0.00027272, 0.00714345, 0.06427591] m**
+in the UR tool-mounting (`tool0`) frame. This sums the nine tool bodies and
+includes the camera, printed mount, and modeled screws once. It excludes the
+robot wrist/arm. The asset's mass report lists the separate flange adapter,
+USB cable/ties, camera washers, and tape as unmodeled. This is a model-derived
+reference, not a measurement of the complete mounted hardware; it does not
+automatically fill the collection payload fields. The per-body calculation
+and native-pose cross-check are in
+[`workstation/simulation_payload_reference.json`](workstation/simulation_payload_reference.json).
+
 Print the plan without connecting:
 
 ```bash
