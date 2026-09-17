@@ -1,0 +1,39 @@
+{
+  "robot_ip": null,
+  "payload_mass_kg": null,
+  "payload_cog_m": null,
+  "polyscope_version": null,
+  "gripper_configuration": "open_empty",
+  "start_joint_positions_rad": null,
+  "start_joint_tolerance_rad": 0.02,
+  "joint_excursion_limit_rad": null,
+  "duration_s": 8.0,
+  "f0_hz": 0.1,
+  "f1_hz": 3.0,
+  "amplitudes_m_rad": null,
+  "motion_stiffness": [
+    1000,
+    1000,
+    1000,
+    50,
+    50,
+    50
+  ],
+  "motion_damping_ratio": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    1
+  ],
+  "torque_max": [
+    150,
+    150,
+    150,
+    28,
+    28,
+    28
+  ],
+  "notes": "Gains are the UWLab collection defaults, pending Thunder validation. Fill hardware and motion fields after inspecting the real setup. Axes: base_link XYZ then axis-angle XYZ. Start pose is checked; the script never moves to it."
+}

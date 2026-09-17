@@ -1,0 +1,5 @@
+{
+  "ur_rtde_version": "1.6.2",
+  "directTorque_doc": "directTorque(self: rtde_control.RTDEControlInterface, torque: List[float], friction_comp: bool = True) -> bool\n",
+  "interfaces_imported_without_connection": true
+}

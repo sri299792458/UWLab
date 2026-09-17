@@ -1,0 +1,79 @@
+{
+  "status": "PASS",
+  "source_kind": "synthetic_test",
+  "num_envs": 64,
+  "task": "OmniReset-UMI-Defaults-State-Finetune-v0",
+  "physics_hz": 120,
+  "policy_hz": 10,
+  "phases": [
+    {
+      "progress": 0.0,
+      "mean_reward": 0.021377000957727432,
+      "mean_kp": [
+        500.0,
+        500.0,
+        500.0,
+        60.0,
+        60.0,
+        60.0
+      ],
+      "mean_kd": [
+        160.0,
+        160.0,
+        160.0,
+        0.10000001639127731,
+        0.10000001639127731,
+        0.10000001639127731
+      ]
+    },
+    {
+      "progress": 0.5,
+      "mean_reward": 0.018538756296038628,
+      "mean_kp": [
+        749.4039916992188,
+        749.4039916992188,
+        749.4039916992188,
+        55.24827575683594,
+        55.24827575683594,
+        55.24827575683594
+      ],
+      "mean_kd": [
+        125.6129150390625,
+        125.6129150390625,
+        125.6129150390625,
+        7.660069465637207,
+        7.660069465637207,
+        7.660069465637207
+      ]
+    },
+    {
+      "progress": 1.0,
+      "mean_reward": 0.031233813613653183,
+      "mean_kp": [
+        1017.7171630859375,
+        1017.7171630859375,
+        1017.7171630859375,
+        50.67338562011719,
+        50.67338562011719,
+        50.67338562011719
+      ],
+      "mean_kd": [
+        64.19376373291016,
+        64.19376373291016,
+        64.19376373291016,
+        14.382811546325684,
+        14.382811546325684,
+        14.382811546325684
+      ]
+    }
+  ],
+  "preserved": [
+    "Thunder/UMI assets",
+    "cube motion modes",
+    "reset bank and probabilities",
+    "rewards",
+    "observations",
+    "initial gains"
+  ],
+  "scope": "Configuration and native reset/step validation; no real fitted parameters or learned transfer claim"
+}

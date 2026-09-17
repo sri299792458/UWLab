@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "robot": "thunder",
+  "source_kind": "synthetic_test",
+  "record_path": "/data/kanth042/datasets/umi_reset_from_defaults_20260911/53_thunder_sim2real/replay_test/synthetic_record.pt",
+  "record_sha256": "bdbd96994a2f2ced4dbf6c1023df581726f05ed4f92946f6492509fa0e9a0c7d",
+  "record_validation": {
+    "samples": 400,
+    "duration_s": 0.8,
+    "source_kind": "synthetic_test",
+    "sample_phase": "pre_command",
+    "robot_dt_min_s": 0.0019999999999998908,
+    "robot_dt_max_s": 0.0020000000000000018,
+    "joint_excursion_rad": [
+      0.030209185555577278,
+      0.052480220794677734,
+      0.07094717025756836,
+      0.035344600677490234,
+      0.0010471343994140625,
+      0.026307225227355957
+    ],
+    "max_torque_nm": [
+      5.219603061676025,
+      5.60371732711792,
+      1.8583705425262451,
+      0.8953405618667603,
+      0.8382181525230408,
+      1.0578303337097168
+    ]
+  },
+  "comparison_phase": "pre_command",
+  "dt": 0.002,
+  "controller": {
+    "motion_stiffness": [
+      1000,
+      1000,
+      1000,
+      50,
+      50,
+      50
+    ],
+    "motion_damping_ratio": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "torque_max": [
+      150,
+      150,
+      150,
+      28,
+      28,
+      28
+    ]
+  },
+  "seed": 42,
+  "fit_path": "/data/kanth042/datasets/umi_reset_from_defaults_20260911/53_thunder_sim2real/fit_test/best_fit.json",
+  "fit_sha256": "385c8b8334f7f3aaa4c4dd355f7cd82fd2c8c18cdb6fc5daec85e3deb18325f5",
+  "held_out_record": false,
+  "per_joint_rmse_deg": [
+    0.4261413514614105,
+    1.9146925210952759,
+    1.9777159690856934,
+    1.190385103225708,
+    0.04328995943069458,
+    0.8804656863212585
+  ],
+  "score_sum_joint_mse_rad2": 0.003031892003491521,
+  "upstream_post_step_score_rad2": 0.003022367600351572
+}

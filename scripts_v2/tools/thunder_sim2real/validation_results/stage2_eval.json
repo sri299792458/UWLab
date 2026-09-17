@@ -1,0 +1,39 @@
+{
+  "status": "PASS",
+  "source_kind": "synthetic_test",
+  "num_envs": 64,
+  "task": "OmniReset-UMI-Defaults-State-Finetune-Play-v0",
+  "physics_hz": 120,
+  "policy_hz": 10,
+  "phases": [
+    {
+      "progress": 1.0,
+      "mean_reward": 0.009364779107272625,
+      "mean_kp": [
+        1011.7833251953125,
+        1011.7833251953125,
+        1011.7833251953125,
+        49.66374206542969,
+        49.66374206542969,
+        49.66374206542969
+      ],
+      "mean_kd": [
+        63.19914245605469,
+        63.19914245605469,
+        63.19914245605469,
+        14.34476375579834,
+        14.34476375579834,
+        14.34476375579834
+      ]
+    }
+  ],
+  "preserved": [
+    "Thunder/UMI assets",
+    "cube motion modes",
+    "reset bank and probabilities",
+    "rewards",
+    "observations",
+    "initial gains"
+  ],
+  "scope": "Configuration and native reset/step validation; no real fitted parameters or learned transfer claim"
+}

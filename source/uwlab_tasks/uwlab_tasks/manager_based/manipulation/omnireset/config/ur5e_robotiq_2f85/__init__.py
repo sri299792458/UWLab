@@ -9,6 +9,46 @@ import gymnasium as gym
 
 from . import agents
 
+gym.register(
+    id="OmniReset-Thunder-UMI-Sysid-v0",
+    entry_point="isaaclab.envs:ManagerBasedRLEnv",
+    kwargs={"env_cfg_entry_point": f"{__name__}.umi_sim2real_cfg:ThunderSysidCfg"},
+    disable_env_checker=True,
+)
+for stage, cfg_name in (("Finetune", "UmiCubeFinetuneCfg"), ("Finetune-Play", "UmiCubeFinetuneEvalCfg")):
+    gym.register(
+        id=f"OmniReset-UMI-Defaults-State-{stage}-v0",
+        entry_point="isaaclab.envs:ManagerBasedRLEnv",
+        kwargs={
+            "env_cfg_entry_point": f"{__name__}.umi_sim2real_cfg:{cfg_name}",
+            "rsl_rl_cfg_entry_point": f"{agents.__name__}.rsl_rl_cfg:Base_PPORunnerCfg",
+        },
+        disable_env_checker=True,
+    )
+
+for stage, cfg_name in (("Train", "UmiCubeTrainCfg"), ("Play", "UmiCubeEvalCfg")):
+    gym.register(
+        id=f"OmniReset-UMI-Defaults-State-{stage}-v0",
+        entry_point="isaaclab.envs:ManagerBasedRLEnv",
+        kwargs={
+            "env_cfg_entry_point": f"{__name__}.umi_training_cfg:{cfg_name}",
+            "rsl_rl_cfg_entry_point": f"{agents.__name__}.rsl_rl_cfg:Base_PPORunnerCfg",
+        },
+        disable_env_checker=True,
+    )
+
+# Hardware-only UMI variants of the default offline generation pipeline.
+for stage in (
+    "GraspSampling", "PartialAssemblies", "ObjectAnywhereEEAnywhere",
+    "ObjectRestingEEGrasped", "ObjectAnywhereEEGrasped", "ObjectPartiallyAssembledEEGrasped",
+):
+    gym.register(
+        id=f"OmniReset-UMI-Defaults-{stage}-v0",
+        entry_point="isaaclab.envs:ManagerBasedRLEnv",
+        kwargs={"env_cfg_entry_point": f"{__name__}.umi_reset_cfg:Umi{stage}Cfg"},
+        disable_env_checker=True,
+    )
+
 # Register the partial assemblies environment
 gym.register(
     id="OmniReset-PartialAssemblies-v0",

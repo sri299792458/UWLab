@@ -1,0 +1,27 @@
+{
+  "status": "PASS",
+  "source_kind": "synthetic_test",
+  "known_delay_steps": 2,
+  "recovered_delay_steps": 2,
+  "pre_command_rmse_deg_by_delay": [
+    0.035067807883024216,
+    0.0177261121571064,
+    5.878425145056099e-05,
+    0.01834343746304512,
+    0.03763298690319061,
+    0.05763573572039604
+  ],
+  "upstream_post_step_rmse_deg_by_delay": [
+    0.04283973202109337,
+    0.02895316109061241,
+    0.021177493035793304,
+    0.027112051844596863,
+    0.04182533919811249,
+    0.05996112525463104
+  ],
+  "wrist_position_max_error_m": 2.3103755159015193e-07,
+  "wrist_quaternion_dot": 0.9999998866361819,
+  "jacobian_max_error": 9.86566609283493e-08,
+  "steps": 400,
+  "scope": "Indexing and known-delay recovery with other dynamics fixed; not real-robot fit validation"
+}
