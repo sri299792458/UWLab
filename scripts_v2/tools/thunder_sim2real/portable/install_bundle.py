@@ -76,6 +76,8 @@ def main():
     args = parser.parse_args()
     manifest_path = args.manifest or HERE / ('release_manifest.json' if args.profile == 'core' else 'release_manifest.full.json')
     release = json.loads(manifest_path.read_text())
+    if release.get('published') is False and not args.local_parts:
+        raise ValueError('The full archive is prepared but not published. Use the default core profile; full data requires a separate transfer.')
     dest = args.destination.expanduser().resolve()
     if dest.exists():
         raise ValueError(f'Refusing to overwrite {dest}; choose a new directory')

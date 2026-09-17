@@ -21,6 +21,10 @@ extracting to **334,392,714 bytes (334 MB)** before filesystem overhead. Allow 1
 core download/extraction, plus space for Python environments. It includes the calibrated
 robot, lab/collision models, map coverage, dependency sources and validation evidence.
 
+**Only the core package is published in this release.** The full archive remains on the
+development server. The instructions below describe that prepared archive and require it
+to be transferred or published before `--profile full` can be used.
+
 The **full** profile also includes every saved joint solution and reset tensor:
 **5,711,988,362 bytes (5.7 GB)** downloaded in four parts and **11,615,545,247 bytes (11.6 GB)**
 extracted. It is optional for robot-side planning. For complete simulation/reset workflows:
