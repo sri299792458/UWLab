@@ -126,7 +126,7 @@ def export_profile(fit_path, output):
         "stage2_delay": {"mode": "upstream_range", "physics_hz": 120, "steps": [0, 1]},
         "record_sha256": fit["record_sha256"], "fit_sha256": sha256(fit_path),
         "fit_path": str(fit_path), "validation_status": "fitted_candidate",
-        "note": "Fit error is not proof of real task transfer. Evaluate held-out motions before selecting this profile.",
+        "note": "Fit error is not proof of real task transfer. Follow UWLab's replay-overlay and real-robot teleoperation verification before fine-tuning.",
     }
     profile_api().validate_profile(profile)
     output = Path(output)

@@ -184,8 +184,9 @@ The script does not move to the start pose. It checks position tolerance and
 stationary joints before enabling collection. Ctrl-C aborts; cleanup follows
 the UWLab torque-to-hold handoff. Partial/error recordings are saved when
 samples exist, marked incomplete, and rejected by the fitter. Existing output
-files are not overwritten. Record another reviewed motion as
-`thunder-heldout.pt` for evaluation; it should differ from the fitting motion.
+files are not overwritten. Following UWLab's published procedure, use this same
+recording for fitting and for the subsequent simulated-versus-real overlay.
+A separate held-out trajectory is not required by that procedure.
 
 Transfer the `.pt` recordings to the simulation server. They include the
 controller gains, torque limits, payload configuration, calibration, initial
@@ -215,7 +216,7 @@ search bounds, parameter values, delay, and optimization history.
 ```bash
 CUDA_VISIBLE_DEVICES=0 bash scripts_v2/tools/thunder_sim2real/run_sim.sh \
   scripts_v2/tools/thunder_sim2real/fit.py --headless --device cuda:0 \
-  --record /path/to/thunder-heldout.pt \
+  --record /path/to/thunder-fit.pt \
   --evaluate /path/to/new-fit-directory/best_fit.json \
   --output /path/to/new-evaluation-directory
 ```
@@ -224,6 +225,8 @@ Evaluation writes `evaluation.json`, `replay.npz`, and `joint_overlay.png`.
 Inspect all six joint errors and the plotted trajectories. UWLab's guide
 suggests less than 2 degrees RMS error per joint as a fit check; that is a
 reference criterion, not evidence of successful Thunder task transfer.
+UWLab then calls for teleoperating the physical robot to verify sensible motion
+before proceeding to fine-tuning. See their linked guide for that robot-side step.
 The report identifies whether the evaluated recording differs from the
 fitting recording.
 
@@ -318,7 +321,7 @@ These fixed gains are used on the real robot for collection and in the fitting
 simulation. We fit friction, effective joint inertia, and delay to the actual
 recorded joint response. Perfect command tracking is not required, and no
 separate gain-tuning prerequisite is being introduced. Real-data fitting and
-held-out evaluation are still required; the simulated tests do not prove full
+fit verification are still required; the simulated tests do not prove full
 parameter identifiability or measure physical Thunder dynamics.
 
 Positioning at the chosen start is an ordinary setup step before collection.

@@ -159,7 +159,7 @@ NVIDIA material references; rendering can require internet access for those mate
 All local physics geometry and cube textures are included. The bundle is not an air-gapped
 simulator installer. Check the JSON validation report, not just the simulator process exit.
 `stage2eval` uses a clearly labeled synthetic dynamics profile solely for the smoke test.
-The full real-record → dynamics fit → held-out replay → fine-tuning procedure is in
+The real-record → dynamics fit → replay verification → fine-tuning procedure is in
 [the parent README](../README.md).
 
 The current reset pipeline uses `run_clearance_stage.py`, `run_clearance_atlas.py` and

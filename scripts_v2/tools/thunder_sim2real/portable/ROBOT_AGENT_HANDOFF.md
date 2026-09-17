@@ -78,3 +78,14 @@ the parent README for the collection contract, gains, cleanup and data validatio
 No server-specific IP, credentials, real dynamics dataset or fitted Thunder profile is
 included. Stage-2 training requires an actual validated real-record fit; smoke-test
 synthetic profiles are rejected by production loading.
+
+## Files to return to the simulation server
+
+Follow UWLab's published system-identification procedure: return one completed raw
+`thunder-fit.pt`, the actual collection JSON, collector log and validator output. Include
+the Git commit and any local code changes. The same recording is used for fitting and
+for the simulated-versus-real joint overlay; this procedure does not require a separate
+`thunder-heldout.pt` or a newly invented validation motion. After checking the fit,
+UWLab specifies a real-robot teleoperation check before fine-tuning.
+
+Source: https://uw-lab.github.io/UWLab/main/source/publications/omnireset/sim2real.html#controller-system-identification
