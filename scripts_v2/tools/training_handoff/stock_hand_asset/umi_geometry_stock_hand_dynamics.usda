@@ -1,0 +1,101 @@
+#usda 1.0
+(
+    defaultPrim = "ur5e_robotiq_gripper_d405_mount"
+    subLayers = [
+        @../thunder_d405_umi_rigid_asset/ur5e_robotiq_d405_umi_rigid_thunder.usd@
+    ]
+)
+
+over "ur5e_robotiq_gripper_d405_mount"
+{
+    over "robotiq_base_link" (
+        prepend apiSchemas = ["PhysicsMassAPI"]
+    )
+    {
+        point3f physics:centerOfMass = (0.014904741, 0.024959607, -0.040219497)
+        float3 physics:diagonalInertia = (0.0017755436, 0.0051054154, 0.006171565)
+        float physics:mass = 1.3378382
+        quatf physics:principalAxes = (0.4993256, 0.33204374, 0.7706518, 0.21567726)
+    }
+
+    over "left_outer_knuckle" (
+        prepend apiSchemas = ["PhysicsMassAPI"]
+    )
+    {
+        point3f physics:centerOfMass = (0, 0, 0)
+        float3 physics:diagonalInertia = (0.004, 0.004, 0.004)
+        float physics:mass = 1
+        quatf physics:principalAxes = (1, 0, 0, 0)
+    }
+
+    over "right_outer_knuckle" (
+        prepend apiSchemas = ["PhysicsMassAPI"]
+    )
+    {
+        point3f physics:centerOfMass = (0, 0, 0)
+        float3 physics:diagonalInertia = (0.004, 0.004, 0.004)
+        float physics:mass = 1
+        quatf physics:principalAxes = (1, 0, 0, 0)
+    }
+
+    over "right_inner_knuckle" (
+        prepend apiSchemas = ["PhysicsMassAPI"]
+    )
+    {
+        point3f physics:centerOfMass = (0.0836492, -0.03167676, 1.5978823e-9)
+        float3 physics:diagonalInertia = (0.0000044877793, 0.000008004879, 0.000011838778)
+        float physics:mass = 0.027306942
+        quatf physics:principalAxes = (0.69840646, 0, 0, 0.71570134)
+    }
+
+    over "left_inner_knuckle" (
+        prepend apiSchemas = ["PhysicsMassAPI"]
+    )
+    {
+        point3f physics:centerOfMass = (0.0836492, 0.031676754, -4.3153964e-10)
+        float3 physics:diagonalInertia = (0.0000044877793, 0.00000800488, 0.000011838778)
+        float physics:mass = 0.027306942
+        quatf physics:principalAxes = (0.7157014, 0, 0, 0.6984064)
+    }
+
+    over "left_outer_finger" (
+        prepend apiSchemas = ["PhysicsMassAPI"]
+    )
+    {
+        point3f physics:centerOfMass = (0.06957139, 0.06559633, 0.000005532598)
+        float3 physics:diagonalInertia = (0.000004293101, 0.000010880908, 0.0000132201985)
+        float physics:mass = 0.039179202
+        quatf physics:principalAxes = (0.7157011, 0, 0, 0.6984067)
+    }
+
+    over "right_outer_finger" (
+        prepend apiSchemas = ["PhysicsMassAPI"]
+    )
+    {
+        point3f physics:centerOfMass = (0.069571406, -0.06559631, -0.0000055335636)
+        float3 physics:diagonalInertia = (0.0000042931015, 0.000010880908, 0.0000132201985)
+        float physics:mass = 0.039179202
+        quatf physics:principalAxes = (0.6984066, 0, 0, 0.7157012)
+    }
+
+    over "right_inner_finger" (
+        prepend apiSchemas = ["PhysicsMassAPI"]
+    )
+    {
+        point3f physics:centerOfMass = (0.12621737, -0.048126288, -2.5474776e-8)
+        float3 physics:diagonalInertia = (9.985451e-7, 0.0000028386992, 0.0000032097846)
+        float physics:mass = 0.019761555
+        quatf physics:principalAxes = (0.70710695, 0, 0, 0.70710665)
+    }
+
+    over "left_inner_finger" (
+        prepend apiSchemas = ["PhysicsMassAPI"]
+    )
+    {
+        point3f physics:centerOfMass = (0.12621734, 0.04812629, 2.5831602e-8)
+        float3 physics:diagonalInertia = (9.985451e-7, 0.0000028386992, 0.0000032097846)
+        float physics:mass = 0.019761555
+        quatf physics:principalAxes = (0.7071066, 0, 0, 0.70710695)
+    }
+}
+
