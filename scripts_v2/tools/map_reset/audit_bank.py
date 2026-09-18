@@ -1,10 +1,11 @@
 """Check complete production banks and record data/source identity without filtering."""
+import os
 import hashlib
 import json
 from pathlib import Path
 import torch
 
-ROOT = Path('/data/kanth042/datasets/umi_reset_from_defaults_20260911/26_map_reset_regeneration')
+ROOT = Path(os.environ.get('UWLAB_DATA_ROOT', '/data/kanth042/datasets/umi_reset_from_defaults_20260911') + '/26_map_reset_regeneration')
 FAMILIES = ['ObjectAnywhereEEAnywhere', 'ObjectRestingEEGrasped',
             'ObjectAnywhereEEGrasped', 'ObjectPartiallyAssembledEEGrasped']
 

@@ -1,0 +1,7 @@
+{
+  "samples": 4000,
+  "axes": 6,
+  "array_equal": true,
+  "max_difference": 0.0,
+  "upstream_file_sha256": "488f446f03db2be2ebffb6fa4316abe738c1b467464f5773239901f026b54957"
+}

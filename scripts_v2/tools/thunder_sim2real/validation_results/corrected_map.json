@@ -1,0 +1,190 @@
+{
+  "complete": true,
+  "shape": [
+    31,
+    504,
+    37,
+    75
+  ],
+  "total_targets": 43356600,
+  "status_counts": {
+    "2": 20748159,
+    "3": 9348735,
+    "4": 13259706
+  },
+  "positions_total": 86025,
+  "positions_with_any_solution": 60276,
+  "max_position_error_m": 0.0009999831672757864,
+  "max_rotation_error_rad": 0.00999658927321434,
+  "config_sha256": "fd00ee7ca37139d963e123dda739a1e895e4ee79a993c9b78ab801d9febebe5f",
+  "modeling_notes": [
+    "Full tabletop XY sampled at exactly 20 mm, anchored at its lower edges; samples do not extend beyond the table. Heights 0\u2013600 mm at the same spacing. Identical 504 orientations at all positions.",
+    "Robot mounting pose is taken from this model export, not the historical sphere-fit configuration.",
+    "Empty fully open hand, all six finger coordinates locked at zero; no cubes or other payload.",
+    "Original fitted 239 spheres, without the abandoned link-wide radius inflation.",
+    "Self-pair padding remains 2 mm combined. World clearance is 50 mm for the eight vertical column boxes and 1 mm for other lab geometry.",
+    "Same self-pair exclusions and fixed-base/world handling as the accepted comparison.",
+    "World uses all 33 lab boxes. Fixed base sphere group is omitted from world queries because of its mounting interface; its pose is invariant.",
+    "Collision tests determine acceptance after pose IK, and do not guide the IK optimization.",
+    "No solution found describes this finite IK search; it does not prove geometric impossibility.",
+    "Orientation fraction is a fraction of these samples, not an orientation-uniform probability.",
+    "Endpoint map only: no approach-path, dynamics, gains, payload, or hardware validation."
+  ],
+  "heights": [
+    {
+      "height_above_table_m": 0.0,
+      "positions_with_any_solution": 121,
+      "sphere_clear_poses": 800
+    },
+    {
+      "height_above_table_m": 0.02,
+      "positions_with_any_solution": 1732,
+      "sphere_clear_poses": 12180
+    },
+    {
+      "height_above_table_m": 0.04,
+      "positions_with_any_solution": 1790,
+      "sphere_clear_poses": 131469
+    },
+    {
+      "height_above_table_m": 0.06,
+      "positions_with_any_solution": 1824,
+      "sphere_clear_poses": 266811
+    },
+    {
+      "height_above_table_m": 0.08,
+      "positions_with_any_solution": 1851,
+      "sphere_clear_poses": 298166
+    },
+    {
+      "height_above_table_m": 0.1,
+      "positions_with_any_solution": 1870,
+      "sphere_clear_poses": 328433
+    },
+    {
+      "height_above_table_m": 0.12,
+      "positions_with_any_solution": 1890,
+      "sphere_clear_poses": 342502
+    },
+    {
+      "height_above_table_m": 0.14,
+      "positions_with_any_solution": 1913,
+      "sphere_clear_poses": 352121
+    },
+    {
+      "height_above_table_m": 0.16,
+      "positions_with_any_solution": 1936,
+      "sphere_clear_poses": 355598
+    },
+    {
+      "height_above_table_m": 0.18,
+      "positions_with_any_solution": 1953,
+      "sphere_clear_poses": 361470
+    },
+    {
+      "height_above_table_m": 0.2,
+      "positions_with_any_solution": 1973,
+      "sphere_clear_poses": 414605
+    },
+    {
+      "height_above_table_m": 0.22,
+      "positions_with_any_solution": 1990,
+      "sphere_clear_poses": 425497
+    },
+    {
+      "height_above_table_m": 0.24,
+      "positions_with_any_solution": 2001,
+      "sphere_clear_poses": 431345
+    },
+    {
+      "height_above_table_m": 0.26,
+      "positions_with_any_solution": 2018,
+      "sphere_clear_poses": 435781
+    },
+    {
+      "height_above_table_m": 0.28,
+      "positions_with_any_solution": 2034,
+      "sphere_clear_poses": 441014
+    },
+    {
+      "height_above_table_m": 0.3,
+      "positions_with_any_solution": 2040,
+      "sphere_clear_poses": 442568
+    },
+    {
+      "height_above_table_m": 0.32,
+      "positions_with_any_solution": 2053,
+      "sphere_clear_poses": 501651
+    },
+    {
+      "height_above_table_m": 0.34,
+      "positions_with_any_solution": 2063,
+      "sphere_clear_poses": 511868
+    },
+    {
+      "height_above_table_m": 0.36,
+      "positions_with_any_solution": 2071,
+      "sphere_clear_poses": 529319
+    },
+    {
+      "height_above_table_m": 0.38,
+      "positions_with_any_solution": 2076,
+      "sphere_clear_poses": 535729
+    },
+    {
+      "height_above_table_m": 0.4,
+      "positions_with_any_solution": 2084,
+      "sphere_clear_poses": 538988
+    },
+    {
+      "height_above_table_m": 0.42,
+      "positions_with_any_solution": 2086,
+      "sphere_clear_poses": 548032
+    },
+    {
+      "height_above_table_m": 0.44,
+      "positions_with_any_solution": 2090,
+      "sphere_clear_poses": 553264
+    },
+    {
+      "height_above_table_m": 0.46,
+      "positions_with_any_solution": 2094,
+      "sphere_clear_poses": 557202
+    },
+    {
+      "height_above_table_m": 0.48,
+      "positions_with_any_solution": 2094,
+      "sphere_clear_poses": 560844
+    },
+    {
+      "height_above_table_m": 0.5,
+      "positions_with_any_solution": 2098,
+      "sphere_clear_poses": 563714
+    },
+    {
+      "height_above_table_m": 0.52,
+      "positions_with_any_solution": 2102,
+      "sphere_clear_poses": 565603
+    },
+    {
+      "height_above_table_m": 0.54,
+      "positions_with_any_solution": 2104,
+      "sphere_clear_poses": 562888
+    },
+    {
+      "height_above_table_m": 0.56,
+      "positions_with_any_solution": 2108,
+      "sphere_clear_poses": 564517
+    },
+    {
+      "height_above_table_m": 0.58,
+      "positions_with_any_solution": 2109,
+      "sphere_clear_poses": 563308
+    },
+    {
+      "height_above_table_m": 0.6,
+      "positions_with_any_solution": 2108,
+      "sphere_clear_poses": 562419
+    }
+  ]
+}

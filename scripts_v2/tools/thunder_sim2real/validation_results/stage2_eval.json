@@ -1,0 +1,61 @@
+{
+  "status": "PASS",
+  "source_kind": "synthetic_test",
+  "num_envs": 64,
+  "task": "OmniReset-UMI-Defaults-State-Finetune-Play-v0",
+  "isaaclab_module_path": "/data/kanth042/repos/IsaacLab/source/isaaclab/isaaclab/__init__.py",
+  "task_module_path": "/data/kanth042/repos/UWLab-thunder-sim2real/source/uwlab_tasks/uwlab_tasks/__init__.py",
+  "robot_usd": "/data/kanth042/converted_assets/thunder_d405_umi_rigid_asset/ur5e_robotiq_d405_umi_rigid_thunder.usd",
+  "table_usd": "/data/kanth042/converted_assets/lab_vention_asset_v60/lab_vention.usd",
+  "robot_mount_position_world_m": [
+    0.17766,
+    0.377695,
+    1.466
+  ],
+  "robot_mount_quaternion_world_wxyz": [
+    0.5,
+    0.5,
+    0.5,
+    0.5
+  ],
+  "dataset_dir": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/49_clearance_and_placement/OmniReset",
+  "dataset_counts": {
+    "ObjectAnywhereEEAnywhere": 10128
+  },
+  "dataset_sha256": {
+    "ObjectAnywhereEEAnywhere": "ef4d2161eb1cce8f57acac61df8a141449e1d2cf0c4eec10fbca126f468d0da5"
+  },
+  "physics_hz": 120,
+  "policy_hz": 10,
+  "phases": [
+    {
+      "progress": 1.0,
+      "mean_reward": 0.009275328367948532,
+      "mean_kp": [
+        1011.7833251953125,
+        1011.7833251953125,
+        1011.7833251953125,
+        49.66374206542969,
+        49.66374206542969,
+        49.66374206542969
+      ],
+      "mean_kd": [
+        63.19914245605469,
+        63.19914245605469,
+        63.19914245605469,
+        14.34476375579834,
+        14.34476375579834,
+        14.34476375579834
+      ]
+    }
+  ],
+  "preserved": [
+    "Thunder/UMI assets",
+    "cube motion modes",
+    "reset bank and probabilities",
+    "rewards",
+    "observations",
+    "initial gains"
+  ],
+  "scope": "Configuration and native reset/step validation; no real fitted parameters or learned transfer claim"
+}

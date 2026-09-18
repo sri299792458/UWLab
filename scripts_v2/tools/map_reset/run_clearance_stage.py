@@ -11,7 +11,7 @@ import shutil
 import torch
 
 REPO = Path(__file__).resolve().parents[3]
-ROOT = Path('/data/kanth042/datasets/umi_reset_from_defaults_20260911/49_clearance_and_placement')
+ROOT = Path(os.environ.get('UWLAB_DATA_ROOT', '/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917') + '/49_clearance_and_placement')
 PAIR = 'InsertiveAprilCube60__ReceptiveAprilCube60'
 
 

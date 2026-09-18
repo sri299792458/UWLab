@@ -10,6 +10,23 @@ import gymnasium as gym
 from . import agents
 
 gym.register(
+    id="OmniReset-Thunder-UMI-Sysid-v0",
+    entry_point="isaaclab.envs:ManagerBasedRLEnv",
+    kwargs={"env_cfg_entry_point": f"{__name__}.umi_sim2real_cfg:ThunderSysidCfg"},
+    disable_env_checker=True,
+)
+for stage, cfg_name in (("Finetune", "UmiCubeFinetuneCfg"), ("Finetune-Play", "UmiCubeFinetuneEvalCfg")):
+    gym.register(
+        id=f"OmniReset-UMI-Defaults-State-{stage}-v0",
+        entry_point="isaaclab.envs:ManagerBasedRLEnv",
+        kwargs={
+            "env_cfg_entry_point": f"{__name__}.umi_sim2real_cfg:{cfg_name}",
+            "rsl_rl_cfg_entry_point": f"{agents.__name__}.rsl_rl_cfg:Base_PPORunnerCfg",
+        },
+        disable_env_checker=True,
+    )
+
+gym.register(
     id="OmniReset-UMI-StockHandCurrentGains-State-Train-v0",
     entry_point="isaaclab.envs:ManagerBasedRLEnv",
     kwargs={

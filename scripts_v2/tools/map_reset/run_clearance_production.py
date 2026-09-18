@@ -3,6 +3,7 @@
 Uses the original recorder and sampling budgets. All shard records, raw files,
 source snapshots and merge hashes are retained alongside the final CPU banks.
 """
+import argparse
 import hashlib
 import json
 import os
@@ -15,7 +16,7 @@ import time
 import torch
 
 REPO = Path(__file__).resolve().parents[3]
-ROOT = Path('/data/kanth042/datasets/umi_reset_from_defaults_20260911/49_clearance_and_placement')
+ROOT = Path(os.environ.get('UWLAB_DATA_ROOT', '/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917') + '/49_clearance_and_placement')
 DATA = ROOT / 'OmniReset'
 PAIR = 'InsertiveAprilCube60__ReceptiveAprilCube60'
 GENERAL = 'ObjectAnywhereEEAnywhere'
@@ -40,12 +41,16 @@ def combine(nodes):
 
 
 def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--gpus', type=int, nargs='+', default=[0, 1, 2, 6])
+    args = parser.parse_args()
+    assert len(set(args.gpus)) == len(args.gpus)
     pilot = json.loads((ROOT / 'pilot_validation.json').read_text())
     assert pilot['all_saved_states_valid']
     assert len(pilot['families']) == 4
     records, processes, merged = {}, {}, {}
     env = os.environ.copy()
-    env.update(CONDA_PREFIX='/data/kanth042/envs/uwlab-isaac51', OMP_NUM_THREADS='1',
+    env.update(CONDA_PREFIX=os.environ.get("CONDA_PREFIX", sys.prefix), OMP_NUM_THREADS='1',
                MKL_NUM_THREADS='1', OPENBLAS_NUM_THREADS='1', PYTHONUNBUFFERED='1')
 
     def save():
@@ -55,8 +60,8 @@ def main():
         temp.write_text(json.dumps(value, indent=2) + '\n')
         temp.replace(ROOT / 'production_runs.json')
 
-    def launch(family, gpu, count, num_envs=4096):
-        key = family + '_gpu' + str(gpu)
+    def launch(family, shard, gpu, count, num_envs=4096):
+        key = family + '_shard' + str(shard)
         shard_data = ROOT / 'production_shards' / key / 'OmniReset'
         command = [sys.executable, 'scripts_v2/tools/map_reset/run_clearance_stage.py',
             '--family', family, '--gpu', str(gpu), '--num-envs', str(num_envs),
@@ -66,7 +71,7 @@ def main():
             proc = subprocess.Popen(command, cwd=REPO, env=env, stdout=stream,
                                     stderr=subprocess.STDOUT, start_new_session=True)
         processes[key] = proc
-        records[key] = dict(family=family, command=command, physical_gpu=gpu,
+        records[key] = dict(family=family, shard=shard, command=command, physical_gpu=gpu,
             pid=proc.pid, process_group=proc.pid, status='running',
             dataset_dir=str(shard_data), stage_record=str(ROOT / 'production_stage' / key / (family + '.json')))
         save()
@@ -94,11 +99,9 @@ def main():
         print('MERGED ' + family + ' ' + str(count), flush=True)
 
     try:
-        launch(GENERAL, 0, 10000)
-        for gpu in (3, 4, 6):
-            launch(AIR, gpu, 3334)
-        for gpu in (5, 7, 2):
-            launch(PARTIAL, gpu, 3334, num_envs=2048 if gpu == 2 else 4096)
+        pending = [(GENERAL, 0, 10000)]
+        pending += [(family, shard, 3334) for shard in range(3) for family in (AIR, PARTIAL)]
+        resting_queued = False
         while True:
             for key, proc in list(processes.items()):
                 code = proc.poll()
@@ -110,12 +113,14 @@ def main():
             for family in (GENERAL, AIR, PARTIAL, REST):
                 if family not in merged:
                     merge(family)
-            if GENERAL in merged:
-                for gpu in (0, 1, 3, 4):
-                    already_started = REST + '_gpu' + str(gpu) in records
-                    busy = any(r['physical_gpu'] == gpu and r['status'] == 'running' for r in records.values())
-                    if not already_started and not busy:
-                        launch(REST, gpu, 2500)
+            if GENERAL in merged and not resting_queued:
+                pending += [(REST, shard, 2500) for shard in range(4)]
+                resting_queued = True
+            for gpu in args.gpus:
+                busy = any(r['physical_gpu'] == gpu and r['status'] == 'running' for r in records.values())
+                if pending and not busy:
+                    family, shard, count = pending.pop(0)
+                    launch(family, shard, gpu, count, num_envs=2048 if gpu == 2 else 4096)
             if len(merged) == 4:
                 break
             time.sleep(3)

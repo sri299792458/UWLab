@@ -1,0 +1,2 @@
+# Keep the pinned upstream source byte-for-byte, including original whitespace.
+ur5e_kinematics.py -whitespace -text

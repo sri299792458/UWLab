@@ -1,0 +1,45 @@
+{
+  "uwlab-isaac51": {
+    "python": "3.11.15 | packaged by conda-forge | (main, Mar  5 2026, 16:45:40) [GCC 14.3.0]",
+    "platform": "Linux-5.15.0-88-generic-x86_64-with-glibc2.35",
+    "packages": {
+      "torch": "2.7.0+cu128",
+      "torchvision": "0.22.0+cu128",
+      "numpy": "1.26.0",
+      "scipy": "1.15.3",
+      "trimesh": "4.5.1",
+      "warp-lang": "1.13.0",
+      "isaacsim": "5.1.0.0",
+      "nvidia-cuda-runtime-cu12": "12.8.57",
+      "nvidia-cuda-nvrtc-cu12": "12.8.61",
+      "usd-core": "26.5",
+      "cmaes": "0.13.0",
+      "rsl-rl-lib": "3.1.2"
+    }
+  },
+  "curobo-umi-audit": {
+    "python": "3.11.15 | packaged by conda-forge | (main, Mar  5 2026, 16:45:40) [GCC 14.3.0]",
+    "platform": "Linux-5.15.0-88-generic-x86_64-with-glibc2.35",
+    "packages": {
+      "torch": "2.7.0+cu128",
+      "torchvision": "0.22.0+cu128",
+      "numpy": "2.4.6",
+      "scipy": "1.17.1",
+      "trimesh": "4.12.2",
+      "warp-lang": "1.17.0",
+      "nvidia-curobo": "0.8.0.post1.dev42",
+      "isaacsim": "5.1.0.0",
+      "cuda-core": "1.2.0",
+      "cuda-bindings": "12.9.7",
+      "cuda-pathfinder": "1.8.1",
+      "nvidia-cuda-runtime-cu12": "12.9.79",
+      "nvidia-cuda-nvrtc-cu12": "12.9.86",
+      "nvidia-cuda-nvcc-cu12": "12.9.86",
+      "usd-core": "26.5",
+      "yourdfpy": "0.0.60",
+      "cmaes": "0.13.0",
+      "rsl-rl-lib": "3.1.2"
+    }
+  },
+  "nvidia_smi": "0, NVIDIA RTX A6000, 550.54.15\n1, NVIDIA RTX A6000, 550.54.15\n2, NVIDIA RTX A6000, 550.54.15\n3, NVIDIA RTX A6000, 550.54.15\n4, NVIDIA RTX A6000, 550.54.15\n5, NVIDIA RTX A6000, 550.54.15\n6, NVIDIA RTX A6000, 550.54.15\n7, NVIDIA RTX A6000, 550.54.15\n"
+}

@@ -27,25 +27,42 @@ def atomic_json(path, data):
     tmp.write_text(json.dumps(data,indent=2,allow_nan=False)+'\n')
     os.replace(tmp,path)
 
-def prepare():
+def prepare(grid_spacing_m):
+    if not np.isfinite(grid_spacing_m) or grid_spacing_m <= 0:
+        raise ValueError('Grid spacing must be positive and finite')
+    if (OUT/'config.json').exists():
+        raise FileExistsError(f'Refusing to replace an existing map configuration: {OUT}')
     OUT.mkdir(parents=True,exist_ok=True)
     previous=ROOT/'20_dense_reachability'
     old=json.loads((previous/'atlas_config.json').read_text())
     candidate=previous/'robot_open_raw_fit_candidate.yml'
     model=OUT/'robot_open_spheres.yml'
-    model.write_bytes(candidate.read_bytes())
     verification=json.loads((previous/'raw_sphere_gpu_verification.json').read_text())
-    assert hashlib.sha256(model.read_bytes()).hexdigest()==verification['candidate_sha256']
+    assert hashlib.sha256(candidate.read_bytes()).hexdigest()==verification['candidate_sha256']
+    robot=yaml.safe_load(candidate.read_text())
+    kinematics=robot['robot_cfg']['kinematics']
+    # The accepted sphere fit is robot-relative; relocate its geometry paths to
+    # the newly exported model without changing sphere centers or exclusions.
+    kinematics['urdf_path']=str(ROOT/'15_table_reachability/model/thunder_umi.urdf')
+    for key in ('asset_root_path', 'robot_asset_root'):
+        if key in kinematics:
+            kinematics[key]=str(ROOT/'15_table_reachability/model')
+    model.write_text(yaml.safe_dump(robot,sort_keys=False))
     keep=['table_bounds_world_m','tabletop_z_m','tool_frame','tool_offset',
-          'robot_base_position_world_m','robot_base_quaternion_world_wxyz',
           'open_hand_joint_values','joint_names','joint_limits_rad',
           'ik_position_tolerance_m','ik_rotation_tolerance_rad','ik_seeds','batch_size','random_seed']
     cfg={k:old[k] for k in keep}
+    audit=json.loads((ROOT/'15_table_reachability/model/export_audit.json').read_text())
+    cfg['robot_base_position_world_m']=audit['lab_constants']['ROBOT_POS']
+    cfg['robot_base_quaternion_world_wxyz']=audit['lab_constants']['ROBOT_ROT']
+    bounds=cfg['table_bounds_world_m']
+    def axis(low, high):
+        return (low+np.arange(int(np.floor((high-low)/grid_spacing_m+1e-8))+1)*grid_spacing_m).tolist()
     cfg.update(version=2,robot_model=str(model),scene_model=str(ROOT/'15_table_reachability/model/lab_scene.yml'),
-        x_world_m=(old['broad']['x_world_m'][0]+np.arange(149)*.01).tolist(),
-        y_world_m=(old['broad']['y_world_m'][0]+np.arange(73)*.01).tolist(),
-        height_above_table_m=(np.arange(61)*.01).tolist(),orientations=old['broad']['orientations'],
-        grid_spacing_m=.01,column_clearance_m=.05,column_box_names=[f'lab_{i}' for i in range(7,15)],
+        x_world_m=axis(bounds['min'][0],bounds['max'][0]),
+        y_world_m=axis(bounds['min'][1],bounds['max'][1]),
+        height_above_table_m=axis(0.,.6),orientations=old['broad']['orientations'],
+        grid_spacing_m=grid_spacing_m,column_clearance_m=.05,column_box_names=[f'lab_{i}' for i in range(7,15)],
         radius_padding_m=.001,world_ignored_robot_link='base_link_shape_0',
         status_codes={'2':'no_converged_IK_found','3':'all_converged_IK_candidates_sphere_blocked','4':'sphere_clear_IK_found'},
         method='32-seed cuRobo pose IK followed by native cuRobo GPU self/world sphere collision checks.',
@@ -54,7 +71,8 @@ def prepare():
             'sphere_blocked_hull_clear':157,'known_missed_hull_overlap_m':.004960164919341728,
             'user_accepted_for_map':True,'source_report':str(previous/'raw_sphere_gpu_verification.json')},
         modeling_notes=[
-            'Full tabletop XY sampled at exactly 10 mm; X stops 5 mm before its upper edge. Heights 0–600 mm in 10 mm increments. Identical 504 orientations at all positions.',
+            f'Full tabletop XY sampled at exactly {grid_spacing_m*1000:g} mm, anchored at its lower edges; samples do not extend beyond the table. Heights 0–600 mm at the same spacing. Identical 504 orientations at all positions.',
+            'Robot mounting pose is taken from this model export, not the historical sphere-fit configuration.',
             'Empty fully open hand, all six finger coordinates locked at zero; no cubes or other payload.',
             'Original fitted 239 spheres, without the abandoned link-wide radius inflation.',
             'Self-pair padding remains 2 mm combined. World clearance is 50 mm for the eight vertical column boxes and 1 mm for other lab geometry.',
@@ -100,7 +118,8 @@ def main(args):
     output=OUT/('pilot' if args.pilot else 'slices');output.mkdir(exist_ok=True)
     jobs=[(h,o) for h in range(cfg['shape'][0]) for o in range(cfg['shape'][1])]
     if args.pilot:
-        jobs=[(h,o) for h,o in [(0,0),(0,251),(10,0),(30,0),(30,251),(60,0)]]
+        last=cfg['shape'][0]-1
+        jobs=[(0,0),(0,251),(last//6,0),(last//2,0),(last//2,251),(last,0)]
     else:jobs=jobs[args.worker::args.workers]
     xx,yy=np.meshgrid(cfg['x_world_m'],cfg['y_world_m'],indexing='xy');count=xx.size
     totals={str(k):0 for k in [2,3,4]};started=time.perf_counter();finished=0;ik_s=0.;collision_s=0.
@@ -178,7 +197,8 @@ def main(args):
 
 if __name__=='__main__':
     parser=argparse.ArgumentParser();parser.add_argument('--prepare',action='store_true')
+    parser.add_argument('--grid-spacing-m',type=float,default=.02)
     parser.add_argument('--pilot',action='store_true');parser.add_argument('--worker',type=int,default=0)
     parser.add_argument('--workers',type=int,default=7);args=parser.parse_args()
-    if args.prepare:prepare()
+    if args.prepare:prepare(args.grid_spacing_m)
     else:main(args)

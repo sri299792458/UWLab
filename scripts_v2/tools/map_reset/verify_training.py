@@ -1,4 +1,5 @@
 """Verify four live ranks, current controller/data, finite W&B metrics, and checkpoint."""
+import os
 import argparse
 from datetime import datetime, timezone
 import hashlib
@@ -7,7 +8,7 @@ import math
 from pathlib import Path
 import wandb
 
-ROOT = Path('/data/kanth042/datasets/umi_reset_from_defaults_20260911')
+ROOT = Path(os.environ.get('UWLAB_DATA_ROOT', '/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917'))
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--prepared-run', type=Path, default=ROOT / '52_training/prepared_run.json')
 args = parser.parse_args()
@@ -28,14 +29,16 @@ for directory in Path('/proc').iterdir():
         values = dict(v.split('=', 1) for v in (directory / 'environ').read_text().split('\0') if '=' in v)
         if 'RANK' not in values or values.get('WANDB_RUN_ID') != metadata['wandb_run_id']:
             continue
-        assert values['WORLD_SIZE'] == '4' and values['CUDA_VISIBLE_DEVICES'] == '3,4,5,7'
+        assert values['WORLD_SIZE'] == str(metadata['distributed_ranks'])
+        assert values['CUDA_VISIBLE_DEVICES'] == metadata['launch_environment']['CUDA_VISIBLE_DEVICES']
         ranks.append(dict(pid=int(directory.name), rank=int(values['RANK']), local_rank=int(values['LOCAL_RANK']),
-                          physical_gpu=[3, 4, 5, 7][int(values['LOCAL_RANK'])]))
+                          physical_gpu=metadata['physical_gpus'][int(values['LOCAL_RANK'])]))
     except (FileNotFoundError, PermissionError, ProcessLookupError):
         continue
-assert sorted(r['rank'] for r in ranks) == [0, 1, 2, 3], ranks
+assert sorted(r['rank'] for r in ranks) == list(range(metadata['distributed_ranks'])), ranks
 api = wandb.Api(timeout=30)
-run = api.run('srinivas299792458-university-of-minnesota/uwlab-lab-cube-stack/'+metadata['wandb_run_id'])
+run_path = metadata['wandb_url'].removeprefix('https://wandb.ai/').replace('/runs/', '/')
+run = api.run(run_path)
 assert run.state == 'running', run.state
 cfg = run.config
 env, runner, policy = cfg['env_cfg'], cfg['runner_cfg'], cfg['policy_cfg']

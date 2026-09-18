@@ -1,0 +1,222 @@
+{
+  "source_kind": "simulation_mass_properties",
+  "gripper_configuration": "open_empty",
+  "asset": "/data/kanth042/converted_assets/thunder_d405_umi_rigid_asset/ur5e_robotiq_d405_umi_rigid_thunder.usd",
+  "asset_sha256": "c9eced8f9a86988ec1e406bd058bd4761db79fb22b2111b58451e1f5b874df88",
+  "payload_mass_kg": 1.002606550231576,
+  "frame": "UR all-zero TCP tool0 (tool mounting frame); identical to wrist_3_link in this calibrated URDF",
+  "wrist_to_tool0_matrix": [
+    [
+      1.0,
+      -8.018290874818299e-17,
+      -8.030659712689852e-17,
+      0.0
+    ],
+    [
+      -8.018118050936582e-17,
+      0.9999999999999998,
+      -8.113394546442265e-17,
+      0.0
+    ],
+    [
+      -8.072493205720505e-17,
+      -7.769857965626052e-17,
+      1.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "urdf_frame_transform_max_error": 3.0276953698223634e-16,
+  "bodies": [
+    {
+      "body": "left_outer_knuckle",
+      "mass_kg": 0.013847731985151768,
+      "body_com_m": [
+        0.0540766604244709,
+        0.04273519292473793,
+        5.214735310232754e-08
+      ],
+      "tool0_com_m": [
+        0.042539996776830166,
+        0.0023946131633663364,
+        0.07000244278601854
+      ]
+    },
+    {
+      "body": "left_outer_finger",
+      "mass_kg": 0.04260376840829849,
+      "body_com_m": [
+        0.06957213580608368,
+        0.06559594720602036,
+        5.48274101674906e-06
+      ],
+      "tool0_com_m": [
+        0.06497428977680113,
+        0.002737821201658733,
+        0.0860094878756836
+      ]
+    },
+    {
+      "body": "left_inner_finger",
+      "mass_kg": 0.04315701872110367,
+      "body_com_m": [
+        0.11897388100624084,
+        0.057400546967983246,
+        5.653875268762931e-05
+      ],
+      "tool0_com_m": [
+        0.05649264742553869,
+        0.0026615861623847195,
+        0.135679508863352
+      ]
+    },
+    {
+      "body": "left_inner_knuckle",
+      "mass_kg": 0.029693763703107834,
+      "body_com_m": [
+        0.08364881575107574,
+        0.03167661279439926,
+        5.82684620553664e-08
+      ],
+      "tool0_com_m": [
+        0.030988705477636574,
+        0.0022209836150503892,
+        0.10007549759205893
+      ]
+    },
+    {
+      "body": "right_outer_knuckle",
+      "mass_kg": 0.013847731985151768,
+      "body_com_m": [
+        0.0540766604244709,
+        -0.04273518919944763,
+        -5.988369355947043e-09
+      ],
+      "tool0_com_m": [
+        -0.04294165967062549,
+        0.0011079764640384482,
+        0.07004542791179455
+      ]
+    },
+    {
+      "body": "right_outer_finger",
+      "mass_kg": 0.04260376840829849,
+      "body_com_m": [
+        0.06957254558801651,
+        -0.06559579819440842,
+        -5.507879905053414e-06
+      ],
+      "tool0_com_m": [
+        -0.06531814289101838,
+        0.0007658252501584259,
+        0.08613240971313349
+      ]
+    },
+    {
+      "body": "right_inner_finger",
+      "mass_kg": 0.04315701872110367,
+      "body_com_m": [
+        0.11897388845682144,
+        -0.05740053951740265,
+        5.653778134728782e-05
+      ],
+      "tool0_com_m": [
+        -0.05673590550101066,
+        0.0009574510828413174,
+        0.1358068804565466
+      ]
+    },
+    {
+      "body": "right_inner_knuckle",
+      "mass_kg": 0.029693763703107834,
+      "body_com_m": [
+        0.08364882320165634,
+        -0.03167659044265747,
+        -4.813837151118605e-08
+      ],
+      "tool0_com_m": [
+        -0.031307737712048055,
+        0.0012833195078525619,
+        0.10013911381800289
+      ]
+    },
+    {
+      "body": "robotiq_base_link",
+      "mass_kg": 0.7440019845962524,
+      "body_com_m": [
+        0.034755922853946686,
+        -3.953089162678225e-06,
+        0.007260560058057308
+      ],
+      "tool0_com_m": [
+        -0.0003135047857913374,
+        0.009010807084863025,
+        0.05041457505858113
+      ]
+    }
+  ],
+  "method": "Read masses and body-local COMs from the current USD; assemble the open-hand link transforms from the source joint frames; transform each COM to tool0; sum mass-weighted COMs. Verify against initial link poses saved from all three native dynamics previews. Authoring/bind-pose link placements are not the assembled articulation configuration.",
+  "native_open_pose_check": [
+    {
+      "variant": "zero_added_friction_inertia_delay",
+      "cog_m_tool0": [
+        -0.000273109453247571,
+        0.007143166683738074,
+        0.064275947255416
+      ]
+    },
+    {
+      "variant": "UW_reference_dynamics_delay_4ms",
+      "cog_m_tool0": [
+        -0.0002726815434794396,
+        0.007143422400893331,
+        0.0642759472541335
+      ]
+    },
+    {
+      "variant": "UW_reference_120percent_delay_10ms",
+      "cog_m_tool0": [
+        -0.0002727067674032852,
+        0.007143407327177957,
+        0.06427594725420911
+      ]
+    }
+  ],
+  "payload_cog_m": [
+    -0.00027272044292126125,
+    0.007143452856706346,
+    0.06427591296461556
+  ],
+  "payload_cog_mm": [
+    -0.27272044292126124,
+    7.143452856706347,
+    64.27591296461556
+  ],
+  "checks": {
+    "native_pose_max_component_difference_m": 3.890103263097392e-07,
+    "arm_pose_invariance_max_component_difference_m": 5.079487178094588e-17,
+    "body_count": 9
+  },
+  "source_joint_audit": "/data/kanth042/datasets/umi_reset_from_defaults_20260911/15_table_reachability/model/export_audit.json",
+  "source_joint_audit_sha256": "f56e097449875dc0468e72c635bf4dabd25cd4f7c1fc07c0d30ed52749d16ac4",
+  "not_included_in_model": [
+    "Separate flange adapter (outside selected PickNik stock set)",
+    "USB cable and ties",
+    "Camera washers",
+    "Tape"
+  ],
+  "base_body_mass_contributions_kg": {
+    "picknik_stock_base": 0.66320197,
+    "measured_mount": 0.016,
+    "nominal_D405": 0.06,
+    "camera_screws": 0.0014,
+    "gripper_mount_screws": 0.0034
+  },
+  "configuration": "Open gripper, no held object. Camera/mount/screws are included once in robotiq_base_link. Excludes the UR robot wrist and arm masses.",
+  "physical_payload_measurement": false
+}

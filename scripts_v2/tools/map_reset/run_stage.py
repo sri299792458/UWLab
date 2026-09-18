@@ -11,7 +11,7 @@ import shutil
 import torch
 
 REPO = Path(__file__).resolve().parents[3]
-ROOT = Path('/data/kanth042/datasets/umi_reset_from_defaults_20260911/26_map_reset_regeneration')
+ROOT = Path(os.environ.get('UWLAB_DATA_ROOT', '/data/kanth042/datasets/umi_reset_from_defaults_20260911') + '/26_map_reset_regeneration')
 PAIR = 'InsertiveAprilCube60__ReceptiveAprilCube60'
 
 

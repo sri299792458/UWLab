@@ -1,0 +1,39 @@
+{
+  "passed": true,
+  "old_mount_map_rejected": true,
+  "robot_base_position_world_m": [
+    0.1776600033044815,
+    0.3776949942111969,
+    1.465999960899353
+  ],
+  "robot_base_quaternion_world_wxyz": [
+    0.5,
+    0.5,
+    0.5,
+    0.5
+  ],
+  "joint_positions_rad": [
+    2.9507620334625244,
+    -0.5903283357620239,
+    1.8338794708251953,
+    5.071762561798096,
+    -0.187371164560318,
+    -1.6183308362960815
+  ],
+  "max_native_fk_position_error_m": 6.72569944174178e-07,
+  "max_native_fk_rotation_error_rad": 1.2619169644675387e-06,
+  "tabletop_native_world_bounds_m": [
+    [
+      -0.8348397438630655,
+      -0.43230468659865934,
+      0.836000030559275
+    ],
+    [
+      0.6501603266706506,
+      0.2876953475995066,
+      0.8423500307655174
+    ]
+  ],
+  "table_bounds_error_m": 1.3372506546538432e-07,
+  "scope": "Native Isaac pose/geometry readback and static render. Pilot atlas endpoint for illustration; not a collection-motion validation."
+}

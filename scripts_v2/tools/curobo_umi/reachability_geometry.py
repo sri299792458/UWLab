@@ -5,6 +5,7 @@ sphere protrusion does not silently decide the final geometric classification.
 This module neither operates hardware nor changes the active Isaac asset.
 """
 from __future__ import annotations
+import os
 
 import itertools
 import json
@@ -17,7 +18,7 @@ from scipy.spatial.transform import Rotation
 import trimesh
 import yaml
 
-ROOT = Path('/data/kanth042/datasets/umi_reset_from_defaults_20260911')
+ROOT = Path(os.environ.get('UWLAB_DATA_ROOT', '/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917'))
 sys.path.insert(0, str(ROOT / '15_table_reachability/deps'))
 import fcl
 

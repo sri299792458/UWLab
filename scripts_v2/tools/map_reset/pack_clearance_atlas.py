@@ -13,7 +13,7 @@ import time
 import numpy as np
 from scipy.ndimage import distance_transform_edt
 
-ROOT = Path('/data/kanth042/datasets/umi_reset_from_defaults_20260911/49_clearance_and_placement')
+ROOT = Path(os.environ.get('UWLAB_DATA_ROOT', '/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917') + '/49_clearance_and_placement')
 SOURCE, OUT = ROOT / 'atlas', ROOT / 'lookup'
 
 

@@ -1,0 +1,7 @@
+{
+  "repository": "https://github.com/WEIRDLabUW/diffusion_policy",
+  "commit": "3cd87c830b3a46967fb2291f5bc18e8d746ab4b6",
+  "path": "diffusion_policy/real_world/ur5e_kinematics.py",
+  "sha256": "cba2822b9ae05c0a761735f8da7e02b79ee04214ee3e09d03561ef2c267d6813",
+  "modifications": "None; Thunder parameters are applied in memory by collect_thunder.py."
+}

@@ -1,5 +1,32 @@
 # UMI training with the regenerated reset bank
 
+## Current mount and training status
+
+The active configuration now uses the physically corrected mounting quaternion
+`[0.5, 0.5, 0.5, 0.5]` and a freshly computed **20 mm** map in
+`/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917`.
+See [MOUNTING_CORRECTION.md](scripts_v2/tools/thunder_sim2real/MOUNTING_CORRECTION.md)
+and the [portable handoff](scripts_v2/tools/thunder_sim2real/portable/README.md).
+The old 10 mm data and live training checkout remain separately preserved.
+No new long training run is launched by the mount/data update.
+
+The existing Stage-1 run did launch on September 17 using the previous mount and banks.
+At checkpoint 1000, a 256-trial-per-family deterministic replay finds zero stack success
+from the three harder families. Partly assembled starts are already successful in
+108/256 trials; holding gives 113/256 final successes, while the learned policy gives
+100/256. It commands the gripper open on 96–100% of actions. The always-zero
+`progress_context` metric is intentional bookkeeping; the real issue is the learned
+behavior. Correcting the mount alone does not demonstrate that this learning problem is fixed.
+The [measured diagnosis and reproduction scripts](/data/kanth042/datasets/umi_reset_from_defaults_20260911/52_training/diagnosis_20260917/README.md)
+retain the exact checkpoint and source identities.
+
+Geometry/physics/integration checks do not establish learned stacking. The preparation
+helper requires a fresh PPO smoke record matching the corrected banks before a full
+launch; the earlier run's smoke report is not evidence for the new mounting.
+
+## Historical notes through the earlier launch preparation
+
+
 As of September 17, the lower (receptive) cube again inherits UWLab's
 **kinematic** setting: resets can place it, but gravity and contact cannot move
 it during an episode. This applies to training, evaluation, and all four

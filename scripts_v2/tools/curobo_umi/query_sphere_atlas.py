@@ -1,10 +1,11 @@
 """Look up the nearest sampled XYZ point and optional orientation subset."""
+import os
 import argparse
 import json
 from pathlib import Path
 import numpy as np
 
-root=Path('/data/kanth042/datasets/umi_reset_from_defaults_20260911/21_sphere_reachability')
+root=Path(os.environ.get('UWLAB_DATA_ROOT', '/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917') + '/49_clearance_and_placement/atlas')
 parser=argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--x',type=float,required=True,help='World X in metres')
 parser.add_argument('--y',type=float,required=True,help='World Y in metres')
@@ -12,7 +13,9 @@ parser.add_argument('--height',type=float,required=True,help='Height above table
 parser.add_argument('--tilt',type=int,choices=range(0,181,30))
 parser.add_argument('--azimuth',type=int)
 parser.add_argument('--roll',type=int)
+parser.add_argument('--atlas-dir',type=Path,default=root,help='Current clearance atlas by default')
 args=parser.parse_args()
+root=args.atlas_dir
 cfg=json.loads((root/'config.json').read_text())
 for value,key in [(args.x,'x_world_m'),(args.y,'y_world_m'),(args.height,'height_above_table_m')]:
     if not cfg[key][0]-1e-9<=value<=cfg[key][-1]+1e-9:
@@ -33,9 +36,13 @@ result=dict(requested=dict(world_x_m=args.x,world_y_m=args.y,height_above_table_
 if len(good):
     orientation=options[int(good[0])]
     path=root/'slices'/f'h{ih:02d}_o{orientation["index"]:03d}.npz'
-    with np.load(path) as data:
-        result.update(orientation=orientation,joint_names=cfg['joint_names'],
-            joint_positions_rad=data['chosen_q'][iy,ix].tolist(),open_hand_joint_values=cfg['open_hand_joint_values'],
-            position_error_m=float(data['position_error_m'][iy,ix]),rotation_error_rad=float(data['rotation_error_rad'][iy,ix]),
-            source_slice=str(path))
+    if path.exists():
+        with np.load(path) as data:
+            result.update(orientation=orientation,joint_names=cfg['joint_names'],
+                joint_positions_rad=data['chosen_q'][iy,ix].tolist(),open_hand_joint_values=cfg['open_hand_joint_values'],
+                position_error_m=float(data['position_error_m'][iy,ix]),rotation_error_rad=float(data['rotation_error_rad'][iy,ix]),
+                source_slice=str(path))
+    else:
+        result.update(orientation=orientation, joint_solution_available=False,
+            note='Core package includes map coverage. Install the full package for saved joint solutions, or solve IK with the included cuRobo model.')
 print(json.dumps(result,indent=2))

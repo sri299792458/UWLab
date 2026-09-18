@@ -1,4 +1,5 @@
 """Pack the completed atlas into an exact, dense joint-seed lookup."""
+import os
 import hashlib
 import json
 from pathlib import Path
@@ -6,7 +7,7 @@ from pathlib import Path
 import numpy as np
 from scipy.ndimage import distance_transform_edt
 
-ROOT = Path('/data/kanth042/datasets/umi_reset_from_defaults_20260911')
+ROOT = Path(os.environ.get('UWLAB_DATA_ROOT', '/data/kanth042/datasets/umi_reset_from_defaults_20260911'))
 SOURCE = ROOT / '21_sphere_reachability'
 OUT = ROOT / '26_map_reset_regeneration'
 

@@ -65,7 +65,7 @@ def resolve_cloud_path(path: str) -> str:
         return path
 
     rel = _extract_relative_path(path)
-    cache_dir = os.path.join(os.path.expanduser("~"), ".cache", "uwlab", "assets")
+    cache_dir = os.environ.get("UWLAB_CACHE_ASSETS_ROOT", os.path.join(os.path.expanduser("~"), ".cache", "uwlab", "assets"))
     local = os.path.join(cache_dir, rel)
 
     if os.path.isfile(local):

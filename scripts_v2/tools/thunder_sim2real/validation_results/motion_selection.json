@@ -1,0 +1,209 @@
+{
+  "candidate": {
+    "candidate": 0,
+    "joint_positions_rad": [
+      -2.939011172452245,
+      -0.750906229019165,
+      1.777949571609497,
+      0.4248623847961426,
+      1.0538079738616943,
+      1.2692182064056396
+    ],
+    "joint_positions_deg": [
+      -168.3929361233094,
+      -43.02375773288218,
+      101.86900664031691,
+      24.342821522682126,
+      60.378749319507655,
+      72.72084650820734
+    ],
+    "tool_position_world_m": [
+      0.035160666270772134,
+      -0.0023048116904009763,
+      1.1123499333928697
+    ],
+    "selection": "Preserve the previous collection hand location by accounting for the physical root mounting correction; independently recheck the full waveform in the corrected model.",
+    "previous_to_corrected_joint_change_rad": [
+      -1.5707963267948966,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "max_non_base_transform_error_m_or_rotation_component": 3.3306690738754696e-16
+  },
+  "robot_base_quaternion_world_wxyz": [
+    0.5,
+    0.5,
+    0.5,
+    0.5
+  ],
+  "motion": {
+    "duration_s": 8.0,
+    "f0_hz": 0.1,
+    "f1_hz": 3.0,
+    "amplitudes_m_rad": [
+      0.1,
+      0.1,
+      0.15000000000000002,
+      0.5,
+      0.25,
+      0.5
+    ]
+  },
+  "controller": {
+    "motion_stiffness": [
+      1000,
+      1000,
+      1000,
+      50,
+      50,
+      50
+    ],
+    "motion_damping_ratio": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "torque_max": [
+      150,
+      150,
+      150,
+      28,
+      28,
+      28
+    ]
+  },
+  "waveform_parity": {
+    "samples": 4000,
+    "axes": 6,
+    "array_equal": true,
+    "max_difference": 0.0,
+    "upstream_file_sha256": "488f446f03db2be2ebffb6fa4316abe738c1b467464f5773239901f026b54957"
+  },
+  "dynamics_cases": [
+    {
+      "candidate": 0,
+      "variant": "zero_added_friction_inertia_delay",
+      "self_margin_m": 0.002107374370098114,
+      "world_margin_m": 0.047587502747774124,
+      "world_gap_m": 0.07512528449296951,
+      "sphere_clear_all_samples": true,
+      "max_joint_speed_rad_s": [
+        1.5703774690628052,
+        1.5707614421844482,
+        1.5707985162734985,
+        3.1242032051086426,
+        1.6375588178634644,
+        3.140488862991333
+      ],
+      "max_joint_excursion_rad": [
+        0.2099751671168466,
+        0.2977592945098877,
+        0.39205384254455566,
+        0.43335163593292236,
+        0.30543410778045654,
+        0.005548715591430664
+      ]
+    },
+    {
+      "candidate": 0,
+      "variant": "UW_reference_dynamics_delay_4ms",
+      "self_margin_m": 0.002880573272705078,
+      "world_margin_m": 0.0526253767311573,
+      "world_gap_m": 0.07512537389993668,
+      "sphere_clear_all_samples": true,
+      "max_joint_speed_rad_s": [
+        0.32094866037368774,
+        1.5707961320877075,
+        1.3084053993225098,
+        2.558779716491699,
+        1.1429611444473267,
+        1.3219801187515259
+      ],
+      "max_joint_excursion_rad": [
+        0.03875081141921477,
+        0.20476102828979492,
+        0.164597749710083,
+        0.324521005153656,
+        0.2373199462890625,
+        0.2248610258102417
+      ]
+    },
+    {
+      "candidate": 0,
+      "variant": "UW_reference_120percent_delay_10ms",
+      "self_margin_m": 0.0029425621032714844,
+      "world_margin_m": 0.05262528732419014,
+      "world_gap_m": 0.07512528449296951,
+      "sphere_clear_all_samples": true,
+      "max_joint_speed_rad_s": [
+        0.277730792760849,
+        1.4957705736160278,
+        1.1155294179916382,
+        2.3089683055877686,
+        1.089784026145935,
+        1.3119205236434937
+      ],
+      "max_joint_excursion_rad": [
+        0.030663176378931567,
+        0.19822877645492554,
+        0.14139258861541748,
+        0.3063305765390396,
+        0.2209005355834961,
+        0.22037160396575928
+      ]
+    }
+  ],
+  "requested_path": {
+    "kind": "ideal_tracking_geometry",
+    "source": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/53_thunder_sim2real/motion_preview/lower_full/dynamics",
+    "candidate": 0,
+    "solved_samples": 4000,
+    "requested_samples": 4000,
+    "failure": null,
+    "method": "Calibrated local inverse kinematics, previous solution as seed; no dynamics or controller tracking assumed",
+    "max_position_error_m": 9.957904153602602e-07,
+    "max_rotation_error_rad": 3.7573347397249775e-06,
+    "max_joint_speed_rad_s": [
+      3.84256441259756,
+      6.459172339478791,
+      5.361880158090637,
+      4.200008918231996,
+      6.580200504798905,
+      9.50609987094575
+    ],
+    "max_joint_excursion_rad": [
+      0.3421241828022912,
+      0.39382023688633677,
+      0.453975298152985,
+      0.4084675787154233,
+      0.5739179883336998,
+      0.7311151918472334
+    ],
+    "within_joint_limits": true
+  },
+  "geometry_status": "corrected_mount_requested_path_and_three_simulated_responses_passed",
+  "physical_hardware_data_collected": false,
+  "parameter_identifiability_proven": false,
+  "source_hashes": {
+    "workstation/collect_thunder.py": "b82df1f9e39ef47cfa3a9bfa71c26fcf2c8ed7c3c1b74801fe0e1e81339bc133",
+    "preview_motion.py": "efc4d42f88999165aeada5dc2a50014e53db79c21771e6b1ebff86b75b904eb0",
+    "check_requested_motion.py": "24f0845af5d094be0e7be90c6404f4fe9b88b4c2607b9158b96bf63d59ebb35c",
+    "check_motion_hulls.py": "1444bb3ae3f096e062cb81209bce4c1cf117639141b6deac3cd75a83cf799571",
+    "render_collection_motion.py": "e6ab93bee0b92f2799f653d2e1d274ad9075c1400345dc70f51c42ff94eae12a",
+    "replay.py": "d1845ab4b8c6b7c6f525fd466037094b1474b4399f65b98f0b7b19546e1acecc"
+  },
+  "joint_excursion_stop_limits_rad": [
+    0.42939064540200766,
+    0.48108669948605326,
+    0.5412417607527015,
+    0.5206180985326389,
+    0.6611844509334163,
+    0.8183816544469499
+  ]
+}

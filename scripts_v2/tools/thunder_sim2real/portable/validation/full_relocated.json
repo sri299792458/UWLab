@@ -1,0 +1,34 @@
+{
+  "passed": true,
+  "data_root": "/data/kanth042/datasets/thunder_portable_20260917_mount_v2/installed_full/data",
+  "lab_boxes": 33,
+  "robot_hulls": 17,
+  "robot_spheres": 239,
+  "lookup_shape": [
+    31,
+    37,
+    75,
+    504,
+    6
+  ],
+  "reset_counts": {
+    "resets_ObjectAnywhereEEAnywhere": 10128,
+    "resets_ObjectAnywhereEEGrasped": 10036,
+    "resets_ObjectPartiallyAssembledEEGrasped": 10019,
+    "resets_ObjectRestingEEGrasped": 10011
+  },
+  "robot_base_quaternion_world_wxyz": [
+    0.5,
+    0.5,
+    0.5,
+    0.5
+  ],
+  "grid_spacing_m": 0.02,
+  "collection_endpoint_hull_clear": true,
+  "gpu_checked": true,
+  "scope": "Input and endpoint verification only; no route or physical robot validation.",
+  "curobo_position_error_m": 5.99089767244889e-08,
+  "gpu_sphere_endpoint_clear": true,
+  "curobo_checker_created": true,
+  "curobo_module_path": "/data/kanth042/datasets/thunder_portable_20260917_mount_v2/installed_full/sources/curobo/curobo/__init__.py"
+}

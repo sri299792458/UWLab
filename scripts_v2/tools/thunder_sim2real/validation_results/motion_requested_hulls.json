@@ -1,0 +1,46 @@
+{
+  "source": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/53_thunder_sim2real/motion_preview/lower_full/requested",
+  "sample_dt_s": 0.002,
+  "candidates": [
+    {
+      "candidate": 0,
+      "variants": [
+        {
+          "variant": "ideal_tracking_geometry",
+          "samples": 4000,
+          "exact_distance_calls": 72126,
+          "world_margin_m": 0.03437100830592836,
+          "world_gap_m": 0.08437100830592836,
+          "self_gap_m": 0.005200793437977219,
+          "moving_self_gap_m": 0.017199345785018423,
+          "nearest_pairs": {
+            "self_gap_m": {
+              "time_s": 5.268,
+              "a": "right_outer_finger_shape_0",
+              "b": "robotiq_base_link_shape_0"
+            },
+            "moving_self_gap_m": {
+              "time_s": 4.426,
+              "a": "base_link_shape_0",
+              "b": "upper_arm_link_shape_0"
+            },
+            "world_gap_m": {
+              "time_s": 2.372,
+              "a": "right_inner_finger_shape_1",
+              "b": "lab_8"
+            },
+            "world_margin_m": {
+              "time_s": 2.372,
+              "a": "right_inner_finger_shape_1",
+              "b": "lab_8"
+            }
+          },
+          "clear": true
+        }
+      ],
+      "clear": true
+    }
+  ],
+  "selected_candidate": 0,
+  "scope": "All 2 ms saved body samples; source convex hulls, 33 lab boxes, same-body/adjacent-link and fixed mounting exclusions. Source manifest distinguishes physics states from ideal-tracking geometry. No unknown real-world obstacles modeled."
+}
