@@ -9,6 +9,16 @@ import gymnasium as gym
 
 from . import agents
 
+gym.register(
+    id="OmniReset-UMI-MayHandDynamics-State-Train-v0",
+    entry_point="isaaclab.envs:ManagerBasedRLEnv",
+    kwargs={
+        "env_cfg_entry_point": f"{__name__}.may_hand_dynamics_cfg:UmiMayHandDynamicsTrainCfg",
+        "rsl_rl_cfg_entry_point": f"{agents.__name__}.rsl_rl_cfg:Base_PPORunnerCfg",
+    },
+    disable_env_checker=True,
+)
+
 for stage, cfg_name in (("Train", "UmiCubeTrainCfg"), ("Play", "UmiCubeEvalCfg")):
     gym.register(
         id=f"OmniReset-UMI-Defaults-State-{stage}-v0",
