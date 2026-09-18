@@ -1,7 +1,7 @@
 """Compare runtime placement math to independent SciPy/corner calculations.
 
-Use the previous complete atlas as a fixture while the new atlas is rebuilding.
-This validates the algorithms, not the new map's final coverage or reset bank.
+Use the active atlas and lookup to validate position coverage, rotated cube
+footprints, and preservation of the original hand-angle sampling.
 """
 import os
 import ast
@@ -17,7 +17,7 @@ import torch
 import yaml
 
 REPO = Path(__file__).resolve().parents[3]
-ROOT = Path(os.environ.get('UWLAB_DATA_ROOT', '/data/kanth042/datasets/umi_reset_from_defaults_20260911'))
+ROOT = Path(os.environ.get('UWLAB_DATA_ROOT', '/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917'))
 OUT = ROOT / '49_clearance_and_placement'
 spec = importlib.util.spec_from_file_location('placement_isaac_math',
     str(Path(os.environ.get("ISAACLAB_PATH", "/data/kanth042/repos/IsaacLab")) / "source/isaaclab/isaaclab/utils/math.py"))
@@ -28,7 +28,7 @@ tree = ast.parse(source.read_text())
 selected = [node for node in tree.body if isinstance(node, (ast.ClassDef, ast.FunctionDef))
             and node.name in ('AtlasSeeds', '_map_acceptance')]
 namespace = dict(json=json, np=np, torch=torch, yaml=yaml, Path=Path, math_utils=math_utils,
-                 ATLAS=ROOT / '21_sphere_reachability', LOOKUP=ROOT / '26_map_reset_regeneration')
+                 ATLAS=OUT / 'atlas', LOOKUP=OUT / 'lookup')
 exec(compile(ast.Module(body=selected, type_ignores=[]), str(source), 'exec'), namespace)
 atlas = namespace['AtlasSeeds'](SimpleNamespace(device='cuda'))
 
@@ -59,7 +59,7 @@ for yaw in (0., 45., 90.):
 assert atlas.cube_edge_clear(t(fixture_p), t(fixture_q)).tolist() == fixture_expected
 
 # Position coverage must match the union over all saved map orientations.
-with np.load(ROOT / '21_sphere_reachability/atlas.npz') as saved:
+with np.load(OUT / 'atlas/atlas.npz') as saved:
     occupied = (saved['status'] == 4).any(axis=1)
 axes = [a.cpu().numpy() for a in atlas.axes]
 positions = np.column_stack([rng.uniform(lo[0]-.1, hi[0]+.1, 512),
@@ -108,7 +108,7 @@ report = dict(random_rotated_footprint_cases=512, surface_boundary_cases=6,
               position_coverage_cases=512, original_hand_angle_samples_preserved=512,
               samples_no_longer_vetoed_by_missing_orientation=previously_vetoed,
               pose_error_gate_removed=True, final_collision_gate_retained=True,
-              all_passed=True, fixture_atlas=str(ROOT / '21_sphere_reachability'),
-              scope='Position-only algorithm validation; not a new-map coverage result.')
+              all_passed=True, fixture_atlas=str(OUT / 'atlas'),
+              scope='Position-only algorithm validation using the active map; not a reset-bank validation.')
 (OUT / 'placement_math_validation.json').write_text(json.dumps(report, indent=2) + '\n')
 print(json.dumps(report), flush=True)

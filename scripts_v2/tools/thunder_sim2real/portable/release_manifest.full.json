@@ -1,32 +1,18 @@
 {
   "schema": 1,
-  "tag": "thunder-lab-20260917-v1",
+  "tag": "thunder-lab-20260917-mount-v2",
   "repository": "sri299792458/UWLab",
-  "archive_sha256": "11b23a00fb85c361c41a3390f3d8978820e4ef2c24d36a0c37aaa9cd5764a493",
-  "archive_bytes": 5711988362,
-  "manifest_sha256": "f933be2f31fa13e6ed5a43fda0be6d823117294a89eadf63959037a66d98f390",
-  "extracted_bytes": 11615545247,
+  "archive_sha256": "342406159cdf17fdb5d2f7c22833219886e0b46475b6d249837b17205c7f4733",
+  "archive_bytes": 895637069,
+  "manifest_sha256": "1386b4fb13b335e92aafb03c2206a78c2c0d4d8346ddabbf71706dd0c62dd71a",
+  "extracted_bytes": 1859058012,
   "parts": [
     {
       "name": "thunder-lab.tar.gz.part000",
-      "bytes": 1610612736,
-      "sha256": "753063073f5962bdc076081418283ef878a782462118f1d9d36c4a5ce2b9dbcb"
-    },
-    {
-      "name": "thunder-lab.tar.gz.part001",
-      "bytes": 1610612736,
-      "sha256": "3bbdfc59aed50bdb8787667fc0a598453dad086c531d2ea380971aac7c125e4d"
-    },
-    {
-      "name": "thunder-lab.tar.gz.part002",
-      "bytes": 1610612736,
-      "sha256": "a94f7850caa78b2a1ba7b8650d5e44bd6edcfb28a40af1ce9660c811a9c6b77e"
-    },
-    {
-      "name": "thunder-lab.tar.gz.part003",
-      "bytes": 880150154,
-      "sha256": "e0cb62839e63fbae15df761b9995fc2fffd08af44aa7b1a0b44745ae664d1da7"
+      "bytes": 895637069,
+      "sha256": "342406159cdf17fdb5d2f7c22833219886e0b46475b6d249837b17205c7f4733"
     }
   ],
-  "published": false
+  "published": false,
+  "profile": "full"
 }

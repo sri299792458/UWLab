@@ -1,8 +1,11 @@
 # Complete Thunder lab handoff
 
-This package supplies the current lab and Thunder assets, calibration, cuRobo collision model,
-full reachability atlas, joint lookup, reset banks, and source/software versions used on the
-development server. Path planning and physical execution belong to the robot-system agent.
+This release uses the physically corrected Thunder mounting quaternion `[0.5, 0.5, 0.5, 0.5]`
+(`w,x,y,z`) and a newly computed **20 mm** reachability map. It supplies the current lab and
+Thunder assets, calibration, cuRobo collision model, coverage data, and pinned software sources.
+The optional full profile adds the complete joint lookup and freshly recorded reset banks.
+Path planning and physical execution belong to the robot-system agent. The previous release
+remains historical; its mounting and map must not be mixed with this release.
 
 ## Download the code and data
 
@@ -10,15 +13,16 @@ development server. Path planning and physical execution belong to the robot-sys
 git clone --branch thunder-umi-sim2real https://github.com/sri299792458/UWLab.git
 cd UWLab
 python3.11 scripts_v2/tools/thunder_sim2real/portable/install_bundle.py \
-  --destination "$HOME/thunder-lab"
-source "$HOME/thunder-lab/activate.sh"
+  --destination "$HOME/thunder-lab-mount-v2"
+source "$HOME/thunder-lab-mount-v2/activate.sh"
 ```
 
 For an existing clone, switch to `thunder-umi-sim2real` and pull before running the installer.
 Use Python 3.11.8 or later in the 3.11 series (the server uses 3.11.15).
-By default, the installer downloads the **core** package: **222,662,520 bytes (223 MB)**,
-extracting to **334,392,714 bytes (334 MB)** before filesystem overhead. Allow 1 GB for
-core download/extraction, plus space for Python environments. It includes the calibrated
+By default, the installer downloads the **150 MB core** package (149,883,745 bytes).
+It contains 3,053 files totaling 260,349,299 bytes before installation metadata. Exact sizes
+and hashes are recorded in `release_manifest.json`. Allow 1 GB for core download/extraction,
+plus space for Python environments. It includes the calibrated
 robot, lab/collision models, map coverage, dependency sources and validation evidence.
 
 **Only the core package is published in this release.** The full archive remains on the
@@ -26,17 +30,18 @@ development server. The instructions below describe that prepared archive and re
 to be transferred or published before `--profile full` can be used.
 
 The **full** profile also includes every saved joint solution and reset tensor:
-**5,711,988,362 bytes (5.7 GB)** downloaded in four parts and **11,615,545,247 bytes (11.6 GB)**
-extracted. It is optional for robot-side planning. For complete simulation/reset workflows:
+895,637,069 download bytes (896 MB), with 34,315 files totaling 1,859,058,012 bytes
+(1.86 GB) before installation metadata. Its hashes are in `release_manifest.full.json`.
+It is optional for robot-side planning. For complete simulation/reset workflows:
 
 ```bash
 python3.11 scripts_v2/tools/thunder_sim2real/portable/install_bundle.py \
-  --profile full --destination "$HOME/thunder-lab-full"
-source "$HOME/thunder-lab-full/activate.sh"
+  --profile full --destination "$HOME/thunder-lab-mount-v2-full"
+source "$HOME/thunder-lab-mount-v2-full/activate.sh"
 ```
 
-Allow at least **30 GB** during full download/extraction, plus simulator/environment space.
-Already downloaded parts are reused.
+Allow at least **5 GB** during full download/extraction, plus simulator/environment space.
+Already downloaded parts are reused within a cache specific to the release tag.
 The destination must be new; an existing installation is never overwritten.
 
 All parts, the joined archive, and every extracted file have SHA-256 checksums.
@@ -49,7 +54,7 @@ To move the data later, install again at the new location so embedded paths are 
 
 ## Contents and entry points
 
-Paths below are relative to `$HOME/thunder-lab` unless marked as repository files.
+Paths below are relative to `$HOME/thunder-lab-mount-v2` unless marked as repository files.
 
 | Purpose | Location |
 | --- | --- |
@@ -72,11 +77,16 @@ Paths below are relative to `$HOME/thunder-lab` unless marked as repository file
 | cuRobo export, IK, map and hull-check tools | Repository: `scripts_v2/tools/curobo_umi/` |
 | Current reset generation and packing tools | Repository: `scripts_v2/tools/map_reset/` |
 
-The four reset families contain 10,644 / 10,049 / 10,029 / 10,010 states (40,732 total).
-The map has 61 heights × 73 Y positions × 149 X positions × 504 orientations.
-The lookup stores six joint coordinates at each cell, with non-finite entries for missing
-solutions. There are 104,883,216 accepted pose solutions. The map is the current
-`49_clearance_and_placement` revision, superseding the earlier `21_sphere_reachability` map.
+The final bank contains **40,194 states**: 10,128 ordinary starts, 10,011 table-grasp
+recipe starts, 10,036 airborne-grasp starts and 10,019 partial-assembly starts.
+`dataset_audit.json` records their hashes and validation. Raw recordings and any explicit native-recheck exclusions are
+preserved on the development server; the installed bank contains the validated final rows.
+The map has **31 heights × 37 Y positions × 75 X positions × 504 orientations**:
+**43,356,600 targets and 13,259,706 accepted pose solutions**. There are 60,276 spatial
+positions with at least one solution. The six-joint lookup uses non-finite entries for missing
+solutions. The map belongs to the corrected mounting and supersedes the previous 10 mm map.
+The installer checks the complete archive, and `check_bundle.py` rejects map/bank mounting
+orientations that differ from this checkout.
 
 Historical scripts are included for inspection. Scripts named `run_sphere_atlas.py`,
 `run_stage.py`, `prepare_lookup.py`, `audit_bank.py` and their older summarizers target
@@ -100,7 +110,7 @@ From the repository root, with Python 3.11 available:
 ```bash
 python3.11 -m venv "$HOME/venvs/thunder-curobo"
 source "$HOME/venvs/thunder-curobo/bin/activate"
-source "$HOME/thunder-lab/activate.sh"
+source "$HOME/thunder-lab-mount-v2/activate.sh"
 python -m pip install --upgrade pip setuptools wheel
 python -m pip install torch==2.7.0 --index-url https://download.pytorch.org/whl/cu128
 python -m pip install -r scripts_v2/tools/thunder_sim2real/portable/environment/curobo-requirements.txt
@@ -135,7 +145,7 @@ license and hardware requirements apply. This bundle does not redistribute its b
 ```bash
 python3.11 -m venv "$HOME/venvs/thunder-isaac"
 source "$HOME/venvs/thunder-isaac/bin/activate"
-source "$HOME/thunder-lab-full/activate.sh"
+source "$HOME/thunder-lab-mount-v2-full/activate.sh"
 python -m pip install --upgrade pip setuptools wheel toml
 python -m pip install torch==2.7.0 torchvision==0.22.0 \
   --index-url https://download.pytorch.org/whl/cu128
@@ -166,9 +176,11 @@ The current reset pipeline uses `run_clearance_stage.py`, `run_clearance_atlas.p
 `pack_clearance_atlas.py`. Keep the delivered inputs intact. Recompute into a separate
 data root and prepare its configuration anew; the delivered slice/report hashes describe
 the original generation, not a resumed generation with relocated or edited source files.
-The old multi-GPU orchestration scripts describe the server's GPU allocation; adapt their
-device allocation before running on a workstation. Direct `run_clearance_stage.py` accepts
-`--gpu`, `--dataset-dir`, `--input-dir` and `--output-subdir`.
+The current pilot and production drivers accept `--gpus`, for example
+`run_clearance_production.py --gpus 0` on a single GPU. Direct `run_clearance_stage.py` accepts
+`--gpu`, `--dataset-dir`, `--input-dir` and `--output-subdir`. Use
+`audit_clearance_bank.py` for final structural/hash checks; combine disjoint native reports
+with `merge_native_validation.py --reports REPORT...`. Both default to the current data root.
 
 ## Handoff to the robot-system agent
 
@@ -179,17 +191,18 @@ The simulation's payload reference is supplied separately and is not labeled a m
 
 ## Delivery validation
 
-- Full archive: all 64,574 files verified after extraction into a new location.
-- Core archive: all 3,067 files verified after extraction into a second location.
-- Fresh cuRobo virtual environment installed from the focused requirements and bundled
-  source: GPU kinematics, scene construction, sphere checks and CPU hull checks passed.
-  Maximum tool-position difference from calibrated joint-tree FK was 8.5e-8 m.
-- Full relocated inputs: all 40,732 reset states loaded with finite joint tensors;
-  the complete joint lookup and collision models loaded successfully.
-- Isaac Sim: native 64-environment Stage-2 evaluation reset/step smoke test passed using
-  relocated assets/reset inputs, at 120 Hz simulation and 10 Hz policy rate. This used
-  the existing simulator environment, not a new full Isaac binary installation.
-- Existing collector/data-contract suite: 11 tests passed.
+The `validation/` reports identify the extracted file counts, bundle paths, corrected mount,
+lookup dimensions and final bank counts. Geometry verification covers calibrated cuRobo
+kinematics, scene construction, sphere clearance and original convex hulls. The native
+Stage-2 smoke test uses 64 environments, 120 Hz simulation and 10 Hz policy rate with a
+clearly labeled synthetic dynamics profile. It verifies reset/step integration, not a trained
+policy. Simulator checks use the existing Isaac environment, not a new simulator binary
+installation. The collector/data-contract suite has 11 checks.
+
+Both profiles were installed separately and passed these checks. cuRobo forward-kinematics
+position disagreement was below 0.06 micrometers. The cuRobo check imported each installation’s
+bundled source; the native check imported the full installation’s bundled IsaacLab source.
+The dedicated cuRobo environment was created during the previous delivery and reused here.
 
 Reports are in `validation/`. The GPU tests validate the exercised geometry and APIs;
 physical hardware, workstation-specific drivers and a planned route remain robot-side work.

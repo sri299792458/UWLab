@@ -1,5 +1,6 @@
 """Check relocated inputs, atlas lookup and optionally cuRobo GPU kinematics."""
 import argparse
+import ast
 import importlib.util
 import json
 import os
@@ -24,6 +25,15 @@ def main():
     model = yaml.safe_load(Path(cfg['robot_model']).read_text())['robot_cfg']
     assert Path(model['kinematics']['urdf_path']).is_file()
     audit = json.loads((model_dir/'export_audit.json').read_text())
+    configuration = REPO/'source/uwlab_tasks/uwlab_tasks/manager_based/manipulation/omnireset/config/ur5e_robotiq_2f85/umi_reset_cfg.py'
+    expected_mount = {}
+    for node in ast.parse(configuration.read_text()).body:
+        if isinstance(node, ast.Assign) and isinstance(node.targets[0], ast.Name):
+            if node.targets[0].id in ('ROBOT_POS', 'ROBOT_ROT'):
+                expected_mount[node.targets[0].id] = ast.literal_eval(node.value)
+    assert np.allclose(cfg['robot_base_position_world_m'], expected_mount['ROBOT_POS'], atol=1e-7, rtol=0)
+    q_map, q_expected = np.asarray(cfg['robot_base_quaternion_world_wxyz']), np.asarray(expected_mount['ROBOT_ROT'])
+    assert abs(np.dot(q_map, q_expected))/(np.linalg.norm(q_map)*np.linalg.norm(q_expected)) > 1-1e-10, 'Bundle mounting does not match this checkout'
     assert all(Path(shape['mesh']).is_file() for shape in audit['collision_shapes'])
     scene = yaml.safe_load(Path(cfg['scene_model']).read_text())
     assert len(scene['cuboid']) == 33
@@ -32,7 +42,10 @@ def main():
     seed_path = root/'49_clearance_and_placement/lookup/atlas_joint_seeds.npy'
     seeds = np.load(seed_path, mmap_mode='r') if seed_path.exists() else None
     if seeds is not None:
-        assert seeds.shape == (61, 73, 149, 504, 6)
+        nh, no, ny, nx = cfg['shape']
+        assert seeds.shape == (nh, ny, nx, no, 6)
+    assert cfg['robot_base_quaternion_world_wxyz'] == audit['lab_constants']['ROBOT_ROT']
+    assert cfg['robot_base_position_world_m'] == audit['lab_constants']['ROBOT_POS']
     candidate = json.loads((REPO/'scripts_v2/tools/thunder_sim2real/workstation/collection.simulation_candidate.json').read_text())
     q = np.asarray(candidate['start_joint_positions_rad'], dtype=np.float64)[None]
     sys.path.insert(0, str(REPO/'scripts_v2/tools/curobo_umi'))
@@ -51,6 +64,10 @@ def main():
         data = torch.load(path, map_location='cpu', weights_only=True)
         rows = data['initial_state']['articulation']['robot']['joint_position']
         assert all(torch.isfinite(row).all() for row in rows)
+        roots = torch.stack(data['initial_state']['articulation']['robot']['root_pose'])[:,3:7]
+        expected = torch.tensor(q_map, dtype=roots.dtype)
+        dots = (roots @ expected).abs() / (roots.norm(dim=1)*expected.norm())
+        assert ((dots-1).abs() < 1e-6).all(), 'Reset bank mounting differs from the map'
         counts[path.stem] = len(rows)
     if banks.exists():
         assert len(counts) == 4 and min(counts.values()) >= 10000
@@ -64,9 +81,11 @@ def main():
     assert len(adapter.radii) == 239
     report = dict(passed=True, data_root=str(root), lab_boxes=33, robot_hulls=17,
                   robot_spheres=239, lookup_shape=list(seeds.shape) if seeds is not None else None, reset_counts=counts,
+                  robot_base_quaternion_world_wxyz=q_map.tolist(), grid_spacing_m=cfg['grid_spacing_m'],
                   collection_endpoint_hull_clear=True, gpu_checked=False,
                   scope='Input and endpoint verification only; no route or physical robot validation.')
     if args.gpu:
+        import curobo
         from curobo.kinematics import Kinematics, KinematicsCfg
         from curobo.types import JointState
         from curobo.collision_checking import RobotCollisionChecker, RobotCollisionCheckerCfg
@@ -91,7 +110,8 @@ def main():
             torch.tensor(rotations, device='cuda', dtype=torch.float32), torch.zeros(1,3,device='cuda'))
         assert bool(self_clear.all()) and bool(world_clear.all())
         report.update(gpu_checked=True, curobo_position_error_m=error, gpu_sphere_endpoint_clear=True,
-                      curobo_checker_created=gpu_checker is not None)
+                      curobo_checker_created=gpu_checker is not None,
+                      curobo_module_path=curobo.__file__)
     if args.output:
         args.output.write_text(json.dumps(report, indent=2)+'\n')
     print(json.dumps(report, indent=2))

@@ -56,7 +56,7 @@ summary = {"kind": "ideal_tracking_geometry", "source": str(args.preview), "cand
            "method": "Calibrated local inverse kinematics, previous solution as seed; no dynamics or controller tracking assumed"}
 if failure is None:
     qs = np.array(joint_rows)
-    audit_path = Path(os.environ.get('UWLAB_DATA_ROOT', '/data/kanth042/datasets/umi_reset_from_defaults_20260911') + '/15_table_reachability/model/export_audit.json')
+    audit_path = Path(os.environ.get('UWLAB_DATA_ROOT', '/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917') + '/15_table_reachability/model/export_audit.json')
     audit = json.loads(audit_path.read_text())
     transforms = batch_fk(audit, qs)
     base_id = manifest["body_names"].index("base_link")

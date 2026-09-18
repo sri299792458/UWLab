@@ -2,13 +2,14 @@
 import argparse
 import hashlib
 import json
+import os
 from pathlib import Path
 import shutil
 import subprocess
 import tarfile
 
 REPO = Path(__file__).resolve().parents[4]
-DATA = Path('/data/kanth042/datasets/umi_reset_from_defaults_20260911')
+DATA = Path(os.environ.get('UWLAB_DATA_ROOT', '/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917'))
 ASSETS = Path('/data/kanth042/converted_assets')
 
 
@@ -20,6 +21,9 @@ def sha(path):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--tag', default='thunder-lab-20260917-mount-v2')
+    parser.add_argument('--curobo-source', type=Path,
+                        default=Path('/data/kanth042/datasets/umi_reset_from_defaults_20260911/15_table_reachability/curobo'))
     args = parser.parse_args()
     out = args.output.resolve()
     out.mkdir(parents=True, exist_ok=False)
@@ -56,14 +60,14 @@ def main():
     for path in sorted(current.iterdir()):
         if path.is_file() and path.suffix in {'.json', '.md', '.py', '.patch'}:
             add(path, Path('data/49_clearance_and_placement') / path.name)
-    for name in ['position_only_fixture/summary.json', 'position_only_fixture/orientation_preservation.json']:
-        add(current / name, Path('data/49_clearance_and_placement') / name)
-    add(DATA / '52_training/ppo_smoke_verification.json', 'data/52_training/ppo_smoke_verification.json')
+    add(DATA/'rebuild_inputs.json', 'data/rebuild_inputs.json')
+    for name in ['mounting_validation.json', 'world_boxes.json', 'corrected_mount_front.png', 'corrected_mount_other_angle.png']:
+        add(DATA/'mounting_validation'/name, Path('data/mounting_validation')/name)
     preview = DATA / '53_thunder_sim2real/motion_preview/lower_full'
     add(preview, 'data/53_thunder_sim2real/motion_preview/lower_full')
     sources = {}
     for name, source in [('IsaacLab', Path('/data/kanth042/repos/IsaacLab')),
-                         ('curobo', DATA / '15_table_reachability/curobo')]:
+                         ('curobo', args.curobo_source)]:
         commit = subprocess.check_output(['git', '-C', str(source), 'rev-parse', 'HEAD'], text=True).strip()
         archive = out / (name + '.tar')
         subprocess.run(['git', '-C', str(source), 'archive', '--format=tar', '-o', str(archive), 'HEAD'], check=True)
@@ -83,7 +87,7 @@ def main():
                 files[rel] = dict(bytes=path.stat().st_size, sha256=sha(path), source=f'{name}@{commit}+local-patch')
         files[str(patch_path.relative_to(stage))] = dict(bytes=len(patch), sha256=sha(patch_path), source=str(source))
         sources[name] = dict(commit=commit, patch_sha256=sha(patch_path))
-    manifest = dict(schema=1, bundle='thunder-lab-20260917-v1', files=files,
+    manifest = dict(schema=1, bundle=args.tag, files=files,
                     source_repositories=sources, total_bytes=sum(v['bytes'] for v in files.values()),
                     scope='Current lab/robot/assets, full clearance atlas+slices+lookup, current reset banks, validation, pinned dependency sources. No robot path or robot execution.',
                     exclusions=['Historical superseded assets and maps', 'Intermediate duplicate reset banks and logs',
@@ -112,7 +116,7 @@ def main():
                     block = source.read(min(8 << 20, (1536 << 20) - size))
             parts.append(dict(name=name, bytes=size, sha256=sha(part)))
             index += 1
-    release = dict(schema=1, tag='thunder-lab-20260917-v1', repository='sri299792458/UWLab',
+    release = dict(schema=1, tag=args.tag, repository='sri299792458/UWLab',
                    archive_sha256=sha(archive), archive_bytes=archive.stat().st_size,
                    manifest_sha256=sha(stage / 'bundle_manifest.json'), extracted_bytes=manifest['total_bytes'], parts=parts)
     (out / 'release_manifest.json').write_text(json.dumps(release, indent=2)+'\n')

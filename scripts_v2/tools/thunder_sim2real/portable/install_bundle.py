@@ -29,6 +29,8 @@ def verify(root, manifest):
 def relocate(root, manifest):
     mappings = {
         '/data/kanth042/datasets/umi_reset_from_defaults_20260911/15_table_reachability/curobo': str(root / 'sources/curobo'),
+        '/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/15_table_reachability/curobo': str(root / 'sources/curobo'),
+        '/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917': str(root / 'data'),
         '/data/kanth042/datasets/umi_reset_from_defaults_20260911': str(root / 'data'),
         '/data/kanth042/converted_assets': str(root / 'assets'),
         '/home/kanth042/.cache/uwlab/assets': str(root / 'cache_assets'),
@@ -68,7 +70,7 @@ def relocate(root, manifest):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--destination', type=Path, required=True, help='New directory; refuses to overwrite')
-    parser.add_argument('--cache', type=Path, default=Path.home()/'.cache/uwlab/thunder-lab-20260917-v1')
+    parser.add_argument('--cache', type=Path, help='Download cache; defaults to a directory per release tag')
     parser.add_argument('--local-parts', type=Path, help='Use existing downloaded parts without network')
     parser.add_argument('--profile', choices=['core', 'full'], default='core',
                         help='Core lab/model/coverage, or complete map lookup and reset datasets')
@@ -81,7 +83,7 @@ def main():
     dest = args.destination.expanduser().resolve()
     if dest.exists():
         raise ValueError(f'Refusing to overwrite {dest}; choose a new directory')
-    cache = (args.local_parts or args.cache).expanduser().resolve()
+    cache = (args.local_parts or args.cache or Path.home()/'.cache/uwlab'/release['tag']).expanduser().resolve()
     cache.mkdir(parents=True, exist_ok=True)
     parts = []
     for entry in release['parts']:

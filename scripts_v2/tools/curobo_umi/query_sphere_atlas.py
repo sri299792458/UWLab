@@ -5,7 +5,7 @@ import json
 from pathlib import Path
 import numpy as np
 
-root=Path(os.environ.get('UWLAB_DATA_ROOT', '/data/kanth042/datasets/umi_reset_from_defaults_20260911') + '/49_clearance_and_placement/atlas')
+root=Path(os.environ.get('UWLAB_DATA_ROOT', '/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917') + '/49_clearance_and_placement/atlas')
 parser=argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--x',type=float,required=True,help='World X in metres')
 parser.add_argument('--y',type=float,required=True,help='World Y in metres')

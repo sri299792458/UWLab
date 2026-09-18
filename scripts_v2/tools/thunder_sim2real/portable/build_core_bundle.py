@@ -34,7 +34,7 @@ def main():
     archive = out/'thunder-lab-core.tar.gz.part000'
     with archive.open('wb') as stream:
         subprocess.run(['tar','--use-compress-program=pigz -1 -p 4','-cf','-','-C',str(stage.parent),'thunder-lab'], stdout=stream, check=True)
-    release = dict(schema=1, tag='thunder-lab-20260917-v1', repository='sri299792458/UWLab', profile='core',
+    release = dict(schema=1, tag=manifest['bundle'], repository='sri299792458/UWLab', profile='core',
         archive_sha256=sha(archive), archive_bytes=archive.stat().st_size,
         manifest_sha256=sha(stage/'bundle_manifest.json'), extracted_bytes=manifest['total_bytes'],
         parts=[dict(name=archive.name, bytes=archive.stat().st_size, sha256=sha(archive))])

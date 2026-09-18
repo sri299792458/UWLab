@@ -5,7 +5,7 @@
   "polyscope_version": null,
   "gripper_configuration": "open_empty",
   "start_joint_positions_rad": [
-    -1.3682148456573486,
+    -2.939011172452245,
     -0.750906229019165,
     1.777949571609497,
     0.4248623847961426,
@@ -14,12 +14,12 @@
   ],
   "start_joint_tolerance_rad": 0.02,
   "joint_excursion_limit_rad": [
-    0.36598406570962594,
-    0.576575955960403,
-    0.5648797634337802,
-    0.7939107488724296,
-    0.3293736509776254,
-    0.6932941784771968
+    0.42939064540200766,
+    0.48108669948605326,
+    0.5412417607527015,
+    0.5206180985326389,
+    0.6611844509334163,
+    0.8183816544469499
   ],
   "duration_s": 8.0,
   "f0_hz": 0.1,
@@ -56,19 +56,25 @@
     28,
     28
   ],
-  "notes": "Selected lower start: grasp center 0.27 m above table. Full pinned UW excitation and collection-controller gains. Requested path and three simulated dynamics cases passed source-hull geometry checks. Physical Thunder collection has not been run. Base_link XYZ and axis-angle XYZ. Position at the start pose before recording; the recorder checks this pose and does not issue moveJ.",
-  "simulation_review_status": "full_UW_excitation_geometry_checked_no_hardware_data",
+  "notes": "Corrected physical mounting [0.5,0.5,0.5,0.5] wxyz; grasp center remains 0.27 m above the table. Full pinned UW excitation and collection-controller gains. Requested path and three simulated dynamics cases passed fresh source-hull checks. Physical Thunder collection has not been run. Base_link XYZ and axis-angle XYZ. Position at the start pose before recording; the recorder checks this pose and does not issue moveJ.",
+  "simulation_review_status": "corrected_mount_full_UW_excitation_geometry_checked_no_hardware_data",
   "joint_excursion_limit_basis": {
     "method": "maximum absolute deviation from start across three simulated responses and requested-path IK, plus 5 degrees per joint",
     "observed_max_rad": [
-      0.27871760310990945,
-      0.4893094933606865,
-      0.4776133008340637,
-      0.7066442862727131,
-      0.2421071883779089,
-      0.6060277158774803
+      0.3421241828022912,
+      0.39382023688633677,
+      0.453975298152985,
+      0.43335163593292236,
+      0.5739179883336998,
+      0.7311151918472334
     ],
     "allowance_rad": 0.08726646259971647,
     "scope": "Stop guards only; not online collision detection or a bound on every possible real response."
-  }
+  },
+  "robot_base_quaternion_world_wxyz": [
+    0.5,
+    0.5,
+    0.5,
+    0.5
+  ]
 }

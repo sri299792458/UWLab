@@ -14,7 +14,7 @@ import tarfile
 import wandb
 
 REPO = Path(__file__).resolve().parents[3]
-ROOT = Path(os.environ.get('UWLAB_DATA_ROOT', '/data/kanth042/datasets/umi_reset_from_defaults_20260911'))
+ROOT = Path(os.environ.get('UWLAB_DATA_ROOT', '/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917'))
 DATA_ROOT = ROOT / '49_clearance_and_placement'
 DATA = DATA_ROOT / 'OmniReset'
 TRAINING_ROOT = ROOT / '52_training'
@@ -34,7 +34,11 @@ def git(*args):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--launch', action='store_true')
+    parser.add_argument('--supersedes-run-id')
+    parser.add_argument('--reason', default='Corrected physical mounting and freshly regenerated 20 mm map/reset banks.')
     args = parser.parse_args()
+    physical_gpus = [int(value) for value in os.environ.get('CUDA_VISIBLE_DEVICES', '0,1,2,3').split(',')]
+    assert len(physical_gpus) == 4 and len(set(physical_gpus)) == 4, 'Select four distinct GPUs through CUDA_VISIBLE_DEVICES'
     audit = json.loads((DATA_ROOT / 'dataset_audit.json').read_text())
     native = json.loads((DATA_ROOT / 'native_validation.json').read_text())
     physics = json.loads((DATA_ROOT / 'training_physics.json').read_text())
@@ -76,7 +80,7 @@ def main():
         'scripts/reinforcement_learning/rsl_rl/train.py', '--distributed', '--headless',
         '--task', 'OmniReset-UMI-Defaults-State-Train-v0', '--num_envs', '16384', '--max_iterations', '40000',
         '--logger', 'wandb', '--log_project_name', PROJECT, '--seed', '42',
-        '--run_name', 'umi_clearance_baseline_4gpu_env16384', 'agent.experiment_name=umi_clearance_aprilcube60_r3',
+        '--run_name', 'umi_mount20_baseline_4gpu_env16384', 'agent.experiment_name=umi_clearance_aprilcube60_mount20',
         'env.events.reset_from_reset_states.params.dataset_dir='+str(DATA)]
     environment = dict(CONDA_PREFIX=os.environ.get("CONDA_PREFIX", sys.prefix), CUDA_VISIBLE_DEVICES=os.environ.get("CUDA_VISIBLE_DEVICES", "0,1,2,3"),
         OMNI_KIT_ACCEPT_EULA='YES', PYTHONUNBUFFERED='1', HYDRA_FULL_ERROR='1',
@@ -107,8 +111,9 @@ def main():
     validation_files = [DATA_ROOT / p for p in ('dataset_audit.json', 'native_validation.json',
         'training_physics.json', 'lookup/lookup_manifest.json', 'atlas/summary.json',
         'sphere_adapter_validation.json', 'fresh_inputs.json', 'production_runs.json',
-        'airborne_native_recheck_exclusions.json', 'reload_boundary_diagnosis_first_three.json',
         'source_integrity_validation.json')]
+    validation_files += sorted(DATA_ROOT.glob('*_native_recheck_exclusions.json'))
+    validation_files += sorted(DATA_ROOT.glob('*boundary_diagnosis*.json'))
     validation_files.append(TRAINING_ROOT / 'ppo_smoke_verification.json')
     versions = {}
     for name in ('torch', 'isaacsim', 'isaaclab', 'rsl-rl-lib', 'wandb'):
@@ -121,11 +126,11 @@ def main():
         git_status=git('status', '--short'), worktree=str(REPO), runtime_versions=versions,
         tmux_session=session, launch_command=command, launch_environment=environment,
         local_log=str(output / 'train.log'), local_metadata=str(output / 'run_metadata.json'),
-        distributed_ranks=4, physical_gpus=[3, 4, 5, 7], num_envs_per_rank=16384,
+        distributed_ranks=4, physical_gpus=physical_gpus, num_envs_per_rank=16384,
         total_environments=65536, rollout_steps_per_environment=32, samples_per_iteration=2097152,
         max_iterations=40000, total_configured_samples=83886080000, seed=42,
         task='OmniReset-UMI-Defaults-State-Train-v0', fresh_policy=True,
-        supersedes_run_id='z5bfvcpq', replacement_reason='Restored original alignment reward and fixed lower cube; fresh 100 g generation bank with approved map/clearance/placement changes.',
+        supersedes_run_id=args.supersedes_run_id, replacement_reason=args.reason,
         wandb_run_id=run_id, wandb_url=f'https://wandb.ai/{ENTITY}/{PROJECT}/runs/{run_id}',
         code_snapshot=str(output / 'code_snapshot.tar.gz'), code_snapshot_sha256=sha(output / 'code_snapshot.tar.gz'),
         source_sha256={name: sha(REPO / name) for name in files},

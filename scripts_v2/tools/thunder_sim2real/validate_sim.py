@@ -1,5 +1,6 @@
 """Native simulation checks. All generated data is labeled synthetic_test."""
 import argparse
+import hashlib
 import json
 from pathlib import Path
 import sys
@@ -87,6 +88,7 @@ def replay_check():
 
 def stage2_check():
     import gymnasium as gym
+    import isaaclab
     import uwlab_tasks
     from uwlab_tasks.manager_based.manipulation.omnireset.config.ur5e_robotiq_2f85 import umi_sim2real_cfg as cfgmod
     from uwlab_tasks.manager_based.manipulation.omnireset.config.ur5e_robotiq_2f85.umi_training_cfg import UmiCubeTrainCfg
@@ -145,8 +147,23 @@ def stage2_check():
             phases.append({"progress": progress, "mean_reward": float(reward.mean()),
                            "mean_kp": kp_now.mean(dim=0).cpu().tolist(),
                            "mean_kd": kd_now.mean(dim=0).cpu().tolist()})
+        dataset = Path(cfg.events.reset_from_reset_states.params["dataset_dir"])
+        families = cfg.events.reset_from_reset_states.params["reset_types"]
+        resetter = env.event_manager.get_term_cfg("reset_from_reset_states").func
+        bank_paths = {family: dataset / 'Resets/InsertiveAprilCube60__ReceptiveAprilCube60' / f'resets_{family}.pt'
+                      for family in families}
         return {"status": "PASS", "source_kind": "synthetic_test", "num_envs": 64,
                 "task": task,
+                "isaaclab_module_path": isaaclab.__file__,
+                "task_module_path": uwlab_tasks.__file__,
+                "robot_usd": cfg.scene.robot.spawn.usd_path,
+                "table_usd": cfg.scene.table.spawn.usd_path,
+                "robot_mount_position_world_m": list(cfg.scene.robot.init_state.pos),
+                "robot_mount_quaternion_world_wxyz": list(cfg.scene.robot.init_state.rot),
+                "dataset_dir": str(dataset),
+                "dataset_counts": dict(zip(families, resetter.num_states.cpu().tolist())),
+                "dataset_sha256": {family: hashlib.sha256(path.read_bytes()).hexdigest()
+                                   for family, path in bank_paths.items()},
                 "physics_hz": 120, "policy_hz": 10, "phases": phases,
                 "preserved": ["Thunder/UMI assets", "cube motion modes", "reset bank and probabilities",
                               "rewards", "observations", "initial gains"],

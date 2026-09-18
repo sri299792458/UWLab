@@ -3,12 +3,40 @@
   "source_kind": "synthetic_test",
   "num_envs": 64,
   "task": "OmniReset-UMI-Defaults-State-Finetune-v0",
+  "isaaclab_module_path": "/data/kanth042/repos/IsaacLab/source/isaaclab/isaaclab/__init__.py",
+  "task_module_path": "/data/kanth042/repos/UWLab-thunder-sim2real/source/uwlab_tasks/uwlab_tasks/__init__.py",
+  "robot_usd": "/data/kanth042/converted_assets/thunder_d405_umi_rigid_asset/ur5e_robotiq_d405_umi_rigid_thunder.usd",
+  "table_usd": "/data/kanth042/converted_assets/lab_vention_asset_v60/lab_vention.usd",
+  "robot_mount_position_world_m": [
+    0.17766,
+    0.377695,
+    1.466
+  ],
+  "robot_mount_quaternion_world_wxyz": [
+    0.5,
+    0.5,
+    0.5,
+    0.5
+  ],
+  "dataset_dir": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/49_clearance_and_placement/OmniReset",
+  "dataset_counts": {
+    "ObjectAnywhereEEAnywhere": 10128,
+    "ObjectRestingEEGrasped": 10011,
+    "ObjectAnywhereEEGrasped": 10036,
+    "ObjectPartiallyAssembledEEGrasped": 10019
+  },
+  "dataset_sha256": {
+    "ObjectAnywhereEEAnywhere": "ef4d2161eb1cce8f57acac61df8a141449e1d2cf0c4eec10fbca126f468d0da5",
+    "ObjectRestingEEGrasped": "f7bbd4f4ac2ec9bc1d759f68411fc181e11e5b0e931ad69b7d718f4d86d6d9df",
+    "ObjectAnywhereEEGrasped": "dcc7db6fda22d83bf7286268a5ec319c972dae2c4b174c0af99fc455f1bf603b",
+    "ObjectPartiallyAssembledEEGrasped": "007029ea1a158d114a53d3238e115e06262b191ccf991ee6d8d582b05b8c09be"
+  },
   "physics_hz": 120,
   "policy_hz": 10,
   "phases": [
     {
       "progress": 0.0,
-      "mean_reward": 0.021377000957727432,
+      "mean_reward": 0.02445327863097191,
       "mean_kp": [
         500.0,
         500.0,
@@ -28,42 +56,42 @@
     },
     {
       "progress": 0.5,
-      "mean_reward": 0.018538756296038628,
+      "mean_reward": 0.03345055878162384,
       "mean_kp": [
-        749.4039916992188,
-        749.4039916992188,
-        749.4039916992188,
-        55.24827575683594,
-        55.24827575683594,
-        55.24827575683594
+        767.2703247070312,
+        767.2703247070312,
+        767.2703247070312,
+        54.93404006958008,
+        54.93404006958008,
+        54.93404006958008
       ],
       "mean_kd": [
-        125.6129150390625,
-        125.6129150390625,
-        125.6129150390625,
-        7.660069465637207,
-        7.660069465637207,
-        7.660069465637207
+        127.01954650878906,
+        127.01954650878906,
+        127.01954650878906,
+        7.443333148956299,
+        7.443333148956299,
+        7.443333148956299
       ]
     },
     {
       "progress": 1.0,
-      "mean_reward": 0.031233813613653183,
+      "mean_reward": 0.02975286915898323,
       "mean_kp": [
-        1017.7171630859375,
-        1017.7171630859375,
-        1017.7171630859375,
-        50.67338562011719,
-        50.67338562011719,
-        50.67338562011719
+        1008.8948364257812,
+        1008.8948364257812,
+        1008.8948364257812,
+        51.234107971191406,
+        51.234107971191406,
+        51.234107971191406
       ],
       "mean_kd": [
-        64.19376373291016,
-        64.19376373291016,
-        64.19376373291016,
-        14.382811546325684,
-        14.382811546325684,
-        14.382811546325684
+        64.2519760131836,
+        64.2519760131836,
+        64.2519760131836,
+        14.164742469787598,
+        14.164742469787598,
+        14.164742469787598
       ]
     }
   ],

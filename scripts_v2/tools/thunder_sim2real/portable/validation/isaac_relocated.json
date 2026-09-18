@@ -3,12 +3,34 @@
   "source_kind": "synthetic_test",
   "num_envs": 64,
   "task": "OmniReset-UMI-Defaults-State-Finetune-Play-v0",
+  "isaaclab_module_path": "/data/kanth042/datasets/thunder_portable_20260917_mount_v2/installed_full/sources/IsaacLab/source/isaaclab/isaaclab/__init__.py",
+  "task_module_path": "/data/kanth042/repos/UWLab-thunder-sim2real/source/uwlab_tasks/uwlab_tasks/__init__.py",
+  "robot_usd": "/data/kanth042/datasets/thunder_portable_20260917_mount_v2/installed_full/assets/thunder_d405_umi_rigid_asset/ur5e_robotiq_d405_umi_rigid_thunder.usd",
+  "table_usd": "/data/kanth042/datasets/thunder_portable_20260917_mount_v2/installed_full/assets/lab_vention_asset_v60/lab_vention.usd",
+  "robot_mount_position_world_m": [
+    0.17766,
+    0.377695,
+    1.466
+  ],
+  "robot_mount_quaternion_world_wxyz": [
+    0.5,
+    0.5,
+    0.5,
+    0.5
+  ],
+  "dataset_dir": "/data/kanth042/datasets/thunder_portable_20260917_mount_v2/installed_full/data/49_clearance_and_placement/OmniReset",
+  "dataset_counts": {
+    "ObjectAnywhereEEAnywhere": 10128
+  },
+  "dataset_sha256": {
+    "ObjectAnywhereEEAnywhere": "ef4d2161eb1cce8f57acac61df8a141449e1d2cf0c4eec10fbca126f468d0da5"
+  },
   "physics_hz": 120,
   "policy_hz": 10,
   "phases": [
     {
       "progress": 1.0,
-      "mean_reward": 0.009364779107272625,
+      "mean_reward": 0.009275328367948532,
       "mean_kp": [
         1011.7833251953125,
         1011.7833251953125,

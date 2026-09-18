@@ -94,10 +94,16 @@ try:
         count = len(state['articulation']['robot']['joint_position'])
         tensors = dict(leaves(state))
         assert all(len(v) == count and torch.isfinite(v).all() for v in tensors.values())
+        roots = state['articulation']['robot']['root_pose'][:, 3:7]
+        expected_root = torch.tensor(cfg.scene.robot.init_state.rot, dtype=roots.dtype)
+        root_dot = (roots @ expected_root).abs() / (roots.norm(dim=1) * expected_root.norm())
+        mount_error = float((1-root_dot).abs().max())
+        assert mount_error < 1e-6, (family, 'Reset bank uses a different robot mounting', mount_error)
         flat = torch.cat([v.reshape(count, -1) for v in tensors.values()], dim=1)
         unique = len(torch.unique(flat, dim=0))
         assert unique == count, (family, unique, count)
         result = dict(count=count, unique=unique, sha256=hashlib.sha256(path.read_bytes()).hexdigest(),
+                      robot_mount_quaternion_dot_error=mount_error,
                       self_blocked_rows=[], world_blocked_rows=[], edge_blocked_rows=[], minimum_cube_edge_clearance_m=1e6, maximum_reload_error=0.)
         report['families'][family] = result
         for start in range(0, count, env.num_envs):

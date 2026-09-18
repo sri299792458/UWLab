@@ -1,8 +1,10 @@
 # Thunder / UMI state-policy sim-to-real
 
 For the **complete portable lab, calibrated assets, cuRobo map and software setup**, start with
-[portable/README.md](portable/README.md). The default core download is 223 MB; the full
-map/reset dataset is optional. The robot-side agent handoff is included there.
+[portable/README.md](portable/README.md). The default download is the **150 MB core package**; the full
+map/reset dataset is optional and remains prepared locally. The robot-side agent handoff is included there.
+The physical mounting correction and rebuilt 20 mm map are documented in
+[MOUNTING_CORRECTION.md](MOUNTING_CORRECTION.md). Use the matching corrected bundle.
 
 This branch prepares UWLab's Stage-2 state-policy fine-tuning for Thunder and
 provides a standalone package for the robot workstation. The current Stage-1
@@ -70,7 +72,7 @@ viscous friction 0–20, and delay 0–5 fitting steps. The upper bounds are CLI
 options; inspect solutions at the bounds before interpreting a fit.
 
 Stage 2 preserves the current 60 mm cube assets, fixed lower cube, 20–200 g
-cube mass randomization, current 40,732-state reset bank, four equally weighted
+cube mass randomization, regenerated reset banks, four equally weighted
 reset families, rewards, observations, policy architecture, and PPO defaults.
 It adds the upstream curriculum for arm dynamics, controller gains, and
 action scale. Gains begin at Stage 1's XYZ `Kp=500, Kd=160` and rotation
@@ -301,8 +303,10 @@ recording, a fitted Thunder dynamics profile, or successful physical transfer.
 - [Pinned UWLab robot environment](https://github.com/WEIRDLabUW/diffusion_policy/blob/3cd87c830b3a46967fb2291f5bc18e8d746ab4b6/conda_environment_real.yaml)
 # Current motion candidate — full UW excitation, 27 cm above the table
 
-The selected candidate is now atlas candidate 6 from the 25–35 cm height search,
-with grasp center **27 cm above the table**. It uses full UW amplitudes
+The corrected candidate preserves the previous grasp-center location
+**27 cm above the table**. Accounting for the new mounting rotation changes
+shoulder pan by -90 degrees; all other starting joint coordinates remain the
+same. The full motion has been revalidated in the corrected model. It uses full UW amplitudes
 `[0.1, 0.1, 0.15, 0.5, 0.25, 0.5]` m/rad, the 8-second 0.1–3 Hz sweep, and the
 unchanged UW collection gains (position stiffness 1000, rotation stiffness 50,
 damping ratio 1). The current waveform matches the pinned UW collector's 4,000
@@ -310,12 +314,12 @@ samples exactly, including its original sample/envelope endpoint construction.
 
 `workstation/collection.simulation_candidate.json` contains this candidate.
 Its starting joint angles are
-`[-78.39293, -43.02375, 101.86900, 24.34282, 60.37875, 72.72084]` degrees.
+`[-168.39294, -43.02376, 101.86901, 24.34282, 60.37875, 72.72085]` degrees.
 All 4,000 requested-path poses and 4,001 states in each of three simulated
-responses pass the source-hull checks. Minimum lab clearance is 93.7 mm and
-minimum nonadjacent moving-arm clearance is 15.0 mm; the internal hand gap is
-5.2 mm. In the UW reference simulation, the joints span approximately
-`[15.2, 20.6, 9.1, 50.0, 13.0, 13.2]` degrees.
+responses pass the source-hull checks. Minimum lab clearance is 84.37 mm and
+minimum nonadjacent moving-arm clearance is 17.19 mm; the internal hand gap is
+5.2 mm. The ideal-tracking path is a geometric comparison, not a claim that
+the real robot will track its requested joint velocities.
 
 These fixed gains are used on the real robot for collection and in the fitting
 simulation. We fit friction, effective joint inertia, and delay to the actual
@@ -330,10 +334,10 @@ reached. Hardware fields remain unset, and no hardware connection has been made.
 
 The full review, videos, reproduction inputs, collision measurements, and exact
 waveform parity report are under
-`/data/kanth042/datasets/umi_reset_from_defaults_20260911/53_thunder_sim2real/motion_preview/lower_full/`.
-This supersedes the earlier 52 cm / quarter-amplitude candidate. The old
+`/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/53_thunder_sim2real/motion_preview/lower_full/`.
+This supersedes the previous mounting's collection configuration. The old
 artifacts remain as historical experiments.
 
-Reproduction tools: `select_collection_poses.py --height_min .25 --height_max .35`,
-`preview_motion.py --amplitude_scale 1`, `check_requested_motion.py`,
-`check_motion_hulls.py --candidate 6`, and `render_collection_motion.py --candidate 6`.
+Reproduction uses the saved `lower_full/candidates.json` with
+`preview_motion.py --amplitude_scale 1`, `check_requested_motion.py --candidate 0`,
+`check_motion_hulls.py --candidate 0`, and `render_collection_motion.py --candidate 0`.

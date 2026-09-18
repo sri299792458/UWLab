@@ -1,4 +1,5 @@
 """Exercise all four original reset recipes with the completed new atlas."""
+import argparse
 import json
 import os
 from pathlib import Path
@@ -9,14 +10,17 @@ import sys
 import time
 
 REPO = Path(__file__).resolve().parents[3]
-ROOT = Path(os.environ.get('UWLAB_DATA_ROOT', '/data/kanth042/datasets/umi_reset_from_defaults_20260911') + '/49_clearance_and_placement')
+ROOT = Path(os.environ.get('UWLAB_DATA_ROOT', '/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917') + '/49_clearance_and_placement')
 DATA = ROOT / 'pilot/OmniReset'
 
 
 def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--gpus', type=int, nargs=4, default=[0, 1, 2, 6])
+    args = parser.parse_args()
     assert json.loads((ROOT / 'atlas/summary.json').read_text())['complete']
     assert json.loads((ROOT / 'lookup/packing_progress.json').read_text())['complete']
-    assert json.loads((ROOT / 'position_only_fixture/summary.json').read_text())['all_six_faces_present']
+    assert json.loads((ROOT / 'placement_math_validation.json').read_text())['all_passed']
     for relative in ('Grasps/InsertiveAprilCube60/grasps.pt',
                      'Resets/InsertiveAprilCube60__ReceptiveAprilCube60/partial_assemblies.pt'):
         target = DATA / relative
@@ -44,9 +48,9 @@ def main():
                                process_group=proc.pid, status='running')
         save()
 
-    launch('ObjectAnywhereEEAnywhere', 0)
-    launch('ObjectAnywhereEEGrasped', 3)
-    launch('ObjectPartiallyAssembledEEGrasped', 5)
+    launch('ObjectAnywhereEEAnywhere', args.gpus[0])
+    launch('ObjectAnywhereEEGrasped', args.gpus[1])
+    launch('ObjectPartiallyAssembledEEGrasped', args.gpus[2])
     try:
         while True:
             for family, proc in list(processes.items()):
@@ -58,7 +62,7 @@ def main():
                         raise RuntimeError(f'{family} failed with {code}')
                     print(f'{family} complete', flush=True)
             if records['ObjectAnywhereEEAnywhere']['status'] == 'complete' and 'ObjectRestingEEGrasped' not in records:
-                launch('ObjectRestingEEGrasped', 1)
+                launch('ObjectRestingEEGrasped', args.gpus[3])
             if len(records) == 4 and all(r['status'] == 'complete' for r in records.values()):
                 break
             time.sleep(3)

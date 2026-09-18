@@ -1,6 +1,26 @@
 # Changes for regenerating UMI resets with the accepted map
 
-## September 17 current behavior after recipe review
+## September 17 physical mounting correction and 20 mm map
+
+The active Thunder mounting quaternion is now `[0.5, 0.5, 0.5, 0.5]` in `w,x,y,z` order.
+The map was recomputed at **20 mm XYZ spacing**, as requested: 31 heights, 37 Y positions,
+75 X positions and the same 504 orientations. It contains 13,259,706 accepted pose solutions
+across 60,276 spatial positions. The root translation, calibrated joint transforms and
+controller-frame conversion are preserved. See [the mounting record](scripts_v2/tools/thunder_sim2real/MOUNTING_CORRECTION.md).
+
+The active data root is `/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917`.
+Full-arm reset banks are regenerated there and validated against the corrected geometry.
+The 591 object-relative grasps and 5,536 partial-assembly records are reused. Sphere geometry,
+clearance rules, sampling intent, original acceptance, rewards and controller gains keep the
+previously reviewed definitions. The current placement test preserves all 512 sampled hand
+angles, including 210 that a nearest-orientation test would have rejected.
+
+The earlier data root and training run are historical inputs, separate from this revision.
+Use the current data root's `dataset_audit.json` and `native_validation.json` for final bank
+identities; the entries below describe earlier revisions.
+
+
+## Earlier September 17 behavior after recipe review
 
 The user's criterion is to preserve what each default UWLab reset recipe intends, while adapting its workspace to the selected hardware and requested clearances.
 

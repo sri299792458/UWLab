@@ -25,7 +25,11 @@ a field explicitly names another ordering. SciPy normally expects x,y,z,w.
 `base_link` coordinates. The atlas grid and requested cube/grasp positions use the lab
 world frame. The atlas config contains the base-to-world transform; use it explicitly.
 In the Isaac task, the robot base is at `[0.177660, 0.377695, 1.466000]` with quaternion
-`[0.7071068, 0, 0.7071068, 0]`. The tabletop world Z is `0.84235`.
+`[0.5, 0.5, 0.5, 0.5]`. The tabletop world Z is `0.84235`.
+This corrects the physical mounting difference identified on Thunder. The map
+has been recomputed at 20 mm spacing; use the matching corrected release.
+The URDF's 180-degree conversion from `base_link` to controller `Base` remains
+unchanged. See [../MOUNTING_CORRECTION.md](../MOUNTING_CORRECTION.md).
 Do not apply this mounting transform a second time to `lab_scene.yml` before a base-frame
 cuRobo query. The rendered lab CAD is in millimeters and the Isaac scene scales it by
 0.001; the exported cuRobo boxes and robot meshes are already in meters.

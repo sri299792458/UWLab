@@ -4,9 +4,22 @@ This package is ready to clone and configure on the robot workstation. No
 physical Thunder recording or fitted Thunder dynamics profile exists yet.
 The candidate keeps UW's collection gains and full excitation amplitudes;
 the Thunder-specific start pose is 27 cm above the modeled table.
+The mounting quaternion is now `[0.5, 0.5, 0.5, 0.5]` (`w,x,y,z`), and the
+reachability map is rebuilt at 20 mm spacing. See [MOUNTING_CORRECTION.md](MOUNTING_CORRECTION.md).
+These are geometry, data-contract and integration checks. They do not establish
+that a Stage-1 policy has learned stacking. No trained policy is part of this delivery.
 
 ## Completed checks
 
+- Native mounting readback matches `[0.5, 0.5, 0.5, 0.5]`; calibrated body transforms
+  agree within 0.7 micrometers in position. An old-mount map is rejected.
+- The rebuilt 20 mm map contains 13,259,706 accepted poses at 60,276 spatial
+  positions. All 40,194 final reset states pass native reload geometry checks;
+  three recorded column-margin exclusions preserve their original data and evidence.
+- Both archive profiles pass checksum verification and relocated cuRobo GPU checks.
+  The full installation also passes a native Stage-2 evaluation reset/step check
+  using its bundled IsaacLab sources and relocated data. These checks reuse the
+  existing simulator environment and the dedicated cuRobo environment.
 - Eleven CPU tests pass: record/calibration/timing contracts, synthetic-data
   rejection, calibrated Jacobian comparison, mocked recorder success and abort
   paths, invalid starting-state rejection before creating a control interface,
@@ -29,7 +42,7 @@ the Thunder-specific start pose is 27 cm above the modeled table.
 - The selected full-amplitude motion is checked at all 4,000 requested poses
   and 4,001 states in each of three simulated dynamics cases. All pass the
   source-hull checks, including the camera and 33 lab boxes. Minimum lab
-  clearance is 93.7 mm, moving-arm self clearance is 15.0 mm, and the closest
+  clearance is 84.37 mm, moving-arm self clearance is 17.19 mm, and the closest
   internal hand gap is 5.2 mm. Existing adjacency/mount exclusions and the
   map's 50 mm column requirement are retained.
 - All 4,000 waveform samples match the pinned UW collector exactly.
@@ -49,8 +62,9 @@ Position the robot at the selected configuration before starting collection;
 this recorder checks the position and stationary state, and does not issue
 the initial positioning move itself.
 
-After real collection, validate the timestamps, fit the dynamics, and evaluate
-against a separate real recording before using a selected profile for Stage 2.
+After real collection, validate the timestamps, fit the dynamics, and inspect
+the simulation-versus-real overlay using that same recording, following UWLab.
+UWLab then specifies a real-robot teleoperation check before Stage 2.
 The simulation evidence does not establish physical performance or uniqueness
 of every fitted parameter. Controller tracking error is expected in this
 experiment; the fitting objective is the actual recorded joint response.

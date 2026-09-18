@@ -12,7 +12,7 @@ from isaaclab.utils import configclass
 from . import rl_state_cfg as state
 from .umi_reset_cfg import _configure_hardware, _configure_osc
 
-TRAIN_DATASET_DIR = os.environ.get('UWLAB_DATA_ROOT', '/data/kanth042/datasets/umi_reset_from_defaults_20260911') + '/49_clearance_and_placement/OmniReset'
+TRAIN_DATASET_DIR = os.environ.get('UWLAB_DATA_ROOT', '/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917') + '/49_clearance_and_placement/OmniReset'
 
 
 def _configure_training(cfg):

@@ -13,7 +13,7 @@ from scipy.spatial.transform import Rotation
 import torch
 import yaml
 
-ROOT = Path(os.environ.get('UWLAB_DATA_ROOT', '/data/kanth042/datasets/umi_reset_from_defaults_20260911'))
+ROOT = Path(os.environ.get('UWLAB_DATA_ROOT', '/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917'))
 ATLAS = ROOT / '49_clearance_and_placement/atlas'
 
 
