@@ -21,6 +21,48 @@ The delivered tasks load their large assets from the release, so this checkout d
 need to download the repository's unrelated Git LFS media. The tiny stock USD layer is
 ordinary Git text and is included even when LFS downloads are skipped.
 
+## Storage first: install the simulator in project space
+
+The user's MSI home is already at its 200 GB quota. Clearing a small cache may restore
+Codex, but the simulator stack needs a separate storage plan. MSI documents independent
+home and project quotas. Before installation, run `echo "$SHARED"` and `groupquota` to
+identify the primary project's shared directory and its free allocation; these do not
+recursively scan the home directory. See [MSI quota guidance](https://msi.umn.edu/storage/data-storage-faqs/how-can-i-check-my-storage-quota).
+
+Use a per-user project directory such as `$SHARED/$USER/umi-training` for the repository,
+Python/Conda environment, package caches, data and run outputs:
+
+```text
+umi-training/
+  repo/
+  envs/isaac51/
+  cache/pip/
+  cache/conda/
+  cache/runtime/
+  data/
+  runs/
+```
+
+NVIDIA lists 50 GB as the minimum storage for Isaac Sim 5.1. Budgeting roughly **100 GB
+free for initial software, downloads and caches**, with additional space for accumulated
+checkpoints/videos, is a planning allowance rather than a measured MSI requirement.
+The released task data is only ~896 MB compressed/~1.86 GB unpacked; it is not the
+simulator installation. [NVIDIA requirements](https://docs.isaacsim.omniverse.nvidia.com/5.1.0/installation/requirements.html)
+
+The linked generic environment recipe uses `$HOME/venvs`; **replace that with the project
+environment path above on MSI**. Before invoking pip/Conda, the MSI agent should direct
+their package caches to project storage using `PIP_CACHE_DIR` and `CONDA_PKGS_DIRS`.
+Configure simulator/Kit, W&B, and container caches in project or allocated job-local
+storage too, and inspect the actual paths at first launch. Do not assume moving only
+the environment moves all caches. Keep home-directory configuration/authentication
+separate; do not redefine `HOME` to point at the project.
+
+Global scratch is useful for temporary staging, but MSI deletes data older than 30 days
+and provides no backups there. Retain environments, required inputs and checkpoints in
+project storage with the group's retention plan. If that project is also full, the MSI
+agent/user must choose another authorized project or arrange capacity with the PI/MSI
+before installing. [MSI storage locations](https://userdocs.msi.umn.edu/storage/storage.html)
+
 ## Download the complete training inputs
 
 From this repository root, using Python 3.11 or newer:
