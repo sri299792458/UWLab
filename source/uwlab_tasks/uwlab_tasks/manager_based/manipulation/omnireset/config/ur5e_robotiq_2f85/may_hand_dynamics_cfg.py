@@ -11,7 +11,12 @@ from isaaclab.utils import configclass
 from .umi_training_cfg import UmiCubeTrainCfg
 
 
-def verify_stock_hand_dynamics(env, env_ids, properties_path: str, report_dir: str):
+def verify_stock_hand_dynamics(
+    env, env_ids, properties_path: str, report_dir: str,
+    expected_kp_values=(200.0, 200.0, 200.0, 3.0, 3.0, 3.0),
+    expected_kd_values=(84.8528137423857, 84.8528137423857, 84.8528137423857,
+                        3.4641016151377544, 3.4641016151377544, 3.4641016151377544),
+):
     """Read native properties after startup randomization; never alter state or RNG."""
     robot = env.scene["robot"]
     view = robot.root_physx_view
@@ -50,8 +55,8 @@ def verify_stock_hand_dynamics(env, env_ids, properties_path: str, report_dir: s
     inertia_scale_error = (inertias - default_inertias * scale[..., None]).abs().max().item()
     assert inertia_scale_error < 2e-7, inertia_scale_error
     arm = env.action_manager.get_term("arm")
-    expected_kp = torch.tensor([200.0] * 3 + [3.0] * 3, device=arm._kp.device)
-    expected_kd = torch.tensor([84.8528137423857] * 3 + [3.4641016151377544] * 3, device=arm._kd.device)
+    expected_kp = torch.tensor(expected_kp_values, device=arm._kp.device)
+    expected_kd = torch.tensor(expected_kd_values, device=arm._kd.device)
     assert torch.allclose(arm._kp, expected_kp.expand_as(arm._kp))
     assert torch.allclose(arm._kd, expected_kd.expand_as(arm._kd), rtol=1e-6, atol=1e-6)
     assert abs(env.physics_dt - 1 / 120) < 1e-12

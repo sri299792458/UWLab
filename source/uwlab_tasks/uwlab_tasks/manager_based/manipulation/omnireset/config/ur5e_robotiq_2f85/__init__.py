@@ -10,6 +10,16 @@ import gymnasium as gym
 from . import agents
 
 gym.register(
+    id="OmniReset-UMI-StockHandCurrentGains-State-Train-v0",
+    entry_point="isaaclab.envs:ManagerBasedRLEnv",
+    kwargs={
+        "env_cfg_entry_point": f"{__name__}.stock_hand_current_gains_cfg:UmiStockHandCurrentGainsTrainCfg",
+        "rsl_rl_cfg_entry_point": f"{agents.__name__}.rsl_rl_cfg:Base_PPORunnerCfg",
+    },
+    disable_env_checker=True,
+)
+
+gym.register(
     id="OmniReset-UMI-MayHandDynamics-State-Train-v0",
     entry_point="isaaclab.envs:ManagerBasedRLEnv",
     kwargs={

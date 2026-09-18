@@ -43,6 +43,7 @@ def main():
     args = parser.parse_args()
     output = args.run.resolve()
     metadata = json.loads((output / "run_metadata.json").read_text())
+    assert hashlib.sha256(Path(metadata["comparison_asset"]).read_bytes()).hexdigest() == metadata["comparison_asset_sha256"]
     baseline = Path(metadata["reference_training_log_dir"])
     logs = [p for p in Path(metadata["training_log_root"]).glob("*_" + metadata["run_name"]) if (p / "model_0.pt").exists()]
     assert len(logs) == 1, logs
@@ -67,6 +68,13 @@ def main():
         native = json.loads((output / f"native_training/rank_{rank}.json").read_text())
         assert native["status"] == "PASS" and native["num_envs"] == 16384
         assert native["rank"] == rank and native["seed"] == 42 + rank
+        if "expected_arm_gains" in metadata:
+            for key in ("kp", "kd"):
+                assert np.allclose(native[key], metadata["expected_arm_gains"][key], rtol=1e-6, atol=1e-6)
+        if "paired_native_reference_directory" in metadata:
+            paired = json.loads((Path(metadata["paired_native_reference_directory"]) / f"rank_{rank}.json").read_text())
+            for key in ("asset", "body_names", "default_masses_kg", "default_inertias_kg_m2", "com_poses", "action_scale", "physics_dt", "policy_dt"):
+                assert native[key] == paired[key], (rank, key)
         native_reports.append(native)
     processes = []
     parents = []
@@ -83,7 +91,7 @@ def main():
                 parents.append(int(proc.name))
                 continue
             rank = int(environment[b"LOCAL_RANK"])
-            assert environment[b"CUDA_VISIBLE_DEVICES"] == b"3,4,5,7"
+            assert environment[b"CUDA_VISIBLE_DEVICES"].decode() == ",".join(map(str, metadata["physical_gpus"]))
             assert environment[b"PYTHONPATH"].decode() == metadata["launch_environment"]["PYTHONPATH"]
             processes.append({"pid": int(proc.name), "rank": rank, "physical_gpu": metadata["physical_gpus"][rank]})
         except (FileNotFoundError, PermissionError, ProcessLookupError):
