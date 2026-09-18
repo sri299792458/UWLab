@@ -1,0 +1,27 @@
+{
+  "status": "PASS",
+  "pid": 316613,
+  "rank": 0,
+  "num_envs": 256,
+  "verified_after_first_reset": 256,
+  "configured_root_quaternion_wxyz": [
+    0.5,
+    0.5,
+    0.5,
+    0.5
+  ],
+  "native_root_quaternion_first_wxyz": [
+    0.5,
+    0.5,
+    0.5,
+    0.5
+  ],
+  "max_quaternion_dot_error": 0.0,
+  "max_root_position_deviation_m": [
+    0.0099954754114151,
+    0.009986013174057007,
+    0.009996294975280762
+  ],
+  "reset_dataset_dir": "/data/kanth042/datasets/msi_training_handoff_20260918/relocated/data/49_clearance_and_placement/OmniReset",
+  "no_physics_or_rng_changes": true
+}

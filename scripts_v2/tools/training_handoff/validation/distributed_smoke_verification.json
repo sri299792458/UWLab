@@ -1,0 +1,32 @@
+{
+  "status": "PASS",
+  "condition": "stock-current",
+  "workers": 2,
+  "environments_per_worker": 64,
+  "completed_updates": 3,
+  "logged_updates": [
+    0,
+    1,
+    2
+  ],
+  "finite_scalar_series": 40,
+  "checkpoints": [
+    {
+      "file": "/data/kanth042/datasets/msi_training_handoff_20260918/checks/distributed-training-smoke/logs/rsl_rl/umi_clearance_aprilcube60_r3/2026-09-18_15-12-12_msi_stock_current_seed42_47431ee4/model_0.pt",
+      "iteration": 0,
+      "sha256": "da01921a288588a0cef66816bf944d7b75b7a6f9595648dcd90fc2d05d1a67d6",
+      "all_model_tensors_finite": true
+    },
+    {
+      "file": "/data/kanth042/datasets/msi_training_handoff_20260918/checks/distributed-training-smoke/logs/rsl_rl/umi_clearance_aprilcube60_r3/2026-09-18_15-12-12_msi_stock_current_seed42_47431ee4/model_2.pt",
+      "iteration": 2,
+      "sha256": "a72fa8e6c6ee87aaa77bf6f630712cb8424c8c4bb624d71a2aa080063eb414a6",
+      "all_model_tensors_finite": true
+    }
+  ],
+  "training_log_dir": "/data/kanth042/datasets/msi_training_handoff_20260918/checks/distributed-training-smoke/logs/rsl_rl/umi_clearance_aprilcube60_r3/2026-09-18_15-12-12_msi_stock_current_seed42_47431ee4",
+  "native_property_and_mount_reports_all_passed": true,
+  "logger": "tensorboard",
+  "headless_graphics_warnings": "Kit emitted GPU-foundation graphics initialization/shutdown messages; native simulation audits, three updates, checkpoints, metrics and process completion passed. Rendered-camera workflows were not tested.",
+  "scope": "Local installation and distributed launch test only; no MSI job and no scientific learning claim."
+}

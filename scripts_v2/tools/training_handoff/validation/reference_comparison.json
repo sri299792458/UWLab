@@ -1,0 +1,82 @@
+{
+  "stock-may": {
+    "status": "PASS",
+    "normalized_configuration_differences": [
+      {
+        "path": "/events/verify_corrected_mount/params/report_dir",
+        "reference": "/data/kanth042/datasets/umi_reset_from_defaults_20260911/65_corrected_mount_stock_hand_comparison_20260918/may_gains/mount_training",
+        "comparison": "/data/kanth042/datasets/msi_training_handoff_20260918/checks/stock-may/validation/mount"
+      },
+      {
+        "path": "/events/verify_stock_hand_dynamics/params/report_dir",
+        "reference": "/data/kanth042/datasets/umi_reset_from_defaults_20260911/65_corrected_mount_stock_hand_comparison_20260918/may_gains/native_training",
+        "comparison": "/data/kanth042/datasets/msi_training_handoff_20260918/checks/stock-may/validation/startup"
+      },
+      {
+        "path": "/log_dir",
+        "reference": "/data/kanth042/repos/UWLab-corrected-mount-stock-hand/logs/rsl_rl/umi_clearance_aprilcube60_r3/2026-09-18_12-59-32_umi_corrected_mount_stock_hand_may_gains_seed42_4gpu_env16384",
+        "comparison": null
+      },
+      {
+        "path": "/scene/num_envs",
+        "reference": 16384,
+        "comparison": 256
+      }
+    ],
+    "unexpected_differences": [],
+    "native_fields_exactly_match_reference": [
+      "body_names",
+      "default_masses_kg",
+      "default_inertias_kg_m2",
+      "kp",
+      "kd",
+      "physics_dt",
+      "policy_dt",
+      "action_scale",
+      "COM position"
+    ],
+    "max_COM_frame_quaternion_distance": 1.4675941767984784e-07,
+    "COM_frame_quaternion_tolerance": 2e-06,
+    "COM_frame_note": "Very small native principal-axis quaternion rounding differences; full default inertia tensors and COM positions match exactly."
+  },
+  "stock-current": {
+    "status": "PASS",
+    "normalized_configuration_differences": [
+      {
+        "path": "/events/verify_corrected_mount/params/report_dir",
+        "reference": "/data/kanth042/datasets/umi_reset_from_defaults_20260911/65_corrected_mount_stock_hand_comparison_20260918/current_umi_gains/mount_training",
+        "comparison": "/data/kanth042/datasets/msi_training_handoff_20260918/checks/stock-current/validation/mount"
+      },
+      {
+        "path": "/events/verify_stock_hand_dynamics/params/report_dir",
+        "reference": "/data/kanth042/datasets/umi_reset_from_defaults_20260911/65_corrected_mount_stock_hand_comparison_20260918/current_umi_gains/native_training",
+        "comparison": "/data/kanth042/datasets/msi_training_handoff_20260918/checks/stock-current/validation/startup"
+      },
+      {
+        "path": "/log_dir",
+        "reference": "/data/kanth042/repos/UWLab-corrected-mount-stock-hand/logs/rsl_rl/umi_clearance_aprilcube60_r3/2026-09-18_12-59-32_umi_corrected_mount_stock_hand_current_umi_gains_seed42_4gpu_env16384",
+        "comparison": null
+      },
+      {
+        "path": "/scene/num_envs",
+        "reference": 16384,
+        "comparison": 256
+      }
+    ],
+    "unexpected_differences": [],
+    "native_fields_exactly_match_reference": [
+      "body_names",
+      "default_masses_kg",
+      "default_inertias_kg_m2",
+      "kp",
+      "kd",
+      "physics_dt",
+      "policy_dt",
+      "action_scale",
+      "COM position"
+    ],
+    "max_COM_frame_quaternion_distance": 1.4675941767984784e-07,
+    "COM_frame_quaternion_tolerance": 2e-06,
+    "COM_frame_note": "Very small native principal-axis quaternion rounding differences; full default inertia tensors and COM positions match exactly."
+  }
+}

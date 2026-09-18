@@ -21,10 +21,13 @@ def sha(path):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--destination", type=Path, required=True)
-    parser.add_argument("--cache", type=Path)
+    parser.add_argument("--cache", type=Path, help="Download cache; defaults beside the destination, not in home")
     parser.add_argument("--local-parts", type=Path)
     args = parser.parse_args()
     root = args.destination.expanduser().resolve()
+    if not args.cache and not args.local_parts:
+        release = json.loads((HERE / "release_manifest.json").read_text())
+        args.cache = root.parent / ".uwlab-downloads" / release["tag"]
     command = [sys.executable, str(HERE.parent / "thunder_sim2real/portable/install_bundle.py"),
                "--profile", "full", "--manifest", str(HERE / "release_manifest.json"),
                "--destination", str(root)]

@@ -10,6 +10,17 @@ Start from branch **`codex/msi-training-handoff-20260918`** of
 <https://github.com/sri299792458/UWLab>. The data release is **`umi-training-20260918`**.
 Use a separate checkout for new experiment changes so the delivered reference stays available.
 
+```bash
+GIT_LFS_SKIP_SMUDGE=1 git clone --depth 1 --single-branch \
+  --branch codex/msi-training-handoff-20260918 \
+  https://github.com/sri299792458/UWLab.git UWLab-msi
+cd UWLab-msi
+```
+
+The delivered tasks load their large assets from the release, so this checkout does not
+need to download the repository's unrelated Git LFS media. The tiny stock USD layer is
+ordinary Git text and is included even when LFS downloads are skipped.
+
 ## Download the complete training inputs
 
 From this repository root, using Python 3.11 or newer:
@@ -21,6 +32,10 @@ source /YOUR/PERSISTENT/STORAGE/umi-training-data/activate.sh
 ```
 
 Replace the destination with a path on MSI. The installer refuses an existing destination.
+Use project storage with available quota. By default its download cache is created beside
+the destination under `.uwlab-downloads`, rather than consuming the home-directory quota.
+Allow at least **4 GB free** for the download, temporary archive and extraction, in addition
+to the separately installed simulator environment and future training outputs.
 It downloads the full **895,637,069-byte archive (~896 MB decimal, ~854 MiB)** and verifies
 its SHA-256 plus every extracted file. The full bundle contains **34,315 files, 1,859,058,012
 uncompressed bytes**, before small manifests and the stock-hand layer. It includes:
@@ -166,3 +181,17 @@ source/input identities and verified startup status. The two development-server 
 independently of this delivery. Return new W&B URLs, commit, hypothesis, command, startup
 reports and any setup deviations to the existing discussion task so subsequent experiments
 can be selected using the same evidence.
+
+## Delivery checks
+
+[Validation reports](scripts_v2/tools/training_handoff/validation/summary.json) record a
+fresh relocation of the complete archive, all input/asset checks, and 256-environment,
+20-step native checks for each of the three conditions. The two stock conditions match
+the reference runtime configurations after accounting for paths and validation size/device.
+Masses, full inertias, COM positions, gains, action scale and timing match the native
+reference values; principal-axis quaternion rounding differs by at most 1.47e-7.
+
+A separate two-worker × 64-environment test completed three training updates, with all
+40 scalar series and saved model tensors finite. It used TensorBoard and created no W&B
+experiment. These tests used the existing local simulator installation and the relocated
+bundle's IsaacLab source. They do not establish a fresh MSI installation or training success.

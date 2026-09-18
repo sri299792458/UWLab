@@ -1,0 +1,32 @@
+{
+  "status": "PASS",
+  "verified_utc": "2026-09-18T20:17:39.366698+00:00",
+  "tested_source_commit": "b096c1a6cabddcc0cfab692a9750540be39d6318",
+  "input_test": "input_verification.json",
+  "reference_comparison": "reference_comparison.json",
+  "distributed_training": "distributed_smoke_verification.json",
+  "native_checks": {
+    "stock-may": {
+      "status": "PASS",
+      "num_envs": 256,
+      "policy_steps": 20,
+      "native_report": "stock-may_native.json",
+      "mount_report": "stock-may_mount.json"
+    },
+    "stock-current": {
+      "status": "PASS",
+      "num_envs": 256,
+      "policy_steps": 20,
+      "native_report": "stock-current_native.json",
+      "mount_report": "stock-current_mount.json"
+    },
+    "umi-current": {
+      "status": "PASS",
+      "num_envs": 256,
+      "policy_steps": 20,
+      "native_report": "umi-current_native.json",
+      "mount_report": "umi-current_mount.json"
+    }
+  },
+  "limits": "Existing simulator installation on the development server with newly relocated data and bundled IsaacLab source. No fresh environment install or MSI hardware validation."
+}

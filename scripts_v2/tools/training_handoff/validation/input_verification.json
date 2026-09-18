@@ -1,0 +1,21 @@
+{
+  "status": "PASS",
+  "bundle": "/data/kanth042/datasets/msi_training_handoff_20260918/relocated",
+  "reset_counts": {
+    "ObjectAnywhereEEAnywhere": 10128,
+    "ObjectPartiallyAssembledEEGrasped": 10019,
+    "ObjectAnywhereEEGrasped": 10036,
+    "ObjectRestingEEGrasped": 10011
+  },
+  "total_reset_states": 40194,
+  "all_reset_values_finite": true,
+  "root_quaternion_wxyz": [
+    0.5,
+    0.5,
+    0.5,
+    0.5
+  ],
+  "stock_changed_attributes": 36,
+  "stock_geometry_joints_relationships_unchanged": true,
+  "scope": "Exact input hashes, reset tensors and composed USD properties; native dynamics checked separately."
+}
