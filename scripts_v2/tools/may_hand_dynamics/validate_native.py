@@ -4,6 +4,7 @@ import argparse
 import importlib
 import json
 from pathlib import Path
+import traceback
 
 from isaaclab.app import AppLauncher
 
@@ -53,6 +54,11 @@ try:
         }
         (args.output / "report.json").write_text(json.dumps(report, indent=2) + "\n")
         print("NATIVE_VALIDATION_COMPLETE", json.dumps(report), flush=True)
+except BaseException as error:
+    # Isaac application shutdown can suppress the interpreter's final traceback.
+    traceback.print_exc()
+    (args.output / "failure.json").write_text(json.dumps({"type": type(error).__name__, "message": str(error)}, indent=2) + "\n")
+    raise
 finally:
     env.close()
     app.close()
