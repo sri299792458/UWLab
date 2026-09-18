@@ -9,6 +9,7 @@ from isaaclab.managers import EventTermCfg
 from isaaclab.utils import configclass
 
 from .umi_training_cfg import UmiCubeTrainCfg
+from .corrected_mount_audit import configure_corrected_mount_audit
 
 
 def verify_stock_hand_dynamics(
@@ -105,3 +106,4 @@ class UmiMayHandDynamicsTrainCfg(UmiCubeTrainCfg):
                 "report_dir": os.environ["MAY_HAND_DYNAMICS_REPORT_DIR"],
             },
         )
+        configure_corrected_mount_audit(self)

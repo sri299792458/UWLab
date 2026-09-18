@@ -55,6 +55,10 @@ def main():
         changes = differences(a, b)
         if kind == "env":
             prefixes = ("/seed", "/sim/device", "/log_dir", "/scene/robot/spawn/usd_path", "/actions/arm/motion_stiffness", "/actions/arm/motion_damping_ratio", "/events/verify_stock_hand_dynamics")
+            if "corrected_root_quaternion_wxyz" in metadata:
+                prefixes += ("/scene/robot/init_state/rot", "/events/reset_from_reset_states/params/dataset_dir", "/events/verify_corrected_mount")
+                assert b["scene"]["robot"]["init_state"]["rot"]["value"] == metadata["corrected_root_quaternion_wxyz"]
+                assert b["events"]["reset_from_reset_states"]["params"]["dataset_dir"] == metadata["dataset_dir"]
             assert b["scene"]["num_envs"] == 16384
         else:
             prefixes = ("/seed", "/device", "/run_name")
@@ -75,6 +79,11 @@ def main():
             paired = json.loads((Path(metadata["paired_native_reference_directory"]) / f"rank_{rank}.json").read_text())
             for key in ("asset", "body_names", "default_masses_kg", "default_inertias_kg_m2", "com_poses", "action_scale", "physics_dt", "policy_dt"):
                 assert native[key] == paired[key], (rank, key)
+        if "mount_native_report_directory" in metadata:
+            mount = json.loads((Path(metadata["mount_native_report_directory"]) / f"rank_{rank}.json").read_text())
+            assert mount["status"] == "PASS" and mount["verified_after_first_reset"] == 16384
+            assert np.isclose(abs(np.dot(mount["native_root_quaternion_first_wxyz"], metadata["corrected_root_quaternion_wxyz"])), 1.0, rtol=0, atol=2e-6)
+            assert mount["reset_dataset_dir"] == metadata["dataset_dir"]
         native_reports.append(native)
     processes = []
     parents = []

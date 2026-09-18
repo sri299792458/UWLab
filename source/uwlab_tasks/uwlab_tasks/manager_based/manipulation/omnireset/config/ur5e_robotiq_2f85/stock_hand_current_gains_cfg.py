@@ -8,6 +8,7 @@ from isaaclab.utils import configclass
 
 from .may_hand_dynamics_cfg import verify_stock_hand_dynamics
 from .umi_training_cfg import UmiCubeTrainCfg
+from .corrected_mount_audit import configure_corrected_mount_audit
 
 
 @configclass
@@ -28,3 +29,4 @@ class UmiStockHandCurrentGainsTrainCfg(UmiCubeTrainCfg):
                 "expected_kd_values": (160.0, 160.0, 160.0, 0.1, 0.1, 0.1),
             },
         )
+        configure_corrected_mount_audit(self)

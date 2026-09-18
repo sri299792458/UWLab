@@ -4,6 +4,9 @@ Upstream height/orientation proposals and contact settings are retained.
 Cube placements use full-table map coverage and 50 mm edge clearance. Arm IK
 is seeded from the atlas; final states use its column and collision checks.
 """
+import os
+import json
+from pathlib import Path
 
 from copy import deepcopy
 from math import sqrt
@@ -18,18 +21,21 @@ from . import grasp_sampling_cfg as grasp
 from . import partial_assemblies_cfg as partial
 from . import reset_states_cfg as resets
 
-UMI_ROBOT_USD = "/data/kanth042/converted_assets/thunder_d405_umi_rigid_asset/ur5e_robotiq_d405_umi_rigid_thunder.usd"
-UMI_HAND_USD = "/data/kanth042/converted_assets/thunder_d405_umi_gripper_asset/robotiq_d405_umi_rigid.usd"
-CUBE_DIR = "/data/kanth042/converted_assets/aprilcube_60mm_rounded"
+UMI_ROBOT_USD = os.environ.get('UWLAB_ASSET_ROOT', '/data/kanth042/converted_assets') + '/thunder_d405_umi_rigid_asset/ur5e_robotiq_d405_umi_rigid_thunder.usd'
+UMI_HAND_USD = os.environ.get('UWLAB_ASSET_ROOT', '/data/kanth042/converted_assets') + '/thunder_d405_umi_gripper_asset/robotiq_d405_umi_rigid.usd'
+CUBE_DIR = os.environ.get('UWLAB_ASSET_ROOT', '/data/kanth042/converted_assets') + '/aprilcube_60mm_rounded'
 INSERTIVE_USD = f"{CUBE_DIR}/InsertiveAprilCube60/aprilcube_60.usd"
 RECEPTIVE_USD = f"{CUBE_DIR}/ReceptiveAprilCube60/aprilcube_60.usd"
-DATASET_DIR = "/data/kanth042/datasets/umi_reset_from_defaults_20260911/49_clearance_and_placement/OmniReset"
-TABLE_USD = "/data/kanth042/converted_assets/lab_vention_asset_v60/lab_vention.usd"
+DATASET_DIR = os.environ.get('UWLAB_DATA_ROOT', '/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917') + '/49_clearance_and_placement/OmniReset'
+TABLE_USD = os.environ.get('UWLAB_ASSET_ROOT', '/data/kanth042/converted_assets') + '/lab_vention_asset_v60/lab_vention.usd'
 TABLE_POS = (1.793445, 0.340075, -0.030851)
 TABLE_ROT = (0.5, 0.5, 0.5, 0.5)
 TABLE_Z = 0.84235
 ROBOT_POS = (0.177660, 0.377695, 1.466000)
-ROBOT_ROT = (0.7071068, 0.0, 0.7071068, 0.0)
+# Physical Thunder has its cable opening downward. The CAD assembly's base
+# orientation differs by a quarter-turn about the mounting axis; this is the
+# world orientation of Isaac's base_link. Keep the URDF/controller conversion.
+ROBOT_ROT = (0.5, 0.5, 0.5, 0.5)
 WORKSPACE_X = (-0.11708964407444, 0.6501603722572327)
 WORKSPACE_Y = (-0.4083046615123749, 0.28769537806510925)
 CUBE_MASS_RANGE = (0.02, 0.20)
@@ -96,6 +102,17 @@ class UmiPartialAssembliesCfg(partial.PartialAssembliesCfg):
 
 
 def _configure_hardware(cfg, *, for_reset_generation: bool):
+    # A world-space atlas from another mounting pose supplies invalid seeds and
+    # coverage even when its robot-relative geometry is identical.
+    atlas_path = Path(DATASET_DIR).parent / 'atlas/config.json'
+    atlas = json.loads(atlas_path.read_text())
+    recorded_q = atlas['robot_base_quaternion_world_wxyz']
+    norm = sqrt(sum(v*v for v in recorded_q) * sum(v*v for v in ROBOT_ROT))
+    same_rotation = norm > 0 and abs(sum(a*b for a,b in zip(recorded_q, ROBOT_ROT))) / norm > 1 - 1e-10
+    same_position = max(abs(a-b) for a,b in zip(atlas['robot_base_position_world_m'], ROBOT_POS)) < 1e-6
+    if not (same_rotation and same_position):
+        raise ValueError(f'Reachability map mounting pose does not match the simulation: {atlas_path}. '
+                         'Use the map rebuilt for this robot mounting configuration.')
     cfg.scene.robot.spawn.usd_path = UMI_ROBOT_USD
     cfg.scene.robot.init_state.pos = ROBOT_POS
     cfg.scene.robot.init_state.rot = ROBOT_ROT
