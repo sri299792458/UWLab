@@ -1,0 +1,189 @@
+gripper_offset:
+  pos:
+  - 0.16912166759315866
+  - 9.692102999663983e-05
+  - 2.0275129976581603e-08
+  quat:
+  - 0.5
+  - 0.5
+  - 0.5
+  - 0.5
+finger_offset: 0.16912166759315866
+finger_clearance: 0.06
+maximum_aperture: 0.09
+gripper_approach_direction:
+- 1
+- 0
+- 0
+grasp_align_axis:
+- 1
+- 0
+- 0
+orientation_sample_axis:
+- 1
+- 0
+- 0
+finger_open_joint_angle: 0.0
+sysid:
+  armature:
+  - 3.0026
+  - 1.2213
+  - 1.3881
+  - 0.1773
+  - 0.0825
+  - 0.3825
+  static_friction:
+  - 11.0245
+  - 9.346
+  - 13.0557
+  - 2.9885
+  - 2.7909
+  - 3.4482
+  dynamic_ratio:
+  - 0.8231
+  - 0.858
+  - 0.8167
+  - 0.5906
+  - 0.5904
+  - 0.398
+  viscous_friction:
+  - 32.3425
+  - 17.7669
+  - 21.8401
+  - 3.4105
+  - 2.9387
+  - 3.5182
+calibrated_joints:
+  xyz:
+  - - 0.0
+    - 0.0
+    - 0.16263099170142212
+  - - 0.0002029014648601318
+    - 0.0
+    - 0.0
+  - - -0.4251270129680156
+    - 0.0
+    - 0.0
+  - - -0.39270103912201965
+    - -0.0007189296800535859
+    - 0.13298101317256134
+  - - 7.356193802572872e-06
+    - -0.09970078987582194
+    - 2.052489479750683e-06
+  - - 7.974036416438386e-05
+    - 0.09940826091811411
+    - 0.00013183542547852366
+  rpy:
+  - - 0.0
+    - 0.0
+    - 9.082615722022513e-09
+  - - 1.5705769748115708
+    - 0.0
+    - 3.3440941356185968e-09
+  - - 0.0013388170927211348
+    - -0.0001381070124424094
+    - 1.4112124916968176e-05
+  - - 0.005406205433558737
+    - -0.002339946363885588
+    - 1.6784152657378952e-06
+  - - 1.5707757403032347
+    - 0.0
+    - 6.106788060546154e-07
+  - - 1.5721225279271744
+    - 3.141592653589793
+    - -3.1415925983351394
+link_inertials:
+  masses:
+  - 3.7
+  - 8.393
+  - 2.275
+  - 1.219
+  - 1.219
+  - 0.1879
+  coms:
+  - - 0
+    - 0
+    - 0
+  - - -0.2125
+    - 0.0
+    - 0.138
+  - - -0.1961
+    - 0.0
+    - 0.007
+  - - 0
+    - 0
+    - 0
+  - - 0
+    - 0
+    - 0
+  - - 0.0
+    - 0.0
+    - -0.0229
+  inertias:
+  - - 0.010267495893
+    - 0.010267495893
+    - 0.00666
+    - 0
+    - 0
+    - 0
+  - - 0.1338857818623325
+    - 0.1338857818623325
+    - 0.0151074
+    - 0
+    - 0
+    - 0
+  - - 0.031209355099586295
+    - 0.031209355099586295
+    - 0.004095
+    - 0
+    - 0
+    - 0
+  - - 0.0025598989760400002
+    - 0.0025598989760400002
+    - 0.0021942
+    - 0
+    - 0
+    - 0
+  - - 0.0025598989760400002
+    - 0.0025598989760400002
+    - 0.0021942
+    - 0
+    - 0
+    - 0
+  - - 9.890410052167731e-05
+    - 9.890410052167731e-05
+    - 0.0001321171875
+    - 0
+    - 0
+    - 0
+kinematics_calibration:
+  robot: thunder
+  hash: calib_10185139869934003756
+  source_repository: https://github.com/RPM-lab-UMN/spark-data-collection
+  source_path: Hardware/robot_calibration/ur5e/thunder_kinematics.yaml
+sysid_provenance:
+  status: inherited_reference_values
+  robot: UWLab reference UR5e
+  validated_for_thunder: false
+finger_model:
+  type: rigid_v2_tpu_v22_petg_two_hulls
+  deformable: false
+  extra_contact_length_m: 0.0360186996459961
+  grasp_center_provenance: 'User-selected nominal reference: mean of the midpoint
+    between TPU gripping-face centers over 1001 equally spaced driver angles from
+    0 to 0.785398 rad; unloaded USD linkage.'
+  mass_provenance: 'PETG: user measured 7.5 g per adapter on 2026-09-10. TPU: prior
+    7.5 g measurement, revision applicability provisional. Retained carrier mass follows
+    PickNik stock-link allocation; modified jaw inertia recomputed from CAD parts.'
+  old_reset_states_validated: false
+  build_report: umi_build_report.json
+  grasp_reference:
+    definition: stroke_average_of_tpu_gripping_face_pair_midpoint
+    frame: robotiq_base_link
+    open_driver_angle_rad: 0.0
+    closed_driver_angle_rad: 0.785398
+    samples: 1001
+    report: umi_grasp_reference.json
+  finger_offset_provenance: Nominal sampler standoff uses the X coordinate of the
+    user-selected TPU stroke-average reference; preserves the upstream shared nominal
+    offset convention and the existing broad distance sweep.

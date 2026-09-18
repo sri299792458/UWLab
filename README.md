@@ -2,6 +2,9 @@
 
 # UW Lab
 
+For the corrected UMI training experiments, full data download, and the shared W&B project,
+start with the [MSI training agent handoff](MSI_TRAINING_HANDOFF.md).
+
 [![IsaacSim](https://img.shields.io/badge/IsaacSim-5.1.0-silver.svg)](https://docs.isaacsim.omniverse.nvidia.com/latest/index.html)
 [![Python](https://img.shields.io/badge/python-3.11-blue.svg)](https://docs.python.org/3/whatsnew/3.11.html)
 [![Linux platform](https://img.shields.io/badge/platform-linux--64-orange.svg)](https://releases.ubuntu.com/20.04/)

@@ -1,0 +1,31 @@
+{
+  "schema": 1,
+  "base_usd_relative": "assets/thunder_d405_umi_rigid_asset/ur5e_robotiq_d405_umi_rigid_thunder.usd",
+  "base_usd_sha256": "c9eced8f9a86988ec1e406bd058bd4761db79fb22b2111b58451e1f5b874df88",
+  "installed_directory": "assets/umi_stock_hand_dynamics",
+  "files": {
+    "build_report.json": {
+      "bytes": 8136,
+      "sha256": "1add10f481db8ef9208807faedc4ca476d55f2c889de9538e08c621ad0a17235"
+    },
+    "metadata.yaml": {
+      "bytes": 3843,
+      "sha256": "5bfb52ffd2c32ee0aa388e480123661f9fd2e4eec1c3d1d9f1ea7e83c82851a9"
+    },
+    "reference_umi_properties.json": {
+      "bytes": 7210,
+      "sha256": "5fe54e5e075e43d5a01f8b359e062528f01791037ace0ea2ee8c7d69275e90ee"
+    },
+    "stock_hand_properties.json": {
+      "bytes": 3884,
+      "sha256": "f9eebc70ed8bb1ad9f6fc05ffb1b754ba60b1f8298b8e9fd11438b064bb2e562"
+    },
+    "umi_geometry_stock_hand_dynamics.usda": {
+      "bytes": 3457,
+      "sha256": "f4f4302909063c669b692d1e665e34e9ed82381baff4adb3d35d8ba031eeb547"
+    }
+  },
+  "original_overlay_sha256": "e477e7276457c02d9e65165f54b93103ca0ed5c71cb98f4640d6ba4a480e77b5",
+  "only_overlay_change": "Replace the development-machine sublayer path with a relative path to the identical bundled UMI USD. All authored mass properties are unchanged.",
+  "historical_build_report": "build_report.json records the original generation and original absolute paths; it is provenance, not a runtime configuration."
+}

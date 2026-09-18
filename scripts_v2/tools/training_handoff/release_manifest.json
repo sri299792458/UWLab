@@ -1,0 +1,18 @@
+{
+  "schema": 1,
+  "tag": "umi-training-20260918",
+  "repository": "sri299792458/UWLab",
+  "archive_sha256": "342406159cdf17fdb5d2f7c22833219886e0b46475b6d249837b17205c7f4733",
+  "archive_bytes": 895637069,
+  "manifest_sha256": "1386b4fb13b335e92aafb03c2206a78c2c0d4d8346ddabbf71706dd0c62dd71a",
+  "extracted_bytes": 1859058012,
+  "parts": [
+    {
+      "name": "thunder-lab.tar.gz.part000",
+      "bytes": 895637069,
+      "sha256": "342406159cdf17fdb5d2f7c22833219886e0b46475b6d249837b17205c7f4733"
+    }
+  ],
+  "published": true,
+  "profile": "full"
+}

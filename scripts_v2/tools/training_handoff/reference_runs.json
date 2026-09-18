@@ -1,0 +1,142 @@
+{
+  "schema": 1,
+  "wandb_entity": "srinivas299792458-university-of-minnesota",
+  "wandb_project": "uwlab-lab-cube-stack",
+  "runs": {
+    "may_gains": {
+      "wandb_run_id": "eab459b8",
+      "wandb_url": "https://wandb.ai/srinivas299792458-university-of-minnesota/uwlab-lab-cube-stack/runs/eab459b8",
+      "git_commit": "92d8e5bef8130f1bd7e02c70761c813c11457756",
+      "comparison_asset_sha256": "e477e7276457c02d9e65165f54b93103ca0ed5c71cb98f4640d6ba4a480e77b5",
+      "dataset_sha256": {
+        "ObjectAnywhereEEAnywhere": "ef4d2161eb1cce8f57acac61df8a141449e1d2cf0c4eec10fbca126f468d0da5",
+        "ObjectPartiallyAssembledEEGrasped": "007029ea1a158d114a53d3238e115e06262b191ccf991ee6d8d582b05b8c09be",
+        "ObjectAnywhereEEGrasped": "dcc7db6fda22d83bf7286268a5ec319c972dae2c4b174c0af99fc455f1bf603b",
+        "ObjectRestingEEGrasped": "f7bbd4f4ac2ec9bc1d759f68411fc181e11e5b0e931ad69b7d718f4d86d6d9df"
+      },
+      "dataset_counts": {
+        "ObjectAnywhereEEAnywhere": 10128,
+        "ObjectPartiallyAssembledEEGrasped": 10019,
+        "ObjectAnywhereEEGrasped": 10036,
+        "ObjectRestingEEGrasped": 10011
+      },
+      "corrected_root_quaternion_wxyz": [
+        0.5,
+        0.5,
+        0.5,
+        0.5
+      ],
+      "seed": 42,
+      "rank_seeds": [
+        42,
+        43,
+        44,
+        45
+      ],
+      "num_envs_per_rank": 16384,
+      "total_environments": 65536,
+      "samples_per_iteration": 2097152,
+      "max_iterations": 40000,
+      "physics_hz": 120,
+      "policy_hz": 10,
+      "expected_arm_gains": {
+        "kp": [
+          200.0,
+          200.0,
+          200.0,
+          3.0,
+          3.0,
+          3.0
+        ],
+        "kd": [
+          84.8528137423857,
+          84.8528137423857,
+          84.8528137423857,
+          3.4641016151377544,
+          3.4641016151377544,
+          3.4641016151377544
+        ]
+      },
+      "startup_verification": {
+        "status": "PASS",
+        "verified_utc": "2026-09-18T18:04:17.703716+00:00",
+        "max_verified_update": 2,
+        "finite_scalar_count": 38,
+        "native_verified_ranks": [
+          0,
+          1,
+          2,
+          3
+        ]
+      }
+    },
+    "current_umi_gains": {
+      "wandb_run_id": "8b0d44e5",
+      "wandb_url": "https://wandb.ai/srinivas299792458-university-of-minnesota/uwlab-lab-cube-stack/runs/8b0d44e5",
+      "git_commit": "92d8e5bef8130f1bd7e02c70761c813c11457756",
+      "comparison_asset_sha256": "e477e7276457c02d9e65165f54b93103ca0ed5c71cb98f4640d6ba4a480e77b5",
+      "dataset_sha256": {
+        "ObjectAnywhereEEAnywhere": "ef4d2161eb1cce8f57acac61df8a141449e1d2cf0c4eec10fbca126f468d0da5",
+        "ObjectPartiallyAssembledEEGrasped": "007029ea1a158d114a53d3238e115e06262b191ccf991ee6d8d582b05b8c09be",
+        "ObjectAnywhereEEGrasped": "dcc7db6fda22d83bf7286268a5ec319c972dae2c4b174c0af99fc455f1bf603b",
+        "ObjectRestingEEGrasped": "f7bbd4f4ac2ec9bc1d759f68411fc181e11e5b0e931ad69b7d718f4d86d6d9df"
+      },
+      "dataset_counts": {
+        "ObjectAnywhereEEAnywhere": 10128,
+        "ObjectPartiallyAssembledEEGrasped": 10019,
+        "ObjectAnywhereEEGrasped": 10036,
+        "ObjectRestingEEGrasped": 10011
+      },
+      "corrected_root_quaternion_wxyz": [
+        0.5,
+        0.5,
+        0.5,
+        0.5
+      ],
+      "seed": 42,
+      "rank_seeds": [
+        42,
+        43,
+        44,
+        45
+      ],
+      "num_envs_per_rank": 16384,
+      "total_environments": 65536,
+      "samples_per_iteration": 2097152,
+      "max_iterations": 40000,
+      "physics_hz": 120,
+      "policy_hz": 10,
+      "expected_arm_gains": {
+        "kp": [
+          500.0,
+          500.0,
+          500.0,
+          60.0,
+          60.0,
+          60.0
+        ],
+        "kd": [
+          160.0,
+          160.0,
+          160.0,
+          0.1,
+          0.1,
+          0.1
+        ]
+      },
+      "startup_verification": {
+        "status": "PASS",
+        "verified_utc": "2026-09-18T18:04:29.825878+00:00",
+        "max_verified_update": 2,
+        "finite_scalar_count": 38,
+        "native_verified_ranks": [
+          0,
+          1,
+          2,
+          3
+        ]
+      }
+    }
+  },
+  "interpretation": "New MSI experiments use new W&B run IDs in this same project. These are reference identities, not resume IDs. Old-mount failed runs differ in mount and bank as well as any dynamics intervention."
+}
