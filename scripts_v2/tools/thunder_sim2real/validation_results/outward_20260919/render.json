@@ -1,0 +1,12 @@
+{
+  "source": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/71_safer_sysid_start_20260919/outward_simulation",
+  "candidate": 2,
+  "row": 1,
+  "variant": "UW_reference_dynamics_delay_4ms",
+  "fps": 15,
+  "frames": 120,
+  "rendered_duration_s": 8,
+  "new_physics_steps": 0,
+  "max_render_body_position_difference_m": 2.384185791015625e-07,
+  "method": "Replay the saved full joint states for visualization; use the original 500 Hz body states for collision measurements"
+}

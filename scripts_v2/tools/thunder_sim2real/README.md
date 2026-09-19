@@ -131,12 +131,13 @@ python3.11 -m venv .venv-thunder
 source .venv-thunder/bin/activate
 python -m pip install torch==2.7.1 --index-url https://download.pytorch.org/whl/cpu
 python -m pip install -r scripts_v2/tools/thunder_sim2real/workstation/requirements.txt
-cp scripts_v2/tools/thunder_sim2real/workstation/collection.simulation_candidate.json /tmp/thunder-collection.json
+cp scripts_v2/tools/thunder_sim2real/workstation/collection.outward_candidate.json /tmp/thunder-collection.json
 ```
 
 Fill `/tmp/thunder-collection.json` with Thunder's IP, installed PolyScope
 version, and configured tool payload mass and center of gravity.
-The selected 27 cm start pose, full UW motion amplitudes, and
+The selected pose is shifted 15 cm outward from the columns at the same 27 cm
+height. Its full UW motion amplitudes and
 UW collection gains are already filled in. Preserve them to reproduce the
 checked candidate. `collection.example.json` is a separate blank motion template.
 The candidate's joint excursion stop limits are the largest deviations seen
@@ -301,43 +302,30 @@ recording, a fitted Thunder dynamics profile, or successful physical transfer.
 - [UWLab system identification and fine-tuning guide](https://uw-lab.github.io/UWLab/main/source/publications/omnireset/sim2real.html)
 - [Pinned UWLab real-robot collector](https://github.com/WEIRDLabUW/diffusion_policy/blob/3cd87c830b3a46967fb2291f5bc18e8d746ab4b6/scripts/sim2real/collect_sysid_data.py)
 - [Pinned UWLab robot environment](https://github.com/WEIRDLabUW/diffusion_policy/blob/3cd87c830b3a46967fb2291f5bc18e8d746ab4b6/conda_environment_real.yaml)
-# Current motion candidate — full UW excitation, 27 cm above the table
+# Current motion candidate — 15 cm outward, unchanged UW excitation
 
-The corrected candidate preserves the previous grasp-center location
-**27 cm above the table**. Accounting for the new mounting rotation changes
-shoulder pan by -90 degrees; all other starting joint coordinates remain the
-same. The full motion has been revalidated in the corrected model. It uses full UW amplitudes
-`[0.1, 0.1, 0.15, 0.5, 0.25, 0.5]` m/rad, the 8-second 0.1–3 Hz sweep, and the
-unchanged UW collection gains (position stiffness 1000, rotation stiffness 50,
-damping ratio 1). The current waveform matches the pinned UW collector's 4,000
-samples exactly, including its original sample/envelope endpoint construction.
+Use `workstation/collection.outward_candidate.json`. The compatibility filename
+`collection.simulation_candidate.json` contains the same candidate. The grasp center
+moves 15 cm outward along world -Y, keeping its height 27 cm above the table and
+its orientation unchanged. The corrected mounting remains `[0.5, 0.5, 0.5, 0.5]`.
+Starting joint angles are `[-171.50302, -30.67153, 73.26556, 42.38637, 60.00074, 69.07879]` degrees.
 
-`workstation/collection.simulation_candidate.json` contains this candidate.
-Its starting joint angles are
-`[-168.39294, -43.02376, 101.86901, 24.34282, 60.37875, 72.72085]` degrees.
-All 4,000 requested-path poses and 4,001 states in each of three simulated
-responses pass the source-hull checks. Minimum lab clearance is 84.37 mm and
-minimum nonadjacent moving-arm clearance is 17.19 mm; the internal hand gap is
-5.2 mm. The ideal-tracking path is a geometric comparison, not a claim that
-the real robot will track its requested joint velocities.
+The eight-second 0.1–3 Hz waveform, full amplitudes and collection gains remain exactly
+UW's. All 4,000 six-axis offset samples are identical to the pinned collector.
+The 4,000 requested-path poses and 4,001 states in each of three simulated responses
+pass the source-hull checks. Minimum modeled column clearance is 121.229 mm;
+minimum distance to other lab geometry is 93.729 mm. Minimum nonadjacent moving-arm
+separation is 12.699 mm on the requested path and 14.446 mm across simulated responses.
 
-These fixed gains are used on the real robot for collection and in the fitting
-simulation. We fit friction, effective joint inertia, and delay to the actual
-recorded joint response. Perfect command tracking is not required, and no
-separate gain-tuning prerequisite is being introduced. Real-data fitting and
-fit verification are still required; the simulated tests do not prove full
-parameter identifiability or measure physical Thunder dynamics.
+The [outward-pose handoff](OUTWARD_POSE_HANDOFF.md) links the video, raw trajectories,
+checksummed download and UW-versus-outward joint-range comparison. The selected video
+shows the UW-reference-dynamics case with 4 ms delay. The UW joint comparison is
+calculated ideal tracking with UW's default pose and calibration, not UW hardware data.
+Collision clearance does not establish good identification data: in the shown simulation,
+shoulder pan travels only 5.88 degrees. The zero-added-friction/inertia scenario has
+only 0.54 degrees of wrist-3 travel despite high speed. Real recording and fit verification
+remain necessary; the simulated scenarios are not measured Thunder dynamics.
 
-Positioning at the chosen start is an ordinary setup step before collection.
-UW uses `moveJ`; this recorder currently checks that the pose has already been
-reached. Hardware fields remain unset, and no hardware connection has been made.
-
-The full review, videos, reproduction inputs, collision measurements, and exact
-waveform parity report are under
-`/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/53_thunder_sim2real/motion_preview/lower_full/`.
-This supersedes the previous mounting's collection configuration. The old
-artifacts remain as historical experiments.
-
-Reproduction uses the saved `lower_full/candidates.json` with
-`preview_motion.py --amplitude_scale 1`, `check_requested_motion.py --candidate 0`,
-`check_motion_hulls.py --candidate 0`, and `render_collection_motion.py --candidate 0`.
+The existing corrected-mount core bundle remains compatible. Its `lower_full` motion
+is historical; download the supplemental outward-pose evidence linked in the handoff.
+No physical robot connection or motion command was made for this update.

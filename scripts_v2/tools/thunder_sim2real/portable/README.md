@@ -7,6 +7,12 @@ The optional full profile adds the complete joint lookup and freshly recorded re
 Path planning and physical execution belong to the robot-system agent. The previous release
 remains historical; its mounting and map must not be mixed with this release.
 
+The current collection candidate is now **15 cm outward from the columns**, with the
+same 27 cm height and unchanged UW excitation. After pulling this branch, use the
+[outward-pose handoff](../OUTWARD_POSE_HANDOFF.md) for the updated configuration and
+supplemental video/trajectory download. The core model/map archive below remains
+compatible; the older motion contained inside it is historical.
+
 ## Download the code and data
 
 ```bash
@@ -70,7 +76,7 @@ Paths below are relative to `$HOME/thunder-lab-mount-v2` unless marked as reposi
 | Complete map and all per-height/orientation solutions | `data/49_clearance_and_placement/atlas/atlas.npz`, `atlas/slices/` (**full**) |
 | Memory-mapped joint lookup | `data/49_clearance_and_placement/lookup/atlas_joint_seeds.npy` (**full**) |
 | Current grasp, partial-assembly and four reset banks | `data/49_clearance_and_placement/OmniReset/` (**full**) |
-| Selected motion's simulation trajectories, reports and preview | `data/53_thunder_sim2real/motion_preview/lower_full/` |
+| Historical motion's simulation trajectories, reports and preview | `data/53_thunder_sim2real/motion_preview/lower_full/` |
 | Exact IsaacLab and cuRobo sources with licenses | `sources/IsaacLab/`, `sources/curobo/` |
 | Applied IsaacLab modification and source commits | `sources/IsaacLab.patch`, `bundle_manifest.json` |
 | Collection pose, waveform and real-workstation collector | Repository: `scripts_v2/tools/thunder_sim2real/workstation/` |

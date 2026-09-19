@@ -3,7 +3,8 @@
 This package is ready to clone and configure on the robot workstation. No
 physical Thunder recording or fitted Thunder dynamics profile exists yet.
 The candidate keeps UW's collection gains and full excitation amplitudes;
-the Thunder-specific start pose is 27 cm above the modeled table.
+the Thunder-specific start pose is 15 cm outward from the columns and 27 cm above
+the modeled table. See [the current handoff](OUTWARD_POSE_HANDOFF.md).
 The mounting quaternion is now `[0.5, 0.5, 0.5, 0.5]` (`w,x,y,z`), and the
 reachability map is rebuilt at 20 mm spacing. See [MOUNTING_CORRECTION.md](MOUNTING_CORRECTION.md).
 These are geometry, data-contract and integration checks. They do not establish
@@ -42,10 +43,19 @@ that a Stage-1 policy has learned stacking. No trained policy is part of this de
 - The selected full-amplitude motion is checked at all 4,000 requested poses
   and 4,001 states in each of three simulated dynamics cases. All pass the
   source-hull checks, including the camera and 33 lab boxes. Minimum lab
-  clearance is 84.37 mm, moving-arm self clearance is 17.19 mm, and the closest
+  clearance is 93.729 mm, column clearance is 121.229 mm, minimum nonadjacent
+  moving-arm clearance is 12.699 mm on the requested path (14.446 mm across
+  simulated responses), and the closest
   internal hand gap is 5.2 mm. Existing adjacency/mount exclusions and the
   map's 50 mm column requirement are retained.
 - All 4,000 waveform samples match the pinned UW collector exactly.
+
+Current motion reports are in `validation_results/outward_20260919/`. The older
+`motion_*` reports remain historical. The current joint-range report distinguishes
+calculated UW/default motion from simulated Thunder response. In the video case,
+shoulder-pan travel is 5.88 degrees; in the zero-added-friction/inertia case, wrist-3
+travel is only 0.54 degrees despite high speed. Collision checks do not establish
+identification quality or stable tracking across all assumed dynamics.
 
 Reports in `validation_results/` retain the original server artifact paths for
 traceability. Their presence does not require those paths on the workstation.
@@ -54,7 +64,7 @@ three dynamics cases are assumptions rather than measured Thunder parameters.
 
 ## Workstation setup remaining
 
-Copy `workstation/collection.simulation_candidate.json` and fill the robot IP,
+Copy `workstation/collection.outward_candidate.json` and fill the robot IP,
 installed PolyScope version, and actual mounted tool mass/center of gravity.
 The pose, amplitudes, gains, and simulation-derived excursion stop limits are
 already specified. Install the pinned dependencies and print the plan.

@@ -8,8 +8,10 @@ motion command was made while building or testing it.
 2. Read `$UWLAB_DATA_ROOT/49_clearance_and_placement/atlas/config.json`, its robot YAML,
    and `$UWLAB_DATA_ROOT/15_table_reachability/model/export_audit.json` before planning.
 3. The destination is `start_joint_positions_rad` in the repository's
-   `scripts_v2/tools/thunder_sim2real/workstation/collection.simulation_candidate.json`.
-   It is the selected 27 cm above-table grasp-center candidate with the full UW waveform.
+   `scripts_v2/tools/thunder_sim2real/workstation/collection.outward_candidate.json`.
+   It is the selected pose 15 cm outward from the columns, still 27 cm above the table,
+   with the unchanged full UW waveform. See [the outward-pose handoff](../OUTWARD_POSE_HANDOFF.md)
+   for its video, joint ranges, complete trajectories and current validation reports.
    Obtain the actual current joint state on the robot system and plan from that state.
 4. Apply the complete collision geometry, validate the path and inspect its preview locally.
    The bundled collector checks that the robot is already at the destination; it does not
@@ -65,7 +67,7 @@ not just the destination. The atlas itself is an endpoint lookup, not a path cer
 
 The workstation folder is independently installable without Isaac. The controller is the
 pinned UW Cartesian controller with Thunder's calibration and supplied link inertials.
-The selected full-amplitude excitation lasts 8 seconds and runs at 500 Hz. The earlier
+The selected full-amplitude excitation lasts 8 seconds and runs at 500 Hz. The outward-pose
 server validation covers the requested waveform and simulated responses at that pose;
 it does not establish physical tracking or collision clearance from the current posture.
 
