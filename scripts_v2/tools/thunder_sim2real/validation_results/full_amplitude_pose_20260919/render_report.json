@@ -1,0 +1,12 @@
+{
+  "source": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/robust_atlas_gpu7",
+  "candidate": 65,
+  "row": 72,
+  "variant": "single_record_fit",
+  "fps": 15,
+  "frames": 120,
+  "rendered_duration_s": 8,
+  "new_physics_steps": 0,
+  "max_render_body_position_difference_m": 3.069639205932617e-06,
+  "method": "Replay the saved full joint states for visualization; use the original 500 Hz body states for collision measurements"
+}

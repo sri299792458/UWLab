@@ -1,0 +1,56 @@
+[
+  {
+    "gpu": 0,
+    "candidate": 2035,
+    "peak_speed_deg_s": 160.67579650878906,
+    "sphere_clear": false
+  },
+  {
+    "gpu": 1,
+    "candidate": 2057,
+    "peak_speed_deg_s": 154.74624633789062,
+    "sphere_clear": true
+  },
+  {
+    "gpu": 2,
+    "candidate": 2065,
+    "peak_speed_deg_s": 173.70077514648438,
+    "sphere_clear": true
+  },
+  {
+    "gpu": 3,
+    "candidate": 2024,
+    "peak_speed_deg_s": 165.1119842529297,
+    "sphere_clear": true
+  },
+  {
+    "gpu": 4,
+    "candidate": 2064,
+    "peak_speed_deg_s": 170.68252563476562,
+    "sphere_clear": true
+  },
+  {
+    "gpu": 5,
+    "candidate": 2088,
+    "peak_speed_deg_s": 161.18130493164062,
+    "sphere_clear": true
+  },
+  {
+    "gpu": 6,
+    "candidate": 2018,
+    "peak_speed_deg_s": 171.43016052246094,
+    "sphere_clear": true
+  },
+  {
+    "gpu": 7,
+    "candidate": 2026,
+    "peak_speed_deg_s": 176.39381408691406,
+    "sphere_clear": true
+  },
+  {
+    "gpu": 7,
+    "candidate": 0,
+    "peak_speed_deg_s": 223.83493041992188,
+    "sphere_clear": true
+  }
+]

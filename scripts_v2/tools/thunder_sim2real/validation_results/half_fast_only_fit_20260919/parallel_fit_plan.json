@@ -1,0 +1,74 @@
+{
+  "gpus": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+  ],
+  "environments_per_gpu": 128,
+  "simultaneous_candidates": 1024,
+  "sole_record_sha256": "4bb0140cfd3bb93a74a4d1040fd073f0529b886c5ab5a2837b68e7e7c4b71b36",
+  "runs": [
+    {
+      "gpu": 0,
+      "output": "fit_gpu0",
+      "seed": 50,
+      "initial_variant": "broad_train_rank_1",
+      "max_iterations": 24
+    },
+    {
+      "gpu": 1,
+      "output": "fit_gpu1",
+      "seed": 51,
+      "initial_variant": "broad_train_rank_2",
+      "max_iterations": 24
+    },
+    {
+      "gpu": 2,
+      "output": "fit_gpu2",
+      "seed": 52,
+      "initial_variant": "broad_train_rank_3",
+      "max_iterations": 24
+    },
+    {
+      "gpu": 3,
+      "output": "fit_gpu3",
+      "seed": 53,
+      "initial_variant": "broad_train_rank_4",
+      "max_iterations": 24
+    },
+    {
+      "gpu": 4,
+      "output": "fit_gpu4",
+      "seed": 54,
+      "initial_variant": "broad_train_rank_5",
+      "max_iterations": 24
+    },
+    {
+      "gpu": 5,
+      "output": "fit_gpu5",
+      "seed": 55,
+      "initial_variant": "broad_train_rank_6",
+      "max_iterations": 24
+    },
+    {
+      "gpu": 6,
+      "output": "fit_gpu6",
+      "seed": 56,
+      "initial_variant": "broad_train_rank_7",
+      "max_iterations": 24
+    },
+    {
+      "gpu": 7,
+      "output": "fit",
+      "seed": 44,
+      "initial_variant": "broad_train_rank_1",
+      "max_iterations": 40
+    }
+  ],
+  "scope": "Independent optimizer starts on the same sole recording, followed by pose screening. Existing training processes are left running."
+}

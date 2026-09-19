@@ -1,0 +1,47 @@
+{
+  "source": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/robust_requested_65",
+  "sample_dt_s": 0.002,
+  "include_sphere_failures": true,
+  "candidates": [
+    {
+      "candidate": 65,
+      "variants": [
+        {
+          "variant": "ideal_tracking_geometry",
+          "samples": 4000,
+          "exact_distance_calls": 79183,
+          "world_margin_m": 0.02177858280078729,
+          "world_gap_m": 0.07176285360148196,
+          "self_gap_m": 0.005200793437977241,
+          "moving_self_gap_m": 0.017122848549134508,
+          "nearest_pairs": {
+            "self_gap_m": {
+              "time_s": 2.824,
+              "a": "right_outer_finger_shape_0",
+              "b": "robotiq_base_link_shape_0"
+            },
+            "moving_self_gap_m": {
+              "time_s": 3.326,
+              "a": "wrist_1_link_shape_0",
+              "b": "wrist_3_link_shape_0"
+            },
+            "world_gap_m": {
+              "time_s": 2.426,
+              "a": "forearm_link_shape_0",
+              "b": "lab_18"
+            },
+            "world_margin_m": {
+              "time_s": 4.6080000000000005,
+              "a": "forearm_link_shape_0",
+              "b": "lab_7"
+            }
+          },
+          "clear": true
+        }
+      ],
+      "clear": true
+    }
+  ],
+  "selected_candidate": 65,
+  "scope": "All 2 ms saved body samples; source convex hulls, 33 lab boxes, same-body/adjacent-link and fixed mounting exclusions. Source manifest distinguishes physics states from ideal-tracking geometry. No unknown real-world obstacles modeled."
+}

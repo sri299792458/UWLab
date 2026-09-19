@@ -142,12 +142,15 @@ python -m pip install -r scripts_v2/tools/thunder_sim2real/workstation/requireme
 cp scripts_v2/tools/thunder_sim2real/workstation/collection.half_fast_candidate.json /tmp/thunder-collection.json
 ```
 
-The current configuration is the eight-second, half-amplitude, 0.1–3 Hz
+This configuration is the completed eight-second, half-amplitude, 0.1–3 Hz
 collection described in [HALF_AMPLITUDE_HANDOFF.md](HALF_AMPLITUDE_HANDOFF.md).
 It keeps the reviewed outward start pose and the UW controller gains. Connection
 and configured payload values are carried from the last physical recording.
 The full-amplitude outward candidate is retained as historical evidence of the
-speed-limit violation; use the new half-amplitude configuration for the next run.
+speed-limit violation. A different full-amplitude pose has now been reviewed using
+a model fitted only to the completed half-fast recording; see
+[FULL_AMPLITUDE_POSE_REVIEW.md](FULL_AMPLITUDE_POSE_REVIEW.md). Its geometry passes,
+but its predicted 147.9°/s peak exceeds the unchanged 120°/s planning target.
 Its existing joint excursion guards are derived from eight fitted-model responses
 and the requested path, plus five degrees per joint.
 Angles are radians. Amplitudes are explicit XYZ meters followed by XYZ
@@ -312,25 +315,24 @@ predictions. These do not establish a final dynamics profile or physical transfe
 - [UWLab system identification and fine-tuning guide](https://uw-lab.github.io/UWLab/main/source/publications/omnireset/sim2real.html)
 - [Pinned UWLab real-robot collector](https://github.com/WEIRDLabUW/diffusion_policy/blob/3cd87c830b3a46967fb2291f5bc18e8d746ab4b6/scripts/sim2real/collect_sysid_data.py)
 - [Pinned UWLab robot environment](https://github.com/WEIRDLabUW/diffusion_policy/blob/3cd87c830b3a46967fb2291f5bc18e8d746ab4b6/conda_environment_real.yaml)
-# Current motion candidate — half amplitude, 0.1–3 Hz
+# Latest model and full-amplitude pose review
 
-Use `workstation/collection.half_fast_candidate.json`; the compatibility filename
-`collection.simulation_candidate.json` is identical. The pose remains 15 cm
-outward from the columns at the same height and orientation. The motion is eight
-seconds at 500 Hz, with half UW's amplitudes and a 0.1–3 Hz frequency sweep.
-It uses the same controller gains and torque limits as the completed half-slow run.
-The previous `collection.half_slow_candidate.json` remains available for reference.
+The completed half-amplitude 0.1–3 Hz hardware recording is now the sole fitting
+input. Eight independent GPU searches produced a selected model with 0.504° RMS
+joint-position error and 3.030°/s RMS speed error on all 4,000 training samples.
+See [the fitted model](validation_results/half_fast_only_fit_20260919/README.md).
 
-Eight models fitted to the interrupted hardware recording predict a maximum joint
-speed of 102.8 degrees/second for this motion. Every saved 2 ms state and the complete
-requested path passed source-hull checks. Before this frequency increase, the best
-training-fit model predicted the completed half-slow recording with 0.722 degree
-position RMSE and 2.640 degree/second speed RMSE. This measures model agreement;
-it does not establish that the controller gains provide the desired target tracking.
+A new full-amplitude starting pose lowers worst predicted speed from 223.8 to
+147.9°/s across the eight fitted models. Every native state and requested target
+passes the source-shape geometry checks. This remains above the 120°/s planning
+target: [the pose review](FULL_AMPLITUDE_POSE_REVIEW.md) documents that limitation,
+the exact candidate configuration, motion preview, and reproduction steps.
+No physical collection at the new pose is implied.
 
-See [the half-amplitude handoff](HALF_AMPLITUDE_HANDOFF.md) for the workstation
-command and [the published review](validation_results/half_fast_review_20260919/README.md)
-for the existing prediction and geometry evidence. The
-[outward-pose handoff](OUTWARD_POSE_HANDOFF.md) documents the historical full-amplitude
-candidate. The existing corrected-mount core bundle remains compatible; no model
-reinstall is needed for this collection change.
+`workstation/collection.full_amplitude_pose_candidate.json` contains that review
+candidate. `workstation/collection.half_fast_candidate.json` and the compatibility
+filename `collection.simulation_candidate.json` retain the completed half-fast
+motion. [The half-amplitude handoff](HALF_AMPLITUDE_HANDOFF.md) and
+[its prediction review](validation_results/half_fast_review_20260919/README.md)
+are historical records for that experiment. The existing corrected-mount collector
+bundle remains compatible; no simulator install is needed on the robot workstation.

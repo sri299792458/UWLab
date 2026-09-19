@@ -1,4 +1,4 @@
-"""Fit saved partial hardware data and evaluate an untouched chronological suffix.
+"""Fit saved hardware data, optionally leaving a chronological suffix untouched.
 
 Uses UWLab's native simulator, controller and CMA optimizer. The recording stays
 unchanged; this experiment does not export a deployment profile.
@@ -20,7 +20,8 @@ parser.add_argument('--warm_start', type=Path, required=True)
 parser.add_argument('--output', type=Path, required=True)
 parser.add_argument('--num_envs', type=int, default=128)
 parser.add_argument('--iterations', type=int, default=50)
-parser.add_argument('--train_steps', type=int, default=1600)
+parser.add_argument('--train_steps', type=int, default=1600,
+                    help='Number of samples used for fitting; 0 uses the complete recording')
 parser.add_argument('--velocity_weight_s', type=float, default=.05)
 parser.add_argument('--seed', type=int, default=42)
 parser.add_argument('--resume', action='store_true', help='Resume this locally generated experiment checkpoint')
@@ -32,9 +33,11 @@ AppLauncher.add_app_launcher_args(parser)
 args = parser.parse_args()
 record = torch.load(args.record, weights_only=True, map_location='cpu')
 n = len(record['joint_positions'])
+if args.train_steps == 0:
+    args.train_steps = n
 assert record['robot'] == 'thunder' and record['joint_names'] == JOINT_NAMES
 assert record['sample_phase'] == 'pre_command' and record['dt'] == .002
-assert 0 < args.train_steps < n and args.num_envs >= 9 and args.iterations > 0
+assert 0 < args.train_steps <= n and args.num_envs >= 9 and args.iterations > 0
 assert np.isfinite(args.velocity_weight_s) and args.velocity_weight_s > 0
 assert np.isfinite(args.search_scale) and args.search_scale > 0
 for key, width in [('joint_positions', 6), ('joint_velocities', 6),
@@ -81,7 +84,12 @@ def main():
                 velocity_weight_s=args.velocity_weight_s, seed=args.seed,
                 parameterization=args.parameterization, search_scale=args.search_scale,
                 warm_start_path=str(args.warm_start.resolve()), warm_start_sha256=sha256(args.warm_start),
-                scope='Partial-record dynamics estimate for planning the next collection. Command-index alignment at nominal 2 ms. No deployment-profile export. Chronological suffix is never used by the optimizer.')
+                scope=('Single-record dynamics estimate for planning the next collection. '
+                       'Only this recording contributes to the objective. Command-index alignment '
+                       'at nominal 2 ms; original timing and samples are unchanged. No deployment-profile export. '
+                       + ('All samples are used for fitting; reported errors are training errors.'
+                          if args.train_steps == n else
+                          'Chronological suffix is never used by the optimizer.')))
     high = np.array([10.]*6 + [20.]*6 + [1.]*6 + [60.]*6 + [5.])
     low = np.array([1e-4]*6 + [0.]*19)
     if not np.all((warm >= low) & (warm <= high)):
@@ -178,14 +186,16 @@ def main():
                 assert np.isclose(train['weighted_score'], elite[0]['score'], rtol=.02, atol=1e-7), (train, elite[0])
             rows.append(dict(name=f'fit_train_rank_{i+1}' if i < 8 else 'warm_reference',
                              params=item['best_params'], train=train,
-                             held_out=metrics(q[:, i], v[:, i], args.train_steps, n)))
+                             held_out=(metrics(q[:, i], v[:, i], args.train_steps, n)
+                                       if args.train_steps < n else None)))
         write('evaluation.json', {**base, 'rows': rows})
         np.savez_compressed(args.output/'evaluation.npz', real_q=record['joint_positions'].numpy(),
                             real_v=record['joint_velocities'].numpy(), simulated_q=q, simulated_v=v,
                             train_steps=args.train_steps, dt=.002)
         write('fitted_variants.json', dict(rows=[dict(variant=row['name'], params=row['params']) for row in rows[:8]],
                                          source_fit=str((args.output/'best_fit.json').resolve()),
-                                         selection='Top training scores only; suffix did not select candidates.'))
+                                         selection=('Top scores on the sole input recording.' if args.train_steps == n
+                                                    else 'Top training scores only; suffix did not select candidates.')))
         print(json.dumps({'evaluation': rows[0], 'baseline': rows[-1]}, indent=2), flush=True)
     finally:
         replay.close()

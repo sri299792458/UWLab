@@ -1,0 +1,14 @@
+{
+  "pids": [
+    718230,
+    718964,
+    718970,
+    718975,
+    718980,
+    718985,
+    718990,
+    718995
+  ],
+  "reason": "Retain the best completed candidates for final model evaluation and full-amplitude pose checks. In-progress populations are not included in reported candidate counts.",
+  "timestamp_unix_s": 1789850620.6333315
+}

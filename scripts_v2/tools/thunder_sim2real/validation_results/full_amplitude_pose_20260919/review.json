@@ -1,0 +1,70 @@
+{
+  "selected_candidate": 65,
+  "sole_fit_record_sha256": "4bb0140cfd3bb93a74a4d1040fd073f0529b886c5ab5a2837b68e7e7c4b71b36",
+  "searched_candidate_entries": 353,
+  "independent_fit_models": 8,
+  "selection": "Lowest worst-model speed among tested candidates with complete native and requested-path source-hull checks; retains all eight independent fitted models.",
+  "q0_rad": [
+    0.2328343391418457,
+    -2.1665337085723877,
+    -2.385446548461914,
+    -1.7299463748931885,
+    -1.8568737506866455,
+    -1.5858118534088135
+  ],
+  "q0_deg": [
+    13.340424958545425,
+    -124.13323767402407,
+    -136.67601948091706,
+    -99.11862606533619,
+    -106.39102900297223,
+    -90.8603263021438
+  ],
+  "best_model_peak_speed_deg_s": 139.67323303222656,
+  "model_peak_speeds_deg_s": {
+    "single_record_fit": 139.67323303222656,
+    "single_record_fit_gpu6": 133.34483337402344,
+    "single_record_fit_gpu0": 118.07243347167969,
+    "single_record_fit_gpu4": 144.2925262451172,
+    "single_record_fit_gpu3": 131.2953338623047,
+    "single_record_fit_gpu2": 147.8722381591797,
+    "single_record_fit_gpu5": 141.99644470214844,
+    "single_record_fit_gpu1": 114.05998229980469
+  },
+  "max_joint_speed_deg_s": [
+    59.94954299926758,
+    97.85888671875,
+    133.91880798339844,
+    147.8722381591797,
+    144.2925262451172,
+    80.2863540649414
+  ],
+  "old_pose_max_joint_speed_deg_s": [
+    36.9977912902832,
+    109.57408905029297,
+    145.9661407470703,
+    223.83493041992188,
+    100.77072143554688,
+    116.14219665527344
+  ],
+  "peak_speed_reduction_fraction": 0.33936924910796373,
+  "planning_speed_target_deg_s": 120.0,
+  "planning_speed_screen_pass": false,
+  "displayed_hardware_speed_setting_deg_s": 191.0,
+  "all_models_below_displayed_setting": true,
+  "native_min_moving_self_gap_m": 0.017188832468327867,
+  "native_min_world_margin_m": 0.028737071641884715,
+  "requested_min_moving_self_gap_m": 0.017122848549134508,
+  "requested_min_world_margin_m": 0.02177858280078729,
+  "hardware_execution": false,
+  "status": "geometry_pass_speed_planning_target_not_met",
+  "scope": "Model-based predictions for review, not measured full-amplitude hardware behavior. The eight-model spread is not a confidence interval. Transition from current robot pose to candidate pose is not checked.",
+  "min_joint_motion_range_deg": [
+    3.825946807861328,
+    26.301795959472656,
+    24.673973083496094,
+    34.026397705078125,
+    20.950836181640625,
+    20.0025634765625
+  ]
+}

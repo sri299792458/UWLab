@@ -1,0 +1,5129 @@
+{
+  "candidate_count": 128,
+  "parameters": "screening_models_early.json",
+  "scope": "Early native dynamics screening only; full requested-path IK and exact source-hull checks remain required. Lower speed is assessed alongside joint-motion ranges. Finalists must be rechecked using completed fitting runs.",
+  "candidates": [
+    {
+      "candidate": 1026,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu2",
+      "joint_positions_rad": [
+        0.11790416917029187,
+        -2.9901300082087423,
+        -1.867837849446145,
+        -0.7094049016984111,
+        -2.5316775130031783,
+        2.774659509159405
+      ],
+      "coarse_requested_clear": true,
+      "worst_peak_speed_deg_s": 131.9461212158203,
+      "worst_peak_by_joint_deg_s": [
+        66.98392486572266,
+        83.23207092285156,
+        127.14691162109375,
+        131.9461212158203,
+        68.23493957519531,
+        57.815067291259766
+      ],
+      "minimum_joint_range_deg": [
+        13.826363563537598,
+        21.93728256225586,
+        25.586044311523438,
+        24.059986114501953,
+        11.898421287536621,
+        8.770208358764648
+      ],
+      "minimum_world_sphere_margin_m": 0.05262552574276924,
+      "minimum_self_sphere_margin_m": 0.011390410363674164,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1024,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu0",
+      "joint_positions_rad": [
+        0.07024018365154425,
+        -3.069789806507575,
+        -1.8561612867775703,
+        -0.7645928862373064,
+        -2.4835236373685965,
+        2.7759143391890873
+      ],
+      "coarse_requested_clear": true,
+      "worst_peak_speed_deg_s": 135.20274353027344,
+      "worst_peak_by_joint_deg_s": [
+        64.56624603271484,
+        81.5509262084961,
+        122.53163146972656,
+        125.31292724609375,
+        81.18936920166016,
+        135.20274353027344
+      ],
+      "minimum_joint_range_deg": [
+        12.981624603271484,
+        22.187076568603516,
+        24.95125961303711,
+        22.209400177001953,
+        15.308242797851562,
+        14.070393562316895
+      ],
+      "minimum_world_sphere_margin_m": 0.04218655452132225,
+      "minimum_self_sphere_margin_m": 0.011192500591278076,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1052,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu4",
+      "joint_positions_rad": [
+        -0.05328863418875318,
+        -3.170011129234705,
+        -1.8127151269022652,
+        -0.6124726425940663,
+        -2.5022441999874037,
+        2.7685047598792134
+      ],
+      "coarse_requested_clear": true,
+      "worst_peak_speed_deg_s": 137.85667419433594,
+      "worst_peak_by_joint_deg_s": [
+        65.77922058105469,
+        83.5854263305664,
+        111.37561798095703,
+        97.4456787109375,
+        76.7823257446289,
+        137.85667419433594
+      ],
+      "minimum_joint_range_deg": [
+        13.662729263305664,
+        21.621139526367188,
+        23.237319946289062,
+        19.89928436279297,
+        14.889852523803711,
+        14.999968528747559
+      ],
+      "minimum_world_sphere_margin_m": 0.004536252468824387,
+      "minimum_self_sphere_margin_m": 0.011090017855167389,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1081,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu1",
+      "joint_positions_rad": [
+        -0.0897979709298452,
+        -3.053077757612011,
+        -1.7749819493156995,
+        -0.6605231939934864,
+        -1.8828656346849895,
+        2.9617993138871768
+      ],
+      "coarse_requested_clear": true,
+      "worst_peak_speed_deg_s": 138.2445831298828,
+      "worst_peak_by_joint_deg_s": [
+        69.22297668457031,
+        88.05426025390625,
+        107.1642837524414,
+        138.2445831298828,
+        90.33743286132812,
+        129.4861297607422
+      ],
+      "minimum_joint_range_deg": [
+        13.60546588897705,
+        21.084192276000977,
+        20.63187026977539,
+        19.874685287475586,
+        14.611050605773926,
+        30.02228546142578
+      ],
+      "minimum_world_sphere_margin_m": 0.05049581453204155,
+      "minimum_self_sphere_margin_m": 0.017166368663311005,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1107,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu3",
+      "joint_positions_rad": [
+        0.49559026366537207,
+        -2.440698186386715,
+        -2.1623087924878317,
+        0.03390668400327493,
+        1.9708677164350696,
+        0.8070374142601637
+      ],
+      "coarse_requested_clear": true,
+      "worst_peak_speed_deg_s": 139.85023498535156,
+      "worst_peak_by_joint_deg_s": [
+        54.44179916381836,
+        80.26273345947266,
+        138.94891357421875,
+        127.47252655029297,
+        97.90039825439453,
+        139.85023498535156
+      ],
+      "minimum_joint_range_deg": [
+        10.048700332641602,
+        23.99147605895996,
+        27.47244644165039,
+        19.467287063598633,
+        28.592269897460938,
+        28.803749084472656
+      ],
+      "minimum_world_sphere_margin_m": 0.05262552574276924,
+      "minimum_self_sphere_margin_m": 0.01605837792158127,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1074,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu2",
+      "joint_positions_rad": [
+        0.18511945555425802,
+        -2.825139628614927,
+        -1.9658217099565831,
+        -1.048252759204079,
+        -2.5176575779998154,
+        2.730562511450907
+      ],
+      "coarse_requested_clear": true,
+      "worst_peak_speed_deg_s": 145.59950256347656,
+      "worst_peak_by_joint_deg_s": [
+        65.29637908935547,
+        81.2038345336914,
+        125.88668060302734,
+        145.59950256347656,
+        93.30030059814453,
+        133.71006774902344
+      ],
+      "minimum_joint_range_deg": [
+        12.456135749816895,
+        23.041040420532227,
+        24.71052360534668,
+        28.61827850341797,
+        17.218414306640625,
+        12.196859359741211
+      ],
+      "minimum_world_sphere_margin_m": 0.05262528732419014,
+      "minimum_self_sphere_margin_m": 0.01163008064031601,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1027,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu3",
+      "joint_positions_rad": [
+        0.04665991922484225,
+        -3.023402668213571,
+        -1.8512173465643662,
+        -0.691666843543875,
+        -2.427483632661191,
+        2.836481139305787
+      ],
+      "coarse_requested_clear": true,
+      "worst_peak_speed_deg_s": 146.4033966064453,
+      "worst_peak_by_joint_deg_s": [
+        66.2764892578125,
+        85.14556121826172,
+        122.87110900878906,
+        146.4033966064453,
+        75.78934478759766,
+        142.4797821044922
+      ],
+      "minimum_joint_range_deg": [
+        13.40855884552002,
+        22.76343536376953,
+        24.631649017333984,
+        24.732717514038086,
+        12.508097648620605,
+        16.992881774902344
+      ],
+      "minimum_world_sphere_margin_m": 0.051204051822423935,
+      "minimum_self_sphere_margin_m": 0.011403165757656097,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1105,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu1",
+      "joint_positions_rad": [
+        0.6791598321845786,
+        -2.519058248086745,
+        -2.2448783364831084,
+        -0.09522990743498756,
+        2.039829751331189,
+        1.014330752183094
+      ],
+      "coarse_requested_clear": true,
+      "worst_peak_speed_deg_s": 147.36941528320312,
+      "worst_peak_by_joint_deg_s": [
+        48.25230407714844,
+        84.08431243896484,
+        139.43402099609375,
+        122.43960571289062,
+        74.570556640625,
+        147.36941528320312
+      ],
+      "minimum_joint_range_deg": [
+        9.691238403320312,
+        25.416826248168945,
+        28.298933029174805,
+        17.51833724975586,
+        21.707780838012695,
+        34.33646774291992
+      ],
+      "minimum_world_sphere_margin_m": 0.005769703537225723,
+      "minimum_self_sphere_margin_m": 0.014710642397403717,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1021,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu5",
+      "joint_positions_rad": [
+        0.24984095289374644,
+        -3.0584639727828797,
+        -1.7968794878020076,
+        -0.73205003108322,
+        -2.5269383975354542,
+        2.8044199706006947
+      ],
+      "coarse_requested_clear": true,
+      "worst_peak_speed_deg_s": 148.2144775390625,
+      "worst_peak_by_joint_deg_s": [
+        65.10671997070312,
+        82.97496032714844,
+        139.62603759765625,
+        148.2144775390625,
+        66.45755004882812,
+        57.60551071166992
+      ],
+      "minimum_joint_range_deg": [
+        13.355376243591309,
+        21.655933380126953,
+        28.54775047302246,
+        25.773740768432617,
+        12.171109199523926,
+        9.431766510009766
+      ],
+      "minimum_world_sphere_margin_m": 0.05262552574276924,
+      "minimum_self_sphere_margin_m": 0.011216320097446442,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1094,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu6",
+      "joint_positions_rad": [
+        -0.07857118515847389,
+        -3.078499231495159,
+        -1.917977123897366,
+        -0.6793901753610986,
+        -2.333644497604324,
+        2.7202390075232223
+      ],
+      "coarse_requested_clear": true,
+      "worst_peak_speed_deg_s": 149.07325744628906,
+      "worst_peak_by_joint_deg_s": [
+        63.28535842895508,
+        84.88748168945312,
+        109.94386291503906,
+        114.29927062988281,
+        92.26653289794922,
+        149.07325744628906
+      ],
+      "minimum_joint_range_deg": [
+        12.660216331481934,
+        22.524473190307617,
+        22.08633041381836,
+        19.81224250793457,
+        18.7507266998291,
+        19.36000633239746
+      ],
+      "minimum_world_sphere_margin_m": 0.007167201489210129,
+      "minimum_self_sphere_margin_m": 0.012512736022472382,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1054,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu6",
+      "joint_positions_rad": [
+        0.12605003387039276,
+        -3.271900046087728,
+        -1.652579913496807,
+        -0.790299250392789,
+        -2.4296257046284873,
+        3.0778657326503853
+      ],
+      "coarse_requested_clear": true,
+      "worst_peak_speed_deg_s": 153.1522216796875,
+      "worst_peak_by_joint_deg_s": [
+        61.15793991088867,
+        81.6400375366211,
+        129.333251953125,
+        149.5327606201172,
+        77.92437744140625,
+        153.1522216796875
+      ],
+      "minimum_joint_range_deg": [
+        12.318324089050293,
+        20.88037872314453,
+        27.626712799072266,
+        25.232162475585938,
+        15.985796928405762,
+        20.13747215270996
+      ],
+      "minimum_world_sphere_margin_m": 0.03852875903248787,
+      "minimum_self_sphere_margin_m": 0.009678170084953308,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1117,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu5",
+      "joint_positions_rad": [
+        0.2058346105850444,
+        -2.3265862970778506,
+        -2.1586399671109886,
+        0.0796396204179173,
+        2.0287169218486434,
+        1.220961520490817
+      ],
+      "coarse_requested_clear": true,
+      "worst_peak_speed_deg_s": 153.17677307128906,
+      "worst_peak_by_joint_deg_s": [
+        63.90647888183594,
+        71.09270477294922,
+        132.1639862060547,
+        108.26216888427734,
+        113.7475357055664,
+        153.17677307128906
+      ],
+      "minimum_joint_range_deg": [
+        11.886285781860352,
+        21.379379272460938,
+        24.667390823364258,
+        17.371822357177734,
+        31.735774993896484,
+        29.353046417236328
+      ],
+      "minimum_world_sphere_margin_m": 0.05262552574276924,
+      "minimum_self_sphere_margin_m": 0.014881715178489685,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1114,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu2",
+      "joint_positions_rad": [
+        0.25375541305073124,
+        -2.501096631360006,
+        -1.968377078856072,
+        -0.20578956540289572,
+        1.8615730387033398,
+        1.0043918251135697
+      ],
+      "coarse_requested_clear": true,
+      "worst_peak_speed_deg_s": 157.3621063232422,
+      "worst_peak_by_joint_deg_s": [
+        70.59529113769531,
+        80.2038345336914,
+        122.31608581542969,
+        157.3621063232422,
+        106.38134002685547,
+        152.1978759765625
+      ],
+      "minimum_joint_range_deg": [
+        12.688720703125,
+        22.066194534301758,
+        23.038616180419922,
+        26.067514419555664,
+        29.008638381958008,
+        28.350130081176758
+      ],
+      "minimum_world_sphere_margin_m": 0.05262552574276924,
+      "minimum_self_sphere_margin_m": 0.015332229435443878,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1063,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu7",
+      "joint_positions_rad": [
+        0.1608530413405896,
+        -3.0722584837576092,
+        -1.652036355984844,
+        -0.6355250333530228,
+        -2.560970755329134,
+        2.86400241591724
+      ],
+      "coarse_requested_clear": true,
+      "worst_peak_speed_deg_s": 157.58828735351562,
+      "worst_peak_by_joint_deg_s": [
+        73.67068481445312,
+        88.92394256591797,
+        134.44378662109375,
+        157.58828735351562,
+        54.041290283203125,
+        44.92318344116211
+      ],
+      "minimum_joint_range_deg": [
+        14.455803871154785,
+        20.118717193603516,
+        27.437702178955078,
+        25.272310256958008,
+        11.52683162689209,
+        7.232814788818359
+      ],
+      "minimum_world_sphere_margin_m": 0.05262528732419014,
+      "minimum_self_sphere_margin_m": 0.01078285276889801,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1123,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu3",
+      "joint_positions_rad": [
+        0.427028369673388,
+        -2.5600778540219076,
+        -1.9727151871765134,
+        -0.12402223160213244,
+        1.8813501573392948,
+        1.090384716081015
+      ],
+      "coarse_requested_clear": true,
+      "worst_peak_speed_deg_s": 158.49136352539062,
+      "worst_peak_by_joint_deg_s": [
+        63.3194694519043,
+        82.46549987792969,
+        133.83865356445312,
+        158.49136352539062,
+        103.5125503540039,
+        141.66009521484375
+      ],
+      "minimum_joint_range_deg": [
+        11.32444953918457,
+        22.76899528503418,
+        26.14777946472168,
+        25.193958282470703,
+        29.17039680480957,
+        26.754056930541992
+      ],
+      "minimum_world_sphere_margin_m": 0.05262552574276924,
+      "minimum_self_sphere_margin_m": 0.016009092330932617,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1082,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu2",
+      "joint_positions_rad": [
+        0.29643585960807745,
+        -3.16752298247386,
+        -1.8915247193227616,
+        -0.8222948119962228,
+        -2.257845841255606,
+        2.9574114027778418
+      ],
+      "coarse_requested_clear": true,
+      "worst_peak_speed_deg_s": 159.29348754882812,
+      "worst_peak_by_joint_deg_s": [
+        50.11686706542969,
+        78.61964416503906,
+        143.7780303955078,
+        159.29348754882812,
+        95.30608367919922,
+        90.18657684326172
+      ],
+      "minimum_joint_range_deg": [
+        10.126091003417969,
+        22.3262882232666,
+        30.370113372802734,
+        22.795547485351562,
+        22.541261672973633,
+        19.717975616455078
+      ],
+      "minimum_world_sphere_margin_m": 0.011268708854913712,
+      "minimum_self_sphere_margin_m": 0.011665396392345428,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1062,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu6",
+      "joint_positions_rad": [
+        0.17844901853500625,
+        -3.2376533450125,
+        -1.704165584241268,
+        -0.797744685631595,
+        -2.3803000475398552,
+        3.086022759321798
+      ],
+      "coarse_requested_clear": true,
+      "worst_peak_speed_deg_s": 160.2881317138672,
+      "worst_peak_by_joint_deg_s": [
+        59.21915054321289,
+        81.53623962402344,
+        134.63919067382812,
+        160.2881317138672,
+        81.876953125,
+        151.74142456054688
+      ],
+      "minimum_joint_range_deg": [
+        11.766725540161133,
+        21.435714721679688,
+        28.571887969970703,
+        26.401968002319336,
+        17.137544631958008,
+        21.179431915283203
+      ],
+      "minimum_world_sphere_margin_m": 0.044169921427965164,
+      "minimum_self_sphere_margin_m": 0.01015358418226242,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1112,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu0",
+      "joint_positions_rad": [
+        0.2945374789624016,
+        -2.466110388763044,
+        -2.020989929012189,
+        -0.3140081567601717,
+        1.9046579858441106,
+        0.73016745493932
+      ],
+      "coarse_requested_clear": true,
+      "worst_peak_speed_deg_s": 160.9761505126953,
+      "worst_peak_by_joint_deg_s": [
+        69.8799057006836,
+        80.72645568847656,
+        122.01786804199219,
+        157.345458984375,
+        93.16975402832031,
+        160.9761505126953
+      ],
+      "minimum_joint_range_deg": [
+        12.759787559509277,
+        22.736167907714844,
+        22.94670295715332,
+        26.319740295410156,
+        25.4561824798584,
+        31.622058868408203
+      ],
+      "minimum_world_sphere_margin_m": 0.05262552574276924,
+      "minimum_self_sphere_margin_m": 0.015493035316467285,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1096,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu0",
+      "joint_positions_rad": [
+        0.47794621910156965,
+        -2.439643390692077,
+        -1.967450451343233,
+        -0.17920599989834535,
+        1.97142198638979,
+        0.8869840853636111
+      ],
+      "coarse_requested_clear": true,
+      "worst_peak_speed_deg_s": 164.04360961914062,
+      "worst_peak_by_joint_deg_s": [
+        61.252403259277344,
+        80.8788833618164,
+        142.56712341308594,
+        164.04360961914062,
+        105.81547546386719,
+        145.04542541503906
+      ],
+      "minimum_joint_range_deg": [
+        10.924772262573242,
+        22.24115753173828,
+        27.613422393798828,
+        26.70536994934082,
+        29.663612365722656,
+        26.31641960144043
+      ],
+      "minimum_world_sphere_margin_m": 0.05262552574276924,
+      "minimum_self_sphere_margin_m": 0.01645306497812271,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1113,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu1",
+      "joint_positions_rad": [
+        0.2482839026932815,
+        -2.563596221312758,
+        -2.284948527475026,
+        -0.029490748576919523,
+        1.976465490547755,
+        0.9057555594875055
+      ],
+      "coarse_requested_clear": true,
+      "worst_peak_speed_deg_s": 165.8998565673828,
+      "worst_peak_by_joint_deg_s": [
+        61.562416076660156,
+        77.01631927490234,
+        118.46990966796875,
+        80.29722595214844,
+        67.11543273925781,
+        165.8998565673828
+      ],
+      "minimum_joint_range_deg": [
+        12.322493553161621,
+        24.096263885498047,
+        24.253986358642578,
+        10.989657402038574,
+        19.38966941833496,
+        38.38541030883789
+      ],
+      "minimum_world_sphere_margin_m": 0.026016633957624435,
+      "minimum_self_sphere_margin_m": 0.01529434323310852,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1098,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu2",
+      "joint_positions_rad": [
+        0.5364699460978631,
+        -2.30222639527985,
+        -2.0555020416596603,
+        -0.08301675140071742,
+        1.9625193122108968,
+        0.9250722911750826
+      ],
+      "coarse_requested_clear": true,
+      "worst_peak_speed_deg_s": 166.1485137939453,
+      "worst_peak_by_joint_deg_s": [
+        56.83708953857422,
+        79.26087188720703,
+        149.9775390625,
+        166.1485137939453,
+        112.30274963378906,
+        129.91395568847656
+      ],
+      "minimum_joint_range_deg": [
+        10.025105476379395,
+        22.685365676879883,
+        28.797578811645508,
+        27.542564392089844,
+        31.18062400817871,
+        23.733375549316406
+      ],
+      "minimum_world_sphere_margin_m": 0.05262552574276924,
+      "minimum_self_sphere_margin_m": 0.015110760927200317,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1103,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu7",
+      "joint_positions_rad": [
+        0.34470150235658575,
+        -2.310912196266704,
+        -1.9668186678442314,
+        -0.35047999947467606,
+        2.0247023965795967,
+        1.007843848480561
+      ],
+      "coarse_requested_clear": true,
+      "worst_peak_speed_deg_s": 167.656005859375,
+      "worst_peak_by_joint_deg_s": [
+        66.76262664794922,
+        75.34441375732422,
+        137.485595703125,
+        167.656005859375,
+        104.1950912475586,
+        165.0247039794922
+      ],
+      "minimum_joint_range_deg": [
+        12.046978950500488,
+        20.7329158782959,
+        25.91484260559082,
+        27.316516876220703,
+        28.970888137817383,
+        29.643798828125
+      ],
+      "minimum_world_sphere_margin_m": 0.05262552574276924,
+      "minimum_self_sphere_margin_m": 0.016153588891029358,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1089,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu1",
+      "joint_positions_rad": [
+        -0.26048643049619724,
+        -3.02985430731968,
+        -1.6586818745245582,
+        -0.4929994051169835,
+        -2.437764932121764,
+        3.002075769306453
+      ],
+      "coarse_requested_clear": true,
+      "worst_peak_speed_deg_s": 168.17230224609375,
+      "worst_peak_by_joint_deg_s": [
+        80.42219543457031,
+        95.59153747558594,
+        100.53627014160156,
+        168.17230224609375,
+        59.061248779296875,
+        149.92649841308594
+      ],
+      "minimum_joint_range_deg": [
+        15.620163917541504,
+        21.51065444946289,
+        19.166671752929688,
+        25.525671005249023,
+        10.32504653930664,
+        13.994400978088379
+      ],
+      "minimum_world_sphere_margin_m": 0.05262552574276924,
+      "minimum_self_sphere_margin_m": 0.007745087146759033,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1020,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu4",
+      "joint_positions_rad": [
+        0.19272401390670196,
+        -3.1245003773203748,
+        -1.7198472842296764,
+        -0.8063632555556087,
+        -2.4536950401778173,
+        2.9161589833322132
+      ],
+      "coarse_requested_clear": true,
+      "worst_peak_speed_deg_s": 168.2023162841797,
+      "worst_peak_by_joint_deg_s": [
+        63.54404830932617,
+        82.80596923828125,
+        135.24586486816406,
+        168.2023162841797,
+        73.78284454345703,
+        155.20037841796875
+      ],
+      "minimum_joint_range_deg": [
+        12.766396522521973,
+        21.739137649536133,
+        27.987558364868164,
+        28.51518440246582,
+        12.608719825744629,
+        17.735719680786133
+      ],
+      "minimum_world_sphere_margin_m": 0.05262552574276924,
+      "minimum_self_sphere_margin_m": 0.010589919984340668,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1121,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu1",
+      "joint_positions_rad": [
+        0.4974184807833655,
+        -2.504123701475775,
+        -2.006478502922797,
+        0.012212400310330246,
+        1.7959561630846608,
+        1.1140119345349775
+      ],
+      "coarse_requested_clear": true,
+      "worst_peak_speed_deg_s": 170.0254669189453,
+      "worst_peak_by_joint_deg_s": [
+        59.35255813598633,
+        82.31758880615234,
+        140.82752990722656,
+        170.0254669189453,
+        117.05021667480469,
+        118.39588928222656
+      ],
+      "minimum_joint_range_deg": [
+        10.33266544342041,
+        22.91241455078125,
+        27.325679779052734,
+        27.488370895385742,
+        32.28345489501953,
+        21.56951141357422
+      ],
+      "minimum_world_sphere_margin_m": 0.05262552574276924,
+      "minimum_self_sphere_margin_m": 0.016197971999645233,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1022,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu6",
+      "joint_positions_rad": [
+        0.14149148414962873,
+        -3.0339361465730468,
+        -1.774806327249291,
+        -0.7609880614428619,
+        -2.434750904253457,
+        2.9163570185121386
+      ],
+      "coarse_requested_clear": true,
+      "worst_peak_speed_deg_s": 171.65541076660156,
+      "worst_peak_by_joint_deg_s": [
+        66.90106964111328,
+        84.83511352539062,
+        132.38140869140625,
+        171.65541076660156,
+        73.09381866455078,
+        154.35301208496094
+      ],
+      "minimum_joint_range_deg": [
+        13.19096851348877,
+        22.368417739868164,
+        26.79997444152832,
+        28.571510314941406,
+        11.83349323272705,
+        17.1484317779541
+      ],
+      "minimum_world_sphere_margin_m": 0.05262552574276924,
+      "minimum_self_sphere_margin_m": 0.011017359793186188,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1122,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu2",
+      "joint_positions_rad": [
+        0.26689617084079037,
+        -2.494748425151318,
+        -2.082426196425976,
+        -0.2174395683844357,
+        2.01373263270998,
+        1.0272836949281694
+      ],
+      "coarse_requested_clear": true,
+      "worst_peak_speed_deg_s": 172.95814514160156,
+      "worst_peak_by_joint_deg_s": [
+        67.1054458618164,
+        78.85295104980469,
+        123.90245056152344,
+        121.0379638671875,
+        86.0417251586914,
+        172.95814514160156
+      ],
+      "minimum_joint_range_deg": [
+        12.73763370513916,
+        22.252099990844727,
+        23.397111892700195,
+        20.587852478027344,
+        23.45864486694336,
+        35.14418029785156
+      ],
+      "minimum_world_sphere_margin_m": 0.05262552574276924,
+      "minimum_self_sphere_margin_m": 0.015269361436367035,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1014,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu6",
+      "joint_positions_rad": [
+        0.15191778672314876,
+        -3.0304938619465855,
+        -1.780197749941263,
+        -0.7228904451130493,
+        -2.4332689316321265,
+        2.9384523934064415
+      ],
+      "coarse_requested_clear": true,
+      "worst_peak_speed_deg_s": 173.2857666015625,
+      "worst_peak_by_joint_deg_s": [
+        67.17620086669922,
+        85.73824310302734,
+        134.01023864746094,
+        173.2857666015625,
+        71.66746520996094,
+        140.85675048828125
+      ],
+      "minimum_joint_range_deg": [
+        13.262504577636719,
+        22.30876350402832,
+        27.053449630737305,
+        28.012367248535156,
+        11.954742431640625,
+        16.184459686279297
+      ],
+      "minimum_world_sphere_margin_m": 0.05262552574276924,
+      "minimum_self_sphere_margin_m": 0.01103171706199646,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1126,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu6",
+      "joint_positions_rad": [
+        0.45615435276189004,
+        -2.4675572094014857,
+        -1.8455073808743072,
+        -0.10967619039381185,
+        1.9123484092831011,
+        0.9197619407470095
+      ],
+      "coarse_requested_clear": true,
+      "worst_peak_speed_deg_s": 180.61041259765625,
+      "worst_peak_by_joint_deg_s": [
+        62.06923294067383,
+        79.93634796142578,
+        146.5518035888672,
+        180.61041259765625,
+        122.47206115722656,
+        127.42501068115234
+      ],
+      "minimum_joint_range_deg": [
+        10.769412994384766,
+        21.020889282226562,
+        28.356983184814453,
+        30.793855667114258,
+        32.98217010498047,
+        20.670814514160156
+      ],
+      "minimum_world_sphere_margin_m": 0.05262552574276924,
+      "minimum_self_sphere_margin_m": 0.017009876668453217,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1001,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu1",
+      "joint_positions_rad": [
+        0.2508006357665535,
+        -3.013457530160984,
+        -1.8078802584126432,
+        -0.6647638085942935,
+        -2.434498917029008,
+        2.9458780325355405
+      ],
+      "coarse_requested_clear": true,
+      "worst_peak_speed_deg_s": 181.68858337402344,
+      "worst_peak_by_joint_deg_s": [
+        66.0675277709961,
+        85.60814666748047,
+        142.98182678222656,
+        181.68858337402344,
+        69.2027587890625,
+        65.33641052246094
+      ],
+      "minimum_joint_range_deg": [
+        13.23171329498291,
+        22.44257926940918,
+        28.96198844909668,
+        27.692813873291016,
+        12.233701705932617,
+        12.225955963134766
+      ],
+      "minimum_world_sphere_margin_m": 0.05262552574276924,
+      "minimum_self_sphere_margin_m": 0.011260010302066803,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1092,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu4",
+      "joint_positions_rad": [
+        0.28050446734156836,
+        -3.072876099747321,
+        -1.6840473443647221,
+        -1.1928658704879234,
+        -2.474397812557934,
+        2.6809895305610687
+      ],
+      "coarse_requested_clear": true,
+      "worst_peak_speed_deg_s": 182.653076171875,
+      "worst_peak_by_joint_deg_s": [
+        64.61357116699219,
+        77.81663513183594,
+        131.09754943847656,
+        182.653076171875,
+        95.61758422851562,
+        148.89479064941406
+      ],
+      "minimum_joint_range_deg": [
+        11.822484970092773,
+        22.13617706298828,
+        27.186412811279297,
+        34.840145111083984,
+        18.06426429748535,
+        18.65043067932129
+      ],
+      "minimum_world_sphere_margin_m": 0.05262552574276924,
+      "minimum_self_sphere_margin_m": 0.011787526309490204,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1019,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu3",
+      "joint_positions_rad": [
+        0.29766998180017246,
+        -2.991420066743671,
+        -1.898847559047283,
+        -0.6608066969801955,
+        -2.330205974161417,
+        2.944641947225194
+      ],
+      "coarse_requested_clear": true,
+      "worst_peak_speed_deg_s": 183.46636962890625,
+      "worst_peak_by_joint_deg_s": [
+        60.9643440246582,
+        85.03643035888672,
+        145.11514282226562,
+        183.46636962890625,
+        78.04254150390625,
+        147.60678100585938
+      ],
+      "minimum_joint_range_deg": [
+        12.344552993774414,
+        23.41268539428711,
+        29.478200912475586,
+        29.378625869750977,
+        13.498980522155762,
+        17.920146942138672
+      ],
+      "minimum_world_sphere_margin_m": 0.049617085605859756,
+      "minimum_self_sphere_margin_m": 0.012143753468990326,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1120,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu0",
+      "joint_positions_rad": [
+        0.174514597600263,
+        -2.172520835533228,
+        -1.8342822432991661,
+        -0.13718372905920775,
+        1.9772885657418982,
+        1.0073798614000398
+      ],
+      "coarse_requested_clear": true,
+      "worst_peak_speed_deg_s": 184.48533630371094,
+      "worst_peak_by_joint_deg_s": [
+        70.2642593383789,
+        64.16915130615234,
+        146.6041717529297,
+        184.48533630371094,
+        147.05076599121094,
+        127.02201843261719
+      ],
+      "minimum_joint_range_deg": [
+        12.255556106567383,
+        14.588313102722168,
+        27.618059158325195,
+        29.80290412902832,
+        37.95744323730469,
+        17.987031936645508
+      ],
+      "minimum_world_sphere_margin_m": 0.05262552574276924,
+      "minimum_self_sphere_margin_m": 0.015192963182926178,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1088,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu0",
+      "joint_positions_rad": [
+        0.4673148160816227,
+        -2.9065925435446025,
+        -1.7137704642019576,
+        -1.0260706688079422,
+        -2.6519380128686616,
+        2.5501099400141767
+      ],
+      "coarse_requested_clear": true,
+      "worst_peak_speed_deg_s": 188.55487060546875,
+      "worst_peak_by_joint_deg_s": [
+        71.79403686523438,
+        77.82318115234375,
+        149.77455139160156,
+        188.55487060546875,
+        65.78073120117188,
+        150.51910400390625
+      ],
+      "minimum_joint_range_deg": [
+        13.067766189575195,
+        20.557214736938477,
+        30.534652709960938,
+        32.12894058227539,
+        10.334676742553711,
+        8.367705345153809
+      ],
+      "minimum_world_sphere_margin_m": 0.05262552574276924,
+      "minimum_self_sphere_margin_m": 0.012905776500701904,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1119,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu7",
+      "joint_positions_rad": [
+        0.5796938450540567,
+        -2.240062010226415,
+        -1.9624035225735454,
+        -0.3623742718357259,
+        2.034799307216547,
+        0.9752331503297216
+      ],
+      "coarse_requested_clear": true,
+      "worst_peak_speed_deg_s": 189.63571166992188,
+      "worst_peak_by_joint_deg_s": [
+        57.728702545166016,
+        79.27508544921875,
+        152.19200134277344,
+        189.63571166992188,
+        103.48407745361328,
+        146.6869659423828
+      ],
+      "minimum_joint_range_deg": [
+        10.260293006896973,
+        21.581743240356445,
+        29.28664779663086,
+        32.84623336791992,
+        29.2020206451416,
+        25.94099235534668
+      ],
+      "minimum_world_sphere_margin_m": 0.05262552574276924,
+      "minimum_self_sphere_margin_m": 0.01439269632101059,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1031,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu7",
+      "joint_positions_rad": [
+        0.18505444270280155,
+        -2.9647448290756175,
+        -1.788106995799324,
+        -0.6520411628261803,
+        -2.4157604669385,
+        2.994163847462972
+      ],
+      "coarse_requested_clear": true,
+      "worst_peak_speed_deg_s": 190.45066833496094,
+      "worst_peak_by_joint_deg_s": [
+        70.19388580322266,
+        88.29425048828125,
+        139.8423309326172,
+        190.45066833496094,
+        67.60894775390625,
+        139.0519561767578
+      ],
+      "minimum_joint_range_deg": [
+        13.498092651367188,
+        22.049448013305664,
+        27.873828887939453,
+        29.373004913330078,
+        11.772895812988281,
+        13.095069885253906
+      ],
+      "minimum_world_sphere_margin_m": 0.05262552574276924,
+      "minimum_self_sphere_margin_m": 0.011555954813957214,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1118,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu6",
+      "joint_positions_rad": [
+        0.7020989190402753,
+        -2.457072876424954,
+        -1.9220068011293858,
+        0.039843377934060537,
+        1.9036952751393268,
+        0.9135487946844985
+      ],
+      "coarse_requested_clear": true,
+      "worst_peak_speed_deg_s": 197.32571411132812,
+      "worst_peak_by_joint_deg_s": [
+        54.00893020629883,
+        85.74913024902344,
+        158.7011260986328,
+        197.32571411132812,
+        115.98582458496094,
+        103.65093231201172
+      ],
+      "minimum_joint_range_deg": [
+        9.197392463684082,
+        23.31534194946289,
+        31.09726905822754,
+        33.40557861328125,
+        30.95127296447754,
+        18.27903938293457
+      ],
+      "minimum_world_sphere_margin_m": 0.05262552574276924,
+      "minimum_self_sphere_margin_m": 0.014430031180381775,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1093,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu5",
+      "joint_positions_rad": [
+        0.4424839871897525,
+        -3.09044817406865,
+        -1.8348499873355342,
+        -0.809910308340398,
+        -2.0520348132354314,
+        2.650869577555006
+      ],
+      "coarse_requested_clear": true,
+      "worst_peak_speed_deg_s": 197.55731201171875,
+      "worst_peak_by_joint_deg_s": [
+        52.90889358520508,
+        82.87562561035156,
+        154.2864227294922,
+        197.55731201171875,
+        90.57557678222656,
+        97.74432373046875
+      ],
+      "minimum_joint_range_deg": [
+        10.3378324508667,
+        22.683807373046875,
+        31.944055557250977,
+        28.249258041381836,
+        17.487892150878906,
+        22.878276824951172
+      ],
+      "minimum_world_sphere_margin_m": 0.02913082018494606,
+      "minimum_self_sphere_margin_m": 0.017731696367263794,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1115,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu3",
+      "joint_positions_rad": [
+        0.6096578077377591,
+        -2.189176021943625,
+        -1.9340924150536758,
+        -0.4481674892678262,
+        2.0577255917612223,
+        1.0335565427514721
+      ],
+      "coarse_requested_clear": true,
+      "worst_peak_speed_deg_s": 199.02450561523438,
+      "worst_peak_by_joint_deg_s": [
+        56.75071334838867,
+        78.60347747802734,
+        154.25192260742188,
+        199.02450561523438,
+        102.10503387451172,
+        148.96209716796875
+      ],
+      "minimum_joint_range_deg": [
+        10.093280792236328,
+        21.06450080871582,
+        29.785524368286133,
+        34.80269241333008,
+        28.908405303955078,
+        26.019378662109375
+      ],
+      "minimum_world_sphere_margin_m": 0.05262552574276924,
+      "minimum_self_sphere_margin_m": 0.013841889798641205,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1099,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu3",
+      "joint_positions_rad": [
+        0.5601868286235265,
+        -2.3457078219190963,
+        -2.1763921567770574,
+        -0.43787745628358044,
+        2.094201334859574,
+        1.1165604707268995
+      ],
+      "coarse_requested_clear": true,
+      "worst_peak_speed_deg_s": 199.87168884277344,
+      "worst_peak_by_joint_deg_s": [
+        57.256866455078125,
+        82.80987548828125,
+        133.56423950195312,
+        146.35214233398438,
+        67.93289184570312,
+        199.87168884277344
+      ],
+      "minimum_joint_range_deg": [
+        11.035520553588867,
+        24.142900466918945,
+        26.01970672607422,
+        24.224529266357422,
+        19.956035614013672,
+        36.24148178100586
+      ],
+      "minimum_world_sphere_margin_m": 0.01903584972023964,
+      "minimum_self_sphere_margin_m": 0.01503867655992508,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1083,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu3",
+      "joint_positions_rad": [
+        0.16346056355589186,
+        -2.892837997320389,
+        -1.7425957720518497,
+        -1.0007389029923965,
+        -2.0426491863287977,
+        2.950903016995743
+      ],
+      "coarse_requested_clear": true,
+      "worst_peak_speed_deg_s": 206.05010986328125,
+      "worst_peak_by_joint_deg_s": [
+        69.91078186035156,
+        87.15628814697266,
+        134.0613555908203,
+        206.05010986328125,
+        91.23868560791016,
+        113.44155883789062
+      ],
+      "minimum_joint_range_deg": [
+        12.566154479980469,
+        21.56968116760254,
+        26.303863525390625,
+        32.5080680847168,
+        13.388242721557617,
+        25.83165168762207
+      ],
+      "minimum_world_sphere_margin_m": 0.05262552574276924,
+      "minimum_self_sphere_margin_m": 0.016907818615436554,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1025,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu1",
+      "joint_positions_rad": [
+        0.2131139312578908,
+        -3.0227245525116464,
+        -1.7209595234423722,
+        -0.683034420176123,
+        -2.1982562212747494,
+        2.9502200237458887
+      ],
+      "coarse_requested_clear": true,
+      "worst_peak_speed_deg_s": 206.50111389160156,
+      "worst_peak_by_joint_deg_s": [
+        68.79373168945312,
+        90.66143798828125,
+        141.67698669433594,
+        206.50111389160156,
+        76.34467315673828,
+        102.98357391357422
+      ],
+      "minimum_joint_range_deg": [
+        12.866545677185059,
+        21.771623611450195,
+        28.481525421142578,
+        31.460512161254883,
+        12.253194808959961,
+        20.77322769165039
+      ],
+      "minimum_world_sphere_margin_m": 0.05262552574276924,
+      "minimum_self_sphere_margin_m": 0.014893338084220886,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1049,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu1",
+      "joint_positions_rad": [
+        0.10913474440255887,
+        -2.7746563201598167,
+        -1.8675152063410743,
+        -0.8288069312612025,
+        -2.199740753688168,
+        2.9862740367354608
+      ],
+      "coarse_requested_clear": true,
+      "worst_peak_speed_deg_s": 207.4549102783203,
+      "worst_peak_by_joint_deg_s": [
+        72.11924743652344,
+        87.54208374023438,
+        135.15122985839844,
+        207.4549102783203,
+        81.05870819091797,
+        101.93781280517578
+      ],
+      "minimum_joint_range_deg": [
+        13.364298820495605,
+        22.955663681030273,
+        25.873403549194336,
+        33.62751007080078,
+        11.16022777557373,
+        21.494836807250977
+      ],
+      "minimum_world_sphere_margin_m": 0.05262528732419014,
+      "minimum_self_sphere_margin_m": 0.01447220891714096,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1040,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu0",
+      "joint_positions_rad": [
+        0.27049683154946946,
+        -2.856105170523265,
+        -1.7526671311963207,
+        -0.9183526103913263,
+        -2.44419062542098,
+        2.8836631753169844
+      ],
+      "coarse_requested_clear": true,
+      "worst_peak_speed_deg_s": 211.10528564453125,
+      "worst_peak_by_joint_deg_s": [
+        71.14840698242188,
+        83.96145629882812,
+        144.98573303222656,
+        211.10528564453125,
+        67.40812683105469,
+        134.24346923828125
+      ],
+      "minimum_joint_range_deg": [
+        13.103899002075195,
+        21.603490829467773,
+        28.86585235595703,
+        35.54925537109375,
+        10.671186447143555,
+        13.105547904968262
+      ],
+      "minimum_world_sphere_margin_m": 0.05262552574276924,
+      "minimum_self_sphere_margin_m": 0.011946327984333038,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1102,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu6",
+      "joint_positions_rad": [
+        0.5546307506682426,
+        -2.5184277351016475,
+        -1.7852170817489563,
+        -0.2546878714868066,
+        1.7706598806716776,
+        1.1863425659267783
+      ],
+      "coarse_requested_clear": true,
+      "worst_peak_speed_deg_s": 212.39181518554688,
+      "worst_peak_by_joint_deg_s": [
+        60.68705368041992,
+        83.07017517089844,
+        144.1363525390625,
+        212.39181518554688,
+        117.63489532470703,
+        117.02684020996094
+      ],
+      "minimum_joint_range_deg": [
+        10.426817893981934,
+        21.23272132873535,
+        28.11695098876953,
+        38.077362060546875,
+        31.931215286254883,
+        19.55003547668457
+      ],
+      "minimum_world_sphere_margin_m": 0.05262552574276924,
+      "minimum_self_sphere_margin_m": 0.015743181109428406,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1100,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu4",
+      "joint_positions_rad": [
+        0.6022848479549324,
+        -2.5314418747427596,
+        -1.8023001076420395,
+        -0.03826514857037465,
+        1.6239158850727022,
+        1.0800481174303846
+      ],
+      "coarse_requested_clear": true,
+      "worst_peak_speed_deg_s": 217.79867553710938,
+      "worst_peak_by_joint_deg_s": [
+        58.70273208618164,
+        82.57792663574219,
+        148.77439880371094,
+        217.79867553710938,
+        130.2226104736328,
+        87.14038848876953
+      ],
+      "minimum_joint_range_deg": [
+        9.865467071533203,
+        21.435455322265625,
+        29.138391494750977,
+        38.19449234008789,
+        34.26666259765625,
+        15.506229400634766
+      ],
+      "minimum_world_sphere_margin_m": 0.05262552574276924,
+      "minimum_self_sphere_margin_m": 0.016367323696613312,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1111,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu7",
+      "joint_positions_rad": [
+        0.5939490947364353,
+        -2.3361599091142,
+        -1.6592861852896597,
+        -0.23370185630745643,
+        1.9427102536358316,
+        1.137464144356421
+      ],
+      "coarse_requested_clear": true,
+      "worst_peak_speed_deg_s": 217.83905029296875,
+      "worst_peak_by_joint_deg_s": [
+        55.34928894042969,
+        77.9618911743164,
+        157.07110595703125,
+        217.83905029296875,
+        127.32830810546875,
+        104.77388763427734
+      ],
+      "minimum_joint_range_deg": [
+        9.411812782287598,
+        16.726093292236328,
+        31.41986656188965,
+        40.44440460205078,
+        33.491905212402344,
+        16.90038299560547
+      ],
+      "minimum_world_sphere_margin_m": 0.05262552574276924,
+      "minimum_self_sphere_margin_m": 0.01503056287765503,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1067,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu3",
+      "joint_positions_rad": [
+        0.431717383609355,
+        -2.8668039152488194,
+        -1.879622112489399,
+        -0.8788424451048421,
+        -2.191042381601359,
+        3.375558392539439
+      ],
+      "coarse_requested_clear": true,
+      "worst_peak_speed_deg_s": 219.91189575195312,
+      "worst_peak_by_joint_deg_s": [
+        61.65357971191406,
+        84.92536163330078,
+        155.1671600341797,
+        219.91189575195312,
+        82.9300537109375,
+        87.62026977539062
+      ],
+      "minimum_joint_range_deg": [
+        11.368130683898926,
+        23.769397735595703,
+        31.043399810791016,
+        34.30669403076172,
+        12.646368026733398,
+        18.836894989013672
+      ],
+      "minimum_world_sphere_margin_m": 0.05262528732419014,
+      "minimum_self_sphere_margin_m": 0.013937205076217651,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1106,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu2",
+      "joint_positions_rad": [
+        0.5353259722801359,
+        -2.3089546239936536,
+        -1.863147670424522,
+        -0.22224667963271239,
+        1.5884493543379063,
+        0.9527966561504165
+      ],
+      "coarse_requested_clear": true,
+      "worst_peak_speed_deg_s": 228.71788024902344,
+      "worst_peak_by_joint_deg_s": [
+        60.531829833984375,
+        79.17970275878906,
+        147.56344604492188,
+        228.71788024902344,
+        132.9857635498047,
+        90.93896484375
+      ],
+      "minimum_joint_range_deg": [
+        10.178704261779785,
+        20.250307083129883,
+        28.245145797729492,
+        41.25674057006836,
+        35.32466506958008,
+        15.926600456237793
+      ],
+      "minimum_world_sphere_margin_m": 0.05262552574276924,
+      "minimum_self_sphere_margin_m": 0.015355706214904785,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1085,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu5",
+      "joint_positions_rad": [
+        0.4876255979743913,
+        -3.0678763925200077,
+        -1.6930574918761006,
+        -0.8980709583722126,
+        -2.225839229678864,
+        2.934330555281374
+      ],
+      "coarse_requested_clear": true,
+      "worst_peak_speed_deg_s": 232.12620544433594,
+      "worst_peak_by_joint_deg_s": [
+        60.98481750488281,
+        84.43057250976562,
+        157.58599853515625,
+        232.12620544433594,
+        79.68243408203125,
+        87.76729583740234
+      ],
+      "minimum_joint_range_deg": [
+        11.271239280700684,
+        22.10361099243164,
+        32.75080490112305,
+        36.2982177734375,
+        12.224221229553223,
+        18.697982788085938
+      ],
+      "minimum_world_sphere_margin_m": 0.05262552574276924,
+      "minimum_self_sphere_margin_m": 0.013904005289077759,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1073,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu1",
+      "joint_positions_rad": [
+        0.28016708183270944,
+        -2.8407797184875396,
+        -1.667010409151532,
+        -1.1596853518535148,
+        -2.318775562126409,
+        3.33367620899796
+      ],
+      "coarse_requested_clear": true,
+      "worst_peak_speed_deg_s": 245.98495483398438,
+      "worst_peak_by_joint_deg_s": [
+        70.42800903320312,
+        84.30304718017578,
+        141.3112030029297,
+        245.98495483398438,
+        81.70279693603516,
+        160.3123779296875
+      ],
+      "minimum_joint_range_deg": [
+        12.506196975708008,
+        21.15347671508789,
+        28.553071975708008,
+        44.58835983276367,
+        11.435949325561523,
+        22.842910766601562
+      ],
+      "minimum_world_sphere_margin_m": 0.05262528732419014,
+      "minimum_self_sphere_margin_m": 0.011644907295703888,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1084,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu4",
+      "joint_positions_rad": [
+        0.258339627301395,
+        -2.4877476819553617,
+        -1.7769969053528702,
+        -0.8212193692102896,
+        -2.410151445858381,
+        3.019776650837073
+      ],
+      "coarse_requested_clear": true,
+      "worst_peak_speed_deg_s": 247.04412841796875,
+      "worst_peak_by_joint_deg_s": [
+        76.93009185791016,
+        83.86244201660156,
+        166.69357299804688,
+        247.04412841796875,
+        52.98839569091797,
+        54.780372619628906
+      ],
+      "minimum_joint_range_deg": [
+        14.979351997375488,
+        17.332929611206055,
+        32.387210845947266,
+        39.10028839111328,
+        15.563390731811523,
+        5.490187644958496
+      ],
+      "minimum_world_sphere_margin_m": 0.05262552574276924,
+      "minimum_self_sphere_margin_m": 0.011403590440750122,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1109,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu5",
+      "joint_positions_rad": [
+        0.4430121252290172,
+        -2.309291327165121,
+        -1.9684715757763618,
+        -0.42749215128045587,
+        2.1858993021322535,
+        1.2999260973785445
+      ],
+      "coarse_requested_clear": true,
+      "worst_peak_speed_deg_s": 253.92385864257812,
+      "worst_peak_by_joint_deg_s": [
+        62.13373565673828,
+        75.31838989257812,
+        143.71925354003906,
+        149.5233917236328,
+        88.95341491699219,
+        253.92385864257812
+      ],
+      "minimum_joint_range_deg": [
+        11.594300270080566,
+        20.606201171875,
+        27.708860397338867,
+        23.489925384521484,
+        25.89365577697754,
+        34.74049758911133
+      ],
+      "minimum_world_sphere_margin_m": 0.05262552574276924,
+      "minimum_self_sphere_margin_m": 0.014300405979156494,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1116,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu4",
+      "joint_positions_rad": [
+        0.29086187933005514,
+        -2.6837121502138235,
+        -2.094031217866037,
+        -0.24606483306776916,
+        2.2644003392268335,
+        0.8618587229940134
+      ],
+      "coarse_requested_clear": true,
+      "worst_peak_speed_deg_s": 270.3699035644531,
+      "worst_peak_by_joint_deg_s": [
+        62.00624465942383,
+        79.2913589477539,
+        135.38189697265625,
+        71.98342895507812,
+        57.611175537109375,
+        270.3699035644531
+      ],
+      "minimum_joint_range_deg": [
+        12.900355339050293,
+        22.427595138549805,
+        28.379945755004883,
+        9.696974754333496,
+        15.574155807495117,
+        43.174339294433594
+      ],
+      "minimum_world_sphere_margin_m": 0.030456993728876114,
+      "minimum_self_sphere_margin_m": 0.014315135776996613,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1034,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu2",
+      "joint_positions_rad": [
+        0.14319971899763814,
+        -2.9347708518071065,
+        -2.158473176644686,
+        -0.8721601901570287,
+        -2.5148564543312375,
+        3.0543554815716134
+      ],
+      "coarse_requested_clear": false,
+      "worst_peak_speed_deg_s": 122.07805633544922,
+      "worst_peak_by_joint_deg_s": [
+        54.54890823364258,
+        78.95462036132812,
+        122.07805633544922,
+        91.22405242919922,
+        100.96184539794922,
+        45.80117416381836
+      ],
+      "minimum_joint_range_deg": [
+        10.505921363830566,
+        22.607309341430664,
+        25.397947311401367,
+        19.453495025634766,
+        25.68181037902832,
+        11.265658378601074
+      ],
+      "minimum_world_sphere_margin_m": 0.012854747474193573,
+      "minimum_self_sphere_margin_m": 0.008787833154201508,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1056,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu0",
+      "joint_positions_rad": [
+        0.07660095646605516,
+        -3.0144874068962246,
+        -1.8799231938147174,
+        -0.7021254109973271,
+        -2.594345685074564,
+        2.9404908198398942
+      ],
+      "coarse_requested_clear": false,
+      "worst_peak_speed_deg_s": 123.70513153076172,
+      "worst_peak_by_joint_deg_s": [
+        68.06377410888672,
+        82.39324951171875,
+        122.31835174560547,
+        123.70513153076172,
+        69.36659240722656,
+        32.19943618774414
+      ],
+      "minimum_joint_range_deg": [
+        14.238991737365723,
+        21.091049194335938,
+        24.508268356323242,
+        19.736949920654297,
+        12.057755470275879,
+        6.673804759979248
+      ],
+      "minimum_world_sphere_margin_m": 0.04987826570868492,
+      "minimum_self_sphere_margin_m": 0.009643420577049255,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1011,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu3",
+      "joint_positions_rad": [
+        0.08954374710248257,
+        -3.2259175589819327,
+        -1.7900730807788092,
+        -0.6009225230634181,
+        -2.5788828186691704,
+        2.856482924270827
+      ],
+      "coarse_requested_clear": false,
+      "worst_peak_speed_deg_s": 124.11518859863281,
+      "worst_peak_by_joint_deg_s": [
+        64.33657836914062,
+        81.265380859375,
+        124.11518859863281,
+        105.50284576416016,
+        66.5401840209961,
+        55.02960968017578
+      ],
+      "minimum_joint_range_deg": [
+        13.59575080871582,
+        20.0208683013916,
+        25.958372116088867,
+        17.951663970947266,
+        13.87938117980957,
+        8.320003509521484
+      ],
+      "minimum_world_sphere_margin_m": 0.0076040662825107574,
+      "minimum_self_sphere_margin_m": 0.009959496557712555,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1023,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu7",
+      "joint_positions_rad": [
+        0.097024185629795,
+        -3.1579275416735415,
+        -1.9118460915398316,
+        -0.8074951042953852,
+        -2.653417034368311,
+        3.0752319241679262
+      ],
+      "coarse_requested_clear": false,
+      "worst_peak_speed_deg_s": 124.3463363647461,
+      "worst_peak_by_joint_deg_s": [
+        61.11348342895508,
+        75.8709945678711,
+        124.3463363647461,
+        96.52407836914062,
+        94.23323822021484,
+        48.84075164794922
+      ],
+      "minimum_joint_range_deg": [
+        11.963174819946289,
+        20.198179244995117,
+        25.998929977416992,
+        19.691526412963867,
+        21.49431800842285,
+        10.036320686340332
+      ],
+      "minimum_world_sphere_margin_m": 0.007877614349126816,
+      "minimum_self_sphere_margin_m": 0.007801808416843414,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1072,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu0",
+      "joint_positions_rad": [
+        0.09456972046105486,
+        -3.106903153787088,
+        -2.18945697383667,
+        -0.6932135364119756,
+        -2.545572255407746,
+        3.0237752318625537
+      ],
+      "coarse_requested_clear": false,
+      "worst_peak_speed_deg_s": 125.78020477294922,
+      "worst_peak_by_joint_deg_s": [
+        42.20104217529297,
+        72.83645629882812,
+        125.78020477294922,
+        54.78461837768555,
+        103.58358764648438,
+        39.19218063354492
+      ],
+      "minimum_joint_range_deg": [
+        9.353412628173828,
+        20.722505569458008,
+        27.634159088134766,
+        8.055965423583984,
+        27.89628028869629,
+        7.472745418548584
+      ],
+      "minimum_world_sphere_margin_m": -0.03573540598154068,
+      "minimum_self_sphere_margin_m": 0.008540287613868713,
+      "sphere_clear": false,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1057,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu1",
+      "joint_positions_rad": [
+        0.15652663401835776,
+        -2.997922760886763,
+        -2.021160460632678,
+        -0.7822488808503147,
+        -2.4931697484489663,
+        3.0977339201532788
+      ],
+      "coarse_requested_clear": false,
+      "worst_peak_speed_deg_s": 125.804931640625,
+      "worst_peak_by_joint_deg_s": [
+        59.81503677368164,
+        78.32937622070312,
+        125.804931640625,
+        106.86647033691406,
+        87.5442123413086,
+        47.19829177856445
+      ],
+      "minimum_joint_range_deg": [
+        11.863045692443848,
+        22.383689880371094,
+        25.814180374145508,
+        21.622766494750977,
+        19.512264251708984,
+        11.698529243469238
+      ],
+      "minimum_world_sphere_margin_m": 0.02846638485789299,
+      "minimum_self_sphere_margin_m": 0.008877493441104889,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1009,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu1",
+      "joint_positions_rad": [
+        0.09642503895840196,
+        -3.1733797223935927,
+        -1.9164628873258203,
+        -0.6469216734559556,
+        -2.3668179705000023,
+        2.9348949978122105
+      ],
+      "coarse_requested_clear": false,
+      "worst_peak_speed_deg_s": 126.2115478515625,
+      "worst_peak_by_joint_deg_s": [
+        55.910980224609375,
+        79.41200256347656,
+        126.2115478515625,
+        112.9305419921875,
+        87.29197692871094,
+        69.16151428222656
+      ],
+      "minimum_joint_range_deg": [
+        11.597993850708008,
+        21.891178131103516,
+        26.70245933532715,
+        18.669235229492188,
+        20.055742263793945,
+        17.322614669799805
+      ],
+      "minimum_world_sphere_margin_m": -0.0029877759516239166,
+      "minimum_self_sphere_margin_m": 0.010650739073753357,
+      "sphere_clear": false,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1028,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu4",
+      "joint_positions_rad": [
+        0.15296131318944003,
+        -2.9727438119806044,
+        -1.9790372849150808,
+        -0.6488596850042647,
+        -2.501330455968279,
+        2.949036633426601
+      ],
+      "coarse_requested_clear": false,
+      "worst_peak_speed_deg_s": 127.34976959228516,
+      "worst_peak_by_joint_deg_s": [
+        64.25056457519531,
+        80.6731185913086,
+        127.34976959228516,
+        118.02197265625,
+        73.30250549316406,
+        58.001983642578125
+      ],
+      "minimum_joint_range_deg": [
+        13.366069793701172,
+        22.345714569091797,
+        25.771825790405273,
+        22.03579330444336,
+        13.779837608337402,
+        9.517936706542969
+      ],
+      "minimum_world_sphere_margin_m": 0.03703373298048973,
+      "minimum_self_sphere_margin_m": 0.010078877210617065,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1018,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu2",
+      "joint_positions_rad": [
+        0.166702583487704,
+        -3.0515908184690064,
+        -1.9696560693647376,
+        -0.740366625974163,
+        -2.514053616975634,
+        2.9341795057341455
+      ],
+      "coarse_requested_clear": false,
+      "worst_peak_speed_deg_s": 127.95865631103516,
+      "worst_peak_by_joint_deg_s": [
+        60.5223503112793,
+        77.98221588134766,
+        127.95865631103516,
+        109.21326446533203,
+        82.7130126953125,
+        56.781776428222656
+      ],
+      "minimum_joint_range_deg": [
+        12.235441207885742,
+        21.739248275756836,
+        26.351886749267578,
+        20.282819747924805,
+        17.80988121032715,
+        10.10684871673584
+      ],
+      "minimum_world_sphere_margin_m": 0.025821130722761154,
+      "minimum_self_sphere_margin_m": 0.009770974516868591,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1046,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu6",
+      "joint_positions_rad": [
+        0.14966595064432325,
+        -3.091782908875299,
+        -1.878570707964309,
+        -0.6800130357570764,
+        -2.56414561312155,
+        2.8153996728773025
+      ],
+      "coarse_requested_clear": false,
+      "worst_peak_speed_deg_s": 128.40060424804688,
+      "worst_peak_by_joint_deg_s": [
+        64.18946075439453,
+        81.1417236328125,
+        128.40060424804688,
+        118.27957153320312,
+        71.67436981201172,
+        53.90532302856445
+      ],
+      "minimum_joint_range_deg": [
+        13.415948867797852,
+        21.24989128112793,
+        26.38748550415039,
+        20.876407623291016,
+        13.584043502807617,
+        8.352036476135254
+      ],
+      "minimum_world_sphere_margin_m": 0.032186638563871384,
+      "minimum_self_sphere_margin_m": 0.010580465197563171,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1044,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu4",
+      "joint_positions_rad": [
+        0.12317912239660805,
+        -3.123098501879591,
+        -2.1348113594719242,
+        -0.7759711250101334,
+        -2.4253094627036837,
+        2.953022216880702
+      ],
+      "coarse_requested_clear": false,
+      "worst_peak_speed_deg_s": 128.6769256591797,
+      "worst_peak_by_joint_deg_s": [
+        41.22962188720703,
+        74.70694732666016,
+        128.6769256591797,
+        67.33253479003906,
+        104.73419952392578,
+        52.07548522949219
+      ],
+      "minimum_joint_range_deg": [
+        9.05132007598877,
+        21.29952049255371,
+        28.357318878173828,
+        13.511574745178223,
+        29.216514587402344,
+        13.953460693359375
+      ],
+      "minimum_world_sphere_margin_m": -0.02583722025156021,
+      "minimum_self_sphere_margin_m": 0.009838521480560303,
+      "sphere_clear": false,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1051,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu3",
+      "joint_positions_rad": [
+        0.13336526377496716,
+        -3.375008999810454,
+        -1.8635888916022312,
+        -0.6087216444286319,
+        -2.393461917043887,
+        2.9555476667613667
+      ],
+      "coarse_requested_clear": false,
+      "worst_peak_speed_deg_s": 132.529052734375,
+      "worst_peak_by_joint_deg_s": [
+        42.17473220825195,
+        72.45783233642578,
+        132.529052734375,
+        83.34452819824219,
+        84.56060028076172,
+        64.6037826538086
+      ],
+      "minimum_joint_range_deg": [
+        10.681615829467773,
+        19.70367431640625,
+        30.0889835357666,
+        16.039575576782227,
+        24.47856330871582,
+        17.691118240356445
+      ],
+      "minimum_world_sphere_margin_m": -0.05236345902085304,
+      "minimum_self_sphere_margin_m": 0.009910739958286285,
+      "sphere_clear": false,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1006,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu6",
+      "joint_positions_rad": [
+        0.1480815767413974,
+        -3.113787828907459,
+        -1.874457153544493,
+        -0.6605709800148152,
+        -2.5044020602553334,
+        2.8936444791954026
+      ],
+      "coarse_requested_clear": false,
+      "worst_peak_speed_deg_s": 132.85777282714844,
+      "worst_peak_by_joint_deg_s": [
+        62.59657669067383,
+        80.8277587890625,
+        128.4862823486328,
+        113.95719909667969,
+        76.71546173095703,
+        132.85777282714844
+      ],
+      "minimum_joint_range_deg": [
+        13.003885269165039,
+        21.67094612121582,
+        26.77043914794922,
+        20.76991844177246,
+        14.55073356628418,
+        11.930112838745117
+      ],
+      "minimum_world_sphere_margin_m": 0.025061991065740585,
+      "minimum_self_sphere_margin_m": 0.010184824466705322,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1039,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu7",
+      "joint_positions_rad": [
+        0.20131551384689528,
+        -3.141084737840498,
+        -2.035020375175394,
+        -0.6983615188429259,
+        -2.304243262430556,
+        2.9123442993585344
+      ],
+      "coarse_requested_clear": false,
+      "worst_peak_speed_deg_s": 133.53399658203125,
+      "worst_peak_by_joint_deg_s": [
+        46.7679328918457,
+        76.66439819335938,
+        133.53399658203125,
+        112.99493408203125,
+        95.67842102050781,
+        66.53421783447266
+      ],
+      "minimum_joint_range_deg": [
+        9.985003471374512,
+        22.217496871948242,
+        28.609338760375977,
+        16.687591552734375,
+        24.646312713623047,
+        17.073177337646484
+      ],
+      "minimum_world_sphere_margin_m": -0.009318478405475616,
+      "minimum_self_sphere_margin_m": 0.011114761233329773,
+      "sphere_clear": false,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1064,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu0",
+      "joint_positions_rad": [
+        0.16508468001414736,
+        -3.202469077418375,
+        -1.8351232135260032,
+        -0.7626690100413238,
+        -2.640691176288954,
+        2.8208829263635153
+      ],
+      "coarse_requested_clear": false,
+      "worst_peak_speed_deg_s": 133.6655731201172,
+      "worst_peak_by_joint_deg_s": [
+        61.2159423828125,
+        77.8238525390625,
+        129.38514709472656,
+        110.53863525390625,
+        82.47225189208984,
+        133.6655731201172
+      ],
+      "minimum_joint_range_deg": [
+        12.441914558410645,
+        19.95879554748535,
+        27.05414581298828,
+        21.945404052734375,
+        17.975048065185547,
+        10.672757148742676
+      ],
+      "minimum_world_sphere_margin_m": 0.011688213795423508,
+      "minimum_self_sphere_margin_m": 0.009575791656970978,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1007,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu7",
+      "joint_positions_rad": [
+        0.20510889937439686,
+        -3.1531481519682045,
+        -1.9866698907282259,
+        -0.6080518742757771,
+        -2.3801988161151804,
+        2.9233227893631883
+      ],
+      "coarse_requested_clear": false,
+      "worst_peak_speed_deg_s": 133.9422149658203,
+      "worst_peak_by_joint_deg_s": [
+        52.12676239013672,
+        77.22650909423828,
+        133.9422149658203,
+        114.43843841552734,
+        84.53083038330078,
+        66.25105285644531
+      ],
+      "minimum_joint_range_deg": [
+        11.271848678588867,
+        22.13517951965332,
+        28.459135055541992,
+        18.83659553527832,
+        20.43317985534668,
+        15.212128639221191
+      ],
+      "minimum_world_sphere_margin_m": -0.005992088466882706,
+      "minimum_self_sphere_margin_m": 0.010579697787761688,
+      "sphere_clear": false,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1015,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu7",
+      "joint_positions_rad": [
+        0.14025890128018703,
+        -3.060692263834294,
+        -1.853041797797365,
+        -0.6784422325283429,
+        -2.5358956480846366,
+        2.9372456075216995
+      ],
+      "coarse_requested_clear": false,
+      "worst_peak_speed_deg_s": 133.99264526367188,
+      "worst_peak_by_joint_deg_s": [
+        65.45785522460938,
+        81.89302825927734,
+        128.6220245361328,
+        125.59818267822266,
+        72.2197494506836,
+        133.99264526367188
+      ],
+      "minimum_joint_range_deg": [
+        13.65439510345459,
+        21.693321228027344,
+        26.354448318481445,
+        21.84050178527832,
+        12.62888240814209,
+        9.707501411437988
+      ],
+      "minimum_world_sphere_margin_m": 0.04576372727751732,
+      "minimum_self_sphere_margin_m": 0.009957022964954376,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1008,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu0",
+      "joint_positions_rad": [
+        0.22789476198741415,
+        -3.0877749868097,
+        -1.9277938204873746,
+        -0.6852662525585085,
+        -2.488396098741075,
+        2.9057676692648156
+      ],
+      "coarse_requested_clear": false,
+      "worst_peak_speed_deg_s": 134.60983276367188,
+      "worst_peak_by_joint_deg_s": [
+        59.74514389038086,
+        78.32929229736328,
+        134.60983276367188,
+        119.4388656616211,
+        78.74624633789062,
+        131.97222900390625
+      ],
+      "minimum_joint_range_deg": [
+        12.254389762878418,
+        22.02054214477539,
+        28.002729415893555,
+        22.421733856201172,
+        16.34807014465332,
+        12.869824409484863
+      ],
+      "minimum_world_sphere_margin_m": 0.02487180009484291,
+      "minimum_self_sphere_margin_m": 0.010203108191490173,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1004,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu4",
+      "joint_positions_rad": [
+        0.2103032276871672,
+        -3.0618030728996684,
+        -1.850177843346282,
+        -0.7378125017003837,
+        -2.5227832250278808,
+        2.869348660788395
+      ],
+      "coarse_requested_clear": false,
+      "worst_peak_speed_deg_s": 134.64320373535156,
+      "worst_peak_by_joint_deg_s": [
+        63.54289245605469,
+        81.45945739746094,
+        134.64320373535156,
+        133.2336883544922,
+        71.8037338256836,
+        57.479591369628906
+      ],
+      "minimum_joint_range_deg": [
+        13.072869300842285,
+        21.82276725769043,
+        27.61375617980957,
+        24.221139907836914,
+        13.288392066955566,
+        10.31544303894043
+      ],
+      "minimum_world_sphere_margin_m": 0.05262552574276924,
+      "minimum_self_sphere_margin_m": 0.010486312210559845,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1016,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu0",
+      "joint_positions_rad": [
+        0.04653425336231726,
+        -3.1678002496032387,
+        -1.9269087689808655,
+        -0.7004426297274147,
+        -2.481756445838104,
+        2.836959370747902
+      ],
+      "coarse_requested_clear": false,
+      "worst_peak_speed_deg_s": 135.1590576171875,
+      "worst_peak_by_joint_deg_s": [
+        57.48274612426758,
+        77.4368667602539,
+        120.3348388671875,
+        84.67933654785156,
+        89.40064239501953,
+        135.1590576171875
+      ],
+      "minimum_joint_range_deg": [
+        11.66246223449707,
+        21.30137825012207,
+        25.668710708618164,
+        17.7663516998291,
+        21.587289810180664,
+        15.362405776977539
+      ],
+      "minimum_world_sphere_margin_m": -0.0075600482523441315,
+      "minimum_self_sphere_margin_m": 0.010330036282539368,
+      "sphere_clear": false,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1053,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu5",
+      "joint_positions_rad": [
+        0.28270833385094246,
+        -3.0346395047696477,
+        -2.2147402041518967,
+        -0.9379752180292139,
+        -2.580847278905952,
+        3.044895346999197
+      ],
+      "coarse_requested_clear": false,
+      "worst_peak_speed_deg_s": 136.8854522705078,
+      "worst_peak_by_joint_deg_s": [
+        40.76521301269531,
+        76.02499389648438,
+        136.8854522705078,
+        91.2793197631836,
+        108.60169219970703,
+        32.6593132019043
+      ],
+      "minimum_joint_range_deg": [
+        8.476076126098633,
+        21.636917114257812,
+        30.005449295043945,
+        14.841546058654785,
+        29.877117156982422,
+        7.413678169250488
+      ],
+      "minimum_world_sphere_margin_m": -0.024362917989492416,
+      "minimum_self_sphere_margin_m": 0.008126825094223022,
+      "sphere_clear": false,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1033,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu1",
+      "joint_positions_rad": [
+        0.21827334402905846,
+        -3.208490070736758,
+        -1.9363349251439022,
+        -1.1458249921624442,
+        -2.341599879316761,
+        2.8950851571990555
+      ],
+      "coarse_requested_clear": false,
+      "worst_peak_speed_deg_s": 137.22869873046875,
+      "worst_peak_by_joint_deg_s": [
+        44.28551483154297,
+        79.14755249023438,
+        137.22869873046875,
+        120.60723876953125,
+        113.23928833007812,
+        56.616756439208984
+      ],
+      "minimum_joint_range_deg": [
+        9.17090892791748,
+        21.8735294342041,
+        30.565109252929688,
+        18.1356201171875,
+        31.116127014160156,
+        13.62823486328125
+      ],
+      "minimum_world_sphere_margin_m": -0.0022867247462272644,
+      "minimum_self_sphere_margin_m": 0.010825537145137787,
+      "sphere_clear": false,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1076,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu4",
+      "joint_positions_rad": [
+        0.29956768483411084,
+        -3.0346313146003188,
+        -2.1641739386464542,
+        -0.9756126574734358,
+        -2.090091405123012,
+        2.832146879525825
+      ],
+      "coarse_requested_clear": false,
+      "worst_peak_speed_deg_s": 137.63357543945312,
+      "worst_peak_by_joint_deg_s": [
+        37.47229766845703,
+        79.38985443115234,
+        137.63357543945312,
+        119.97129821777344,
+        114.24272918701172,
+        68.01596069335938
+      ],
+      "minimum_joint_range_deg": [
+        7.5815863609313965,
+        23.10912322998047,
+        29.2017822265625,
+        13.55427360534668,
+        31.066383361816406,
+        18.564453125
+      ],
+      "minimum_world_sphere_margin_m": -0.011135991662740707,
+      "minimum_self_sphere_margin_m": 0.014384053647518158,
+      "sphere_clear": false,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1003,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu3",
+      "joint_positions_rad": [
+        0.09107185076627593,
+        -3.068976061429482,
+        -1.939954274750857,
+        -0.6514453956689145,
+        -2.4420715761184835,
+        2.8140295713917474
+      ],
+      "coarse_requested_clear": false,
+      "worst_peak_speed_deg_s": 137.690185546875,
+      "worst_peak_by_joint_deg_s": [
+        61.78935241699219,
+        81.20960998535156,
+        123.37612915039062,
+        116.09736633300781,
+        81.57331085205078,
+        137.690185546875
+      ],
+      "minimum_joint_range_deg": [
+        12.592305183410645,
+        22.458084106445312,
+        25.385326385498047,
+        20.96385955810547,
+        16.395048141479492,
+        14.614527702331543
+      ],
+      "minimum_world_sphere_margin_m": 0.01916990801692009,
+      "minimum_self_sphere_margin_m": 0.011159993708133698,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1043,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu3",
+      "joint_positions_rad": [
+        0.24676819476435274,
+        -3.2360316113182015,
+        -1.8696017256270707,
+        -0.7646574410477107,
+        -2.506661036735279,
+        2.7220320492604295
+      ],
+      "coarse_requested_clear": true,
+      "worst_peak_speed_deg_s": 137.8918914794922,
+      "worst_peak_by_joint_deg_s": [
+        52.9984245300293,
+        74.21121978759766,
+        137.8918914794922,
+        109.69679260253906,
+        86.64322662353516,
+        129.76068115234375
+      ],
+      "minimum_joint_range_deg": [
+        11.189737319946289,
+        20.827991485595703,
+        29.436208724975586,
+        21.778614044189453,
+        21.692502975463867,
+        14.93128490447998
+      ],
+      "minimum_world_sphere_margin_m": -0.005396056920289993,
+      "minimum_self_sphere_margin_m": 0.011122293770313263,
+      "sphere_clear": false,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1002,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu2",
+      "joint_positions_rad": [
+        0.09630148237017899,
+        -3.0145797674202996,
+        -1.8032650727676092,
+        -0.6419209306096667,
+        -2.526020809239882,
+        2.919654351144262
+      ],
+      "coarse_requested_clear": false,
+      "worst_peak_speed_deg_s": 138.18663024902344,
+      "worst_peak_by_joint_deg_s": [
+        70.34304809570312,
+        86.05682373046875,
+        127.52305603027344,
+        138.18663024902344,
+        62.59489822387695,
+        49.021385192871094
+      ],
+      "minimum_joint_range_deg": [
+        14.294720649719238,
+        21.374433517456055,
+        25.6998291015625,
+        23.771793365478516,
+        11.067105293273926,
+        7.725367069244385
+      ],
+      "minimum_world_sphere_margin_m": 0.05262552574276924,
+      "minimum_self_sphere_margin_m": 0.01053127646446228,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1029,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu5",
+      "joint_positions_rad": [
+        0.0674508460952017,
+        -3.104029151368875,
+        -1.798885821216495,
+        -0.7126365120474294,
+        -2.576982422512852,
+        2.973515203581042
+      ],
+      "coarse_requested_clear": false,
+      "worst_peak_speed_deg_s": 138.40701293945312,
+      "worst_peak_by_joint_deg_s": [
+        66.99602508544922,
+        82.21212768554688,
+        122.03203582763672,
+        121.3998031616211,
+        72.26085662841797,
+        138.40701293945312
+      ],
+      "minimum_joint_range_deg": [
+        13.99495792388916,
+        20.92988395690918,
+        24.937572479248047,
+        19.40965461730957,
+        12.248085975646973,
+        8.807132720947266
+      ],
+      "minimum_world_sphere_margin_m": 0.04374990984797478,
+      "minimum_self_sphere_margin_m": 0.009413100779056549,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1012,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu4",
+      "joint_positions_rad": [
+        0.1564863662233086,
+        -3.08221298335331,
+        -1.8864884722899204,
+        -0.7531885617351679,
+        -2.4182387251878157,
+        3.0438571180640213
+      ],
+      "coarse_requested_clear": false,
+      "worst_peak_speed_deg_s": 139.86492919921875,
+      "worst_peak_by_joint_deg_s": [
+        60.70216751098633,
+        81.2702407836914,
+        130.3989715576172,
+        139.67813110351562,
+        83.53412628173828,
+        139.86492919921875
+      ],
+      "minimum_joint_range_deg": [
+        12.094892501831055,
+        22.538175582885742,
+        26.88681983947754,
+        23.856473922729492,
+        17.10720443725586,
+        17.49393081665039
+      ],
+      "minimum_world_sphere_margin_m": 0.03846805915236473,
+      "minimum_self_sphere_margin_m": 0.009960129857063293,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1000,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu0",
+      "joint_positions_rad": [
+        0.2932582309956048,
+        -3.079043030097136,
+        -1.9251443912716748,
+        -0.6535705106742224,
+        -2.512862073942615,
+        2.847347303744367
+      ],
+      "coarse_requested_clear": false,
+      "worst_peak_speed_deg_s": 140.20484924316406,
+      "worst_peak_by_joint_deg_s": [
+        60.351078033447266,
+        79.77328491210938,
+        140.20484924316406,
+        130.74497985839844,
+        72.18850708007812,
+        47.3580207824707
+      ],
+      "minimum_joint_range_deg": [
+        12.719596862792969,
+        21.93356704711914,
+        29.030563354492188,
+        22.199045181274414,
+        14.356510162353516,
+        8.554059982299805
+      ],
+      "minimum_world_sphere_margin_m": 0.020092535763978958,
+      "minimum_self_sphere_margin_m": 0.010683655738830566,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1061,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu5",
+      "joint_positions_rad": [
+        0.2960976628341151,
+        -3.2165790804579055,
+        -1.9256438424287137,
+        -0.559865835545884,
+        -2.482388032135457,
+        2.7329248730315436
+      ],
+      "coarse_requested_clear": false,
+      "worst_peak_speed_deg_s": 140.32286071777344,
+      "worst_peak_by_joint_deg_s": [
+        54.13396072387695,
+        76.72319030761719,
+        140.32286071777344,
+        112.4136734008789,
+        78.83474731445312,
+        129.98646545410156
+      ],
+      "minimum_joint_range_deg": [
+        11.864935874938965,
+        21.325529098510742,
+        30.073150634765625,
+        21.590044021606445,
+        18.185842514038086,
+        12.330184936523438
+      ],
+      "minimum_world_sphere_margin_m": -0.01996929571032524,
+      "minimum_self_sphere_margin_m": 0.011356651782989502,
+      "sphere_clear": false,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1095,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu7",
+      "joint_positions_rad": [
+        0.2206155087680705,
+        -3.4000548354772917,
+        -1.7571890512336157,
+        -0.9400649389604544,
+        -2.4561358343464526,
+        2.854962812396564
+      ],
+      "coarse_requested_clear": false,
+      "worst_peak_speed_deg_s": 140.92588806152344,
+      "worst_peak_by_joint_deg_s": [
+        42.794029235839844,
+        69.71013641357422,
+        140.92588806152344,
+        103.16064453125,
+        96.44242095947266,
+        138.83213806152344
+      ],
+      "minimum_joint_range_deg": [
+        9.666807174682617,
+        19.539955139160156,
+        31.30733871459961,
+        19.929920196533203,
+        27.513242721557617,
+        17.09284782409668
+      ],
+      "minimum_world_sphere_margin_m": -0.01656222715973854,
+      "minimum_self_sphere_margin_m": 0.010017521679401398,
+      "sphere_clear": false,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1013,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu5",
+      "joint_positions_rad": [
+        0.14232126527359565,
+        -3.1201148377379537,
+        -1.9663933824600652,
+        -0.6709398901514445,
+        -2.421217942768398,
+        2.8515157203638357
+      ],
+      "coarse_requested_clear": false,
+      "worst_peak_speed_deg_s": 142.09909057617188,
+      "worst_peak_by_joint_deg_s": [
+        56.2218132019043,
+        80.3461685180664,
+        127.94241333007812,
+        109.21923065185547,
+        86.2313003540039,
+        142.09909057617188
+      ],
+      "minimum_joint_range_deg": [
+        11.497776985168457,
+        22.015106201171875,
+        26.89666175842285,
+        20.93726348876953,
+        20.333812713623047,
+        16.381961822509766
+      ],
+      "minimum_world_sphere_margin_m": 0.004889216274023056,
+      "minimum_self_sphere_margin_m": 0.01070769876241684,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1075,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu3",
+      "joint_positions_rad": [
+        0.21947112655548126,
+        -2.875412050237207,
+        -2.1229875760305053,
+        -0.6701332101170678,
+        -2.160069473746549,
+        3.054067725035699
+      ],
+      "coarse_requested_clear": false,
+      "worst_peak_speed_deg_s": 144.1094207763672,
+      "worst_peak_by_joint_deg_s": [
+        56.43815231323242,
+        81.20555877685547,
+        129.70587158203125,
+        144.1094207763672,
+        92.58570098876953,
+        89.66630554199219
+      ],
+      "minimum_joint_range_deg": [
+        10.968131065368652,
+        24.639659881591797,
+        25.963085174560547,
+        21.27474021911621,
+        19.23103904724121,
+        20.967504501342773
+      ],
+      "minimum_world_sphere_margin_m": 0.028805885463953018,
+      "minimum_self_sphere_margin_m": 0.013637937605381012,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1036,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu4",
+      "joint_positions_rad": [
+        0.24314043999082502,
+        -3.4080730983306724,
+        -1.832876188494216,
+        -0.7427319085352855,
+        -2.3314293389716982,
+        2.96639900910599
+      ],
+      "coarse_requested_clear": false,
+      "worst_peak_speed_deg_s": 145.2677764892578,
+      "worst_peak_by_joint_deg_s": [
+        35.80245590209961,
+        70.68160247802734,
+        145.2677764892578,
+        115.56732940673828,
+        92.22742462158203,
+        81.08200073242188
+      ],
+      "minimum_joint_range_deg": [
+        9.522233963012695,
+        19.693279266357422,
+        32.3375358581543,
+        16.736339569091797,
+        27.144180297851562,
+        18.252408981323242
+      ],
+      "minimum_world_sphere_margin_m": -0.04552528262138367,
+      "minimum_self_sphere_margin_m": 0.010302655398845673,
+      "sphere_clear": false,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1010,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu2",
+      "joint_positions_rad": [
+        0.08311265786251877,
+        -3.0928556465076644,
+        -1.894114181053942,
+        -0.6047621918191566,
+        -2.65656193749268,
+        2.938889310934434
+      ],
+      "coarse_requested_clear": false,
+      "worst_peak_speed_deg_s": 145.97084045410156,
+      "worst_peak_by_joint_deg_s": [
+        66.48057556152344,
+        81.73667907714844,
+        121.62362670898438,
+        110.17789459228516,
+        72.7476577758789,
+        145.97084045410156
+      ],
+      "minimum_joint_range_deg": [
+        14.132773399353027,
+        20.66929817199707,
+        24.80315399169922,
+        20.00423812866211,
+        12.964599609375,
+        7.068453311920166
+      ],
+      "minimum_world_sphere_margin_m": 0.025506701320409775,
+      "minimum_self_sphere_margin_m": 0.0093141570687294,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1060,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu4",
+      "joint_positions_rad": [
+        0.1731443147932663,
+        -3.168207739647825,
+        -1.9381581511092283,
+        -0.5140251785050699,
+        -2.642225306921573,
+        2.7885217311411354
+      ],
+      "coarse_requested_clear": false,
+      "worst_peak_speed_deg_s": 146.16403198242188,
+      "worst_peak_by_joint_deg_s": [
+        61.095245361328125,
+        80.2003173828125,
+        128.88743591308594,
+        101.4836654663086,
+        74.55386352539062,
+        146.16403198242188
+      ],
+      "minimum_joint_range_deg": [
+        13.295123100280762,
+        20.238861083984375,
+        26.371549606323242,
+        18.431415557861328,
+        14.930013656616211,
+        6.207958698272705
+      ],
+      "minimum_world_sphere_margin_m": -0.008787710219621658,
+      "minimum_self_sphere_margin_m": 0.010166920721530914,
+      "sphere_clear": false,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1065,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu1",
+      "joint_positions_rad": [
+        0.22714554467798706,
+        -3.003590100625479,
+        -1.954974649990168,
+        -0.4116669186568361,
+        -2.6426418772012514,
+        2.812083761178768
+      ],
+      "coarse_requested_clear": false,
+      "worst_peak_speed_deg_s": 148.2255096435547,
+      "worst_peak_by_joint_deg_s": [
+        67.02526092529297,
+        86.07621002197266,
+        135.72996520996094,
+        133.5440673828125,
+        63.329566955566406,
+        148.2255096435547
+      ],
+      "minimum_joint_range_deg": [
+        14.776756286621094,
+        22.172582626342773,
+        27.389787673950195,
+        22.592491149902344,
+        11.808085441589355,
+        5.846914768218994
+      ],
+      "minimum_world_sphere_margin_m": 0.03444230929017067,
+      "minimum_self_sphere_margin_m": 0.010028049349784851,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1035,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu3",
+      "joint_positions_rad": [
+        0.3355501451235399,
+        -3.3053136374657472,
+        -1.6419728592574157,
+        -0.6840388855540133,
+        -2.6847451581702333,
+        2.874026241359516
+      ],
+      "coarse_requested_clear": false,
+      "worst_peak_speed_deg_s": 150.89474487304688,
+      "worst_peak_by_joint_deg_s": [
+        62.44101333618164,
+        80.5489730834961,
+        143.04641723632812,
+        150.89474487304688,
+        61.596431732177734,
+        150.65176391601562
+      ],
+      "minimum_joint_range_deg": [
+        13.392644882202148,
+        19.024534225463867,
+        30.510753631591797,
+        23.756271362304688,
+        12.549775123596191,
+        11.27706527709961
+      ],
+      "minimum_world_sphere_margin_m": 0.02608642354607582,
+      "minimum_self_sphere_margin_m": 0.009140506386756897,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1058,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu2",
+      "joint_positions_rad": [
+        0.39422309747836415,
+        -3.0798474158696334,
+        -1.9188973118490114,
+        -0.5680937707165035,
+        -2.624122766782664,
+        3.027669566082692
+      ],
+      "coarse_requested_clear": false,
+      "worst_peak_speed_deg_s": 151.54566955566406,
+      "worst_peak_by_joint_deg_s": [
+        62.42563247680664,
+        80.42344665527344,
+        148.3726348876953,
+        151.54566955566406,
+        68.86442565917969,
+        42.2664909362793
+      ],
+      "minimum_joint_range_deg": [
+        13.539128303527832,
+        21.677898406982422,
+        30.421777725219727,
+        23.56031608581543,
+        12.786550521850586,
+        3.694148540496826
+      ],
+      "minimum_world_sphere_margin_m": 0.010527703911066055,
+      "minimum_self_sphere_margin_m": 0.00919465720653534,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1030,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu6",
+      "joint_positions_rad": [
+        0.16814625442315864,
+        -3.065596740425957,
+        -1.7768996183987453,
+        -0.6544960238570006,
+        -2.5087398434470933,
+        3.020780708038255
+      ],
+      "coarse_requested_clear": false,
+      "worst_peak_speed_deg_s": 151.7088165283203,
+      "worst_peak_by_joint_deg_s": [
+        67.44783782958984,
+        85.1180648803711,
+        134.07135009765625,
+        151.7088165283203,
+        64.3553695678711,
+        54.978172302246094
+      ],
+      "minimum_joint_range_deg": [
+        13.841883659362793,
+        21.58411979675293,
+        27.334962844848633,
+        24.37825584411621,
+        11.734906196594238,
+        9.285040855407715
+      ],
+      "minimum_world_sphere_margin_m": 0.05262552574276924,
+      "minimum_self_sphere_margin_m": 0.010040432214736938,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1042,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu2",
+      "joint_positions_rad": [
+        0.0029457741405490567,
+        -2.921054017921438,
+        -1.779751987732324,
+        -0.7286421238191033,
+        -2.6580289937228834,
+        2.9181965605003803
+      ],
+      "coarse_requested_clear": false,
+      "worst_peak_speed_deg_s": 152.4205780029297,
+      "worst_peak_by_joint_deg_s": [
+        77.75646209716797,
+        85.6610107421875,
+        120.09041595458984,
+        152.4205780029297,
+        61.633853912353516,
+        47.12174606323242
+      ],
+      "minimum_joint_range_deg": [
+        15.066583633422852,
+        20.443410873413086,
+        23.290090560913086,
+        24.147916793823242,
+        8.938039779663086,
+        5.869167804718018
+      ],
+      "minimum_world_sphere_margin_m": 0.05262552574276924,
+      "minimum_self_sphere_margin_m": 0.010214805603027344,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1087,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu7",
+      "joint_positions_rad": [
+        0.47943302261977716,
+        -3.127876113450368,
+        -1.930139323915047,
+        -0.6980509376228075,
+        -2.648440738199264,
+        2.605569983900477
+      ],
+      "coarse_requested_clear": false,
+      "worst_peak_speed_deg_s": 152.4877166748047,
+      "worst_peak_by_joint_deg_s": [
+        57.29537582397461,
+        74.54422760009766,
+        152.3156280517578,
+        141.0901336669922,
+        73.63233184814453,
+        152.4877166748047
+      ],
+      "minimum_joint_range_deg": [
+        12.287458419799805,
+        21.295927047729492,
+        31.65806770324707,
+        22.975467681884766,
+        15.144536972045898,
+        13.217535018920898
+      ],
+      "minimum_world_sphere_margin_m": -0.010832082480192184,
+      "minimum_self_sphere_margin_m": 0.011005677282810211,
+      "sphere_clear": false,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1050,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu2",
+      "joint_positions_rad": [
+        -0.12515061894411017,
+        -2.9714915296851934,
+        -1.82646610202641,
+        -0.6703682931950259,
+        -2.6626148432168577,
+        2.684182200299319
+      ],
+      "coarse_requested_clear": false,
+      "worst_peak_speed_deg_s": 153.61309814453125,
+      "worst_peak_by_joint_deg_s": [
+        75.82701110839844,
+        85.82139587402344,
+        105.3190689086914,
+        129.8022003173828,
+        65.24331665039062,
+        153.61309814453125
+      ],
+      "minimum_joint_range_deg": [
+        15.397871971130371,
+        20.66526985168457,
+        20.27572250366211,
+        21.275829315185547,
+        9.869144439697266,
+        6.1040167808532715
+      ],
+      "minimum_world_sphere_margin_m": 0.05262528732419014,
+      "minimum_self_sphere_margin_m": 0.011527709662914276,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1017,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu1",
+      "joint_positions_rad": [
+        0.16516180593944146,
+        -3.066858621353392,
+        -1.797463349692688,
+        -0.7096912064296003,
+        -2.4804972291965384,
+        3.024035255761744
+      ],
+      "coarse_requested_clear": false,
+      "worst_peak_speed_deg_s": 153.85401916503906,
+      "worst_peak_by_joint_deg_s": [
+        64.83779907226562,
+        83.44099426269531,
+        133.3643341064453,
+        153.85401916503906,
+        69.90829467773438,
+        133.39019775390625
+      ],
+      "minimum_joint_range_deg": [
+        13.253657341003418,
+        22.035951614379883,
+        27.21152687072754,
+        25.749637603759766,
+        12.508384704589844,
+        13.24913215637207
+      ],
+      "minimum_world_sphere_margin_m": 0.05262552574276924,
+      "minimum_self_sphere_margin_m": 0.009989067912101746,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1110,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu6",
+      "joint_positions_rad": [
+        0.4617707652065888,
+        -2.337769488994559,
+        -1.9876487883617409,
+        0.037403616714001386,
+        2.0652353424551935,
+        1.1028162475149215
+      ],
+      "coarse_requested_clear": false,
+      "worst_peak_speed_deg_s": 154.0404052734375,
+      "worst_peak_by_joint_deg_s": [
+        58.42268753051758,
+        77.2527084350586,
+        154.0404052734375,
+        149.4068145751953,
+        121.57727813720703,
+        134.09719848632812
+      ],
+      "minimum_joint_range_deg": [
+        10.373887062072754,
+        21.1970272064209,
+        29.62858772277832,
+        23.405996322631836,
+        32.621376037597656,
+        23.09708595275879
+      ],
+      "minimum_world_sphere_margin_m": 0.05262552574276924,
+      "minimum_self_sphere_margin_m": 0.015966281294822693,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1005,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu5",
+      "joint_positions_rad": [
+        0.20324880742471227,
+        -3.0228301922098204,
+        -1.855653714117554,
+        -0.7862041569872741,
+        -2.468442849388916,
+        3.00118407942081
+      ],
+      "coarse_requested_clear": false,
+      "worst_peak_speed_deg_s": 154.051025390625,
+      "worst_peak_by_joint_deg_s": [
+        63.14463806152344,
+        80.86923217773438,
+        134.8851318359375,
+        154.051025390625,
+        75.91917419433594,
+        132.5873565673828
+      ],
+      "minimum_joint_range_deg": [
+        12.693869590759277,
+        22.445175170898438,
+        27.410524368286133,
+        26.927759170532227,
+        13.622743606567383,
+        14.979820251464844
+      ],
+      "minimum_world_sphere_margin_m": 0.05262552574276924,
+      "minimum_self_sphere_margin_m": 0.009994253516197205,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1091,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu3",
+      "joint_positions_rad": [
+        0.36887718845877404,
+        -3.3549432575564815,
+        -1.9183067660092223,
+        -0.7638458705593966,
+        -2.2912936258458196,
+        2.9898720756294366
+      ],
+      "coarse_requested_clear": false,
+      "worst_peak_speed_deg_s": 154.25491333007812,
+      "worst_peak_by_joint_deg_s": [
+        32.50417709350586,
+        71.30709838867188,
+        154.25491333007812,
+        133.48838806152344,
+        97.36698913574219,
+        62.18552780151367
+      ],
+      "minimum_joint_range_deg": [
+        8.860313415527344,
+        20.412948608398438,
+        33.76367950439453,
+        17.810148239135742,
+        28.1129207611084,
+        17.107778549194336
+      ],
+      "minimum_world_sphere_margin_m": -0.053056489676237106,
+      "minimum_self_sphere_margin_m": 0.010593876242637634,
+      "sphere_clear": false,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1066,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu2",
+      "joint_positions_rad": [
+        0.1866286012155065,
+        -3.147101414591735,
+        -2.0777596294701923,
+        -0.46562619954098916,
+        -2.7485233970200267,
+        3.2151117232554545
+      ],
+      "coarse_requested_clear": false,
+      "worst_peak_speed_deg_s": 154.65798950195312,
+      "worst_peak_by_joint_deg_s": [
+        55.675045013427734,
+        77.35613250732422,
+        130.38809204101562,
+        56.02051544189453,
+        80.41669464111328,
+        154.65798950195312
+      ],
+      "minimum_joint_range_deg": [
+        12.560158729553223,
+        20.637784957885742,
+        27.460556030273438,
+        10.806687355041504,
+        16.9774169921875,
+        15.293489456176758
+      ],
+      "minimum_world_sphere_margin_m": -0.034192029386758804,
+      "minimum_self_sphere_margin_m": 0.0014655441045761108,
+      "sphere_clear": false,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1048,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu0",
+      "joint_positions_rad": [
+        0.30096131001411974,
+        -3.2295882210515576,
+        -2.0190408225026113,
+        -0.8342910769375265,
+        -2.7194961251130145,
+        3.0681622258505126
+      ],
+      "coarse_requested_clear": false,
+      "worst_peak_speed_deg_s": 155.12484741210938,
+      "worst_peak_by_joint_deg_s": [
+        44.49662780761719,
+        70.75907897949219,
+        144.0407257080078,
+        66.11441802978516,
+        96.7916488647461,
+        155.12484741210938
+      ],
+      "minimum_joint_range_deg": [
+        9.870243072509766,
+        19.616260528564453,
+        31.622879028320312,
+        19.836740493774414,
+        26.40178108215332,
+        17.62640953063965
+      ],
+      "minimum_world_sphere_margin_m": -0.043666403740644455,
+      "minimum_self_sphere_margin_m": 0.006701543927192688,
+      "sphere_clear": false,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1080,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu0",
+      "joint_positions_rad": [
+        0.34390527315774727,
+        -3.092424245610899,
+        -1.7798679945914744,
+        -1.063199363187476,
+        -2.5117347126206995,
+        3.072371627662482
+      ],
+      "coarse_requested_clear": false,
+      "worst_peak_speed_deg_s": 156.61810302734375,
+      "worst_peak_by_joint_deg_s": [
+        60.182037353515625,
+        78.20055389404297,
+        139.5853271484375,
+        156.61810302734375,
+        90.68805694580078,
+        133.4208984375
+      ],
+      "minimum_joint_range_deg": [
+        11.55103588104248,
+        22.16474151611328,
+        28.857521057128906,
+        31.10544776916504,
+        18.747024536132812,
+        16.122156143188477
+      ],
+      "minimum_world_sphere_margin_m": 0.05262552574276924,
+      "minimum_self_sphere_margin_m": 0.008862525224685669,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1045,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu5",
+      "joint_positions_rad": [
+        0.3539302202968513,
+        -2.750696655619243,
+        -2.1274485083981016,
+        -0.7971399030353901,
+        -2.426549876305775,
+        2.7758371949908516
+      ],
+      "coarse_requested_clear": false,
+      "worst_peak_speed_deg_s": 157.60690307617188,
+      "worst_peak_by_joint_deg_s": [
+        59.253684997558594,
+        80.74288940429688,
+        139.73751831054688,
+        157.60690307617188,
+        80.80154418945312,
+        51.1031494140625
+      ],
+      "minimum_joint_range_deg": [
+        12.043794631958008,
+        24.76578712463379,
+        27.908021926879883,
+        26.87750244140625,
+        15.262876510620117,
+        10.00757884979248
+      ],
+      "minimum_world_sphere_margin_m": 0.03847130015492439,
+      "minimum_self_sphere_margin_m": 0.012105844914913177,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1069,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu5",
+      "joint_positions_rad": [
+        0.24679123540094067,
+        -2.764396818066266,
+        -2.0404802401059,
+        -0.420010713793252,
+        -2.5111929599936116,
+        3.0401567521947683
+      ],
+      "coarse_requested_clear": false,
+      "worst_peak_speed_deg_s": 160.07093811035156,
+      "worst_peak_by_joint_deg_s": [
+        71.1726303100586,
+        85.17362213134766,
+        142.46484375,
+        160.07093811035156,
+        62.46177673339844,
+        43.17026138305664
+      ],
+      "minimum_joint_range_deg": [
+        15.052907943725586,
+        23.208995819091797,
+        27.50484275817871,
+        23.85327911376953,
+        12.592463493347168,
+        5.498069763183594
+      ],
+      "minimum_world_sphere_margin_m": 0.05262528732419014,
+      "minimum_self_sphere_margin_m": 0.004238486289978027,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1068,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu4",
+      "joint_positions_rad": [
+        -0.3162357293647684,
+        -3.1904030141507165,
+        -1.3350978676951573,
+        -0.8344422440589281,
+        -2.5651815918901786,
+        3.3121323502854483
+      ],
+      "coarse_requested_clear": false,
+      "worst_peak_speed_deg_s": 160.41192626953125,
+      "worst_peak_by_joint_deg_s": [
+        82.86392211914062,
+        88.86601257324219,
+        89.22025299072266,
+        160.41192626953125,
+        59.48641586303711,
+        146.7486114501953
+      ],
+      "minimum_joint_range_deg": [
+        15.477804183959961,
+        18.446441650390625,
+        17.011104583740234,
+        25.921682357788086,
+        6.914090633392334,
+        14.798068046569824
+      ],
+      "minimum_world_sphere_margin_m": 0.028147350996732712,
+      "minimum_self_sphere_margin_m": 0.008967563509941101,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1127,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu7",
+      "joint_positions_rad": [
+        0.5978191615043837,
+        -2.3653502517759577,
+        -1.9388057385214577,
+        -0.05618240077443584,
+        2.119128976696216,
+        1.095389172326808
+      ],
+      "coarse_requested_clear": false,
+      "worst_peak_speed_deg_s": 162.04603576660156,
+      "worst_peak_by_joint_deg_s": [
+        54.71464920043945,
+        80.34788513183594,
+        159.3292236328125,
+        162.04603576660156,
+        112.20197296142578,
+        140.59869384765625
+      ],
+      "minimum_joint_range_deg": [
+        9.775516510009766,
+        21.829925537109375,
+        31.039642333984375,
+        26.902034759521484,
+        30.233659744262695,
+        24.11129379272461
+      ],
+      "minimum_world_sphere_margin_m": 0.05262552574276924,
+      "minimum_self_sphere_margin_m": 0.014993183314800262,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1059,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu3",
+      "joint_positions_rad": [
+        -0.206619910465411,
+        -2.9391599486814197,
+        -2.0297859465235177,
+        -0.6535292890936782,
+        -2.709972240305116,
+        3.0515733678455903
+      ],
+      "coarse_requested_clear": false,
+      "worst_peak_speed_deg_s": 162.56292724609375,
+      "worst_peak_by_joint_deg_s": [
+        71.48780822753906,
+        80.23527526855469,
+        95.38558959960938,
+        86.11714935302734,
+        86.75763702392578,
+        162.56292724609375
+      ],
+      "minimum_joint_range_deg": [
+        14.690025329589844,
+        21.531856536865234,
+        17.66489601135254,
+        18.223941802978516,
+        15.227919578552246,
+        8.08944320678711
+      ],
+      "minimum_world_sphere_margin_m": 0.0032274313271045685,
+      "minimum_self_sphere_margin_m": 0.007681742310523987,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1047,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu7",
+      "joint_positions_rad": [
+        0.12262177618445169,
+        -2.956829611792737,
+        -1.8878391040474014,
+        -0.677306767869972,
+        -2.4014693345031644,
+        3.082339297281452
+      ],
+      "coarse_requested_clear": false,
+      "worst_peak_speed_deg_s": 163.8451690673828,
+      "worst_peak_by_joint_deg_s": [
+        65.78973388671875,
+        85.86734771728516,
+        130.62049865722656,
+        163.8451690673828,
+        75.23731994628906,
+        141.74069213867188
+      ],
+      "minimum_joint_range_deg": [
+        13.319406509399414,
+        23.15097999572754,
+        26.008607864379883,
+        27.37832260131836,
+        12.358830451965332,
+        17.05748176574707
+      ],
+      "minimum_world_sphere_margin_m": 0.05262552574276924,
+      "minimum_self_sphere_margin_m": 0.010695211589336395,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1032,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu0",
+      "joint_positions_rad": [
+        0.3462784638179822,
+        -3.0870374103938243,
+        -1.9423767620987842,
+        -0.7804858935610908,
+        -2.7371960000776325,
+        2.953994581863056
+      ],
+      "coarse_requested_clear": false,
+      "worst_peak_speed_deg_s": 164.7906494140625,
+      "worst_peak_by_joint_deg_s": [
+        60.48157501220703,
+        76.19695281982422,
+        140.72979736328125,
+        89.23965454101562,
+        77.60527038574219,
+        164.7906494140625
+      ],
+      "minimum_joint_range_deg": [
+        12.726066589355469,
+        21.795637130737305,
+        29.167713165283203,
+        20.661802291870117,
+        15.411843299865723,
+        18.449186325073242
+      ],
+      "minimum_world_sphere_margin_m": 0.005422700196504593,
+      "minimum_self_sphere_margin_m": 0.007419511675834656,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1079,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu7",
+      "joint_positions_rad": [
+        0.23838556528060129,
+        -2.917313007843236,
+        -1.8252255057751523,
+        -0.6569515608538142,
+        -2.544540395408235,
+        2.7042163961980226
+      ],
+      "coarse_requested_clear": false,
+      "worst_peak_speed_deg_s": 164.98013305664062,
+      "worst_peak_by_joint_deg_s": [
+        71.87256622314453,
+        85.78907775878906,
+        142.9330596923828,
+        164.98013305664062,
+        58.13843536376953,
+        37.31401062011719
+      ],
+      "minimum_joint_range_deg": [
+        14.274401664733887,
+        21.61932373046875,
+        28.319950103759766,
+        26.014928817749023,
+        11.165528297424316,
+        6.0349907875061035
+      ],
+      "minimum_world_sphere_margin_m": 0.05262528732419014,
+      "minimum_self_sphere_margin_m": 0.012511514127254486,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1124,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu4",
+      "joint_positions_rad": [
+        0.523629044763785,
+        -2.2075929892072734,
+        -1.9929473815482803,
+        -0.13662360920279415,
+        2.0927814139980536,
+        1.0029200237304376
+      ],
+      "coarse_requested_clear": false,
+      "worst_peak_speed_deg_s": 165.047607421875,
+      "worst_peak_by_joint_deg_s": [
+        56.53903579711914,
+        75.4723892211914,
+        158.3973388671875,
+        165.047607421875,
+        116.15194702148438,
+        139.55270385742188
+      ],
+      "minimum_joint_range_deg": [
+        10.053750991821289,
+        20.855653762817383,
+        30.422733306884766,
+        27.677038192749023,
+        31.576255798339844,
+        24.4070987701416
+      ],
+      "minimum_world_sphere_margin_m": 0.05262552574276924,
+      "minimum_self_sphere_margin_m": 0.014679767191410065,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1090,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu2",
+      "joint_positions_rad": [
+        0.4463416336710701,
+        -3.2773057929861973,
+        -1.912302787540334,
+        -0.6094965064369899,
+        -2.190608161479058,
+        3.152491955824539
+      ],
+      "coarse_requested_clear": false,
+      "worst_peak_speed_deg_s": 166.1459197998047,
+      "worst_peak_by_joint_deg_s": [
+        41.70331954956055,
+        76.25680541992188,
+        157.67245483398438,
+        166.1459197998047,
+        89.7643814086914,
+        79.55873107910156
+      ],
+      "minimum_joint_range_deg": [
+        9.673201560974121,
+        21.7990665435791,
+        33.83905792236328,
+        22.490854263305664,
+        22.607994079589844,
+        20.34741973876953
+      ],
+      "minimum_world_sphere_margin_m": -0.044122111052274704,
+      "minimum_self_sphere_margin_m": 0.01220288872718811,
+      "sphere_clear": false,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1086,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu6",
+      "joint_positions_rad": [
+        0.04625240047177451,
+        -2.894670200342904,
+        -1.7152408350668198,
+        -0.8288697872139021,
+        -2.5948154036187208,
+        2.9736667607602474
+      ],
+      "coarse_requested_clear": false,
+      "worst_peak_speed_deg_s": 166.66741943359375,
+      "worst_peak_by_joint_deg_s": [
+        78.0710678100586,
+        86.24813842773438,
+        126.55692291259766,
+        166.66741943359375,
+        58.679115295410156,
+        36.41667175292969
+      ],
+      "minimum_joint_range_deg": [
+        14.854299545288086,
+        19.840892791748047,
+        24.649850845336914,
+        27.165061950683594,
+        9.410484313964844,
+        6.021317005157471
+      ],
+      "minimum_world_sphere_margin_m": 0.05262552574276924,
+      "minimum_self_sphere_margin_m": 0.009943678975105286,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1071,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu7",
+      "joint_positions_rad": [
+        -0.0028122061428049183,
+        -2.6079841746190366,
+        -1.9868503517545784,
+        -0.730092531485153,
+        -2.72161006138854,
+        2.9188454528649275
+      ],
+      "coarse_requested_clear": false,
+      "worst_peak_speed_deg_s": 167.3064422607422,
+      "worst_peak_by_joint_deg_s": [
+        78.24215698242188,
+        80.5143051147461,
+        125.50928497314453,
+        151.48284912109375,
+        58.59114074707031,
+        167.3064422607422
+      ],
+      "minimum_joint_range_deg": [
+        15.411361694335938,
+        20.987735748291016,
+        23.577600479125977,
+        23.37950325012207,
+        9.525190353393555,
+        7.954260349273682
+      ],
+      "minimum_world_sphere_margin_m": 0.05262528732419014,
+      "minimum_self_sphere_margin_m": 0.009983360767364502,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1038,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu6",
+      "joint_positions_rad": [
+        0.12665904180690188,
+        -2.957132348950058,
+        -1.825101603186555,
+        -0.5391761492049446,
+        -2.4776281400272193,
+        2.980735052335726
+      ],
+      "coarse_requested_clear": false,
+      "worst_peak_speed_deg_s": 168.4220733642578,
+      "worst_peak_by_joint_deg_s": [
+        72.14006805419922,
+        89.38593292236328,
+        134.63063049316406,
+        168.4220733642578,
+        62.48706817626953,
+        58.791595458984375
+      ],
+      "minimum_joint_range_deg": [
+        14.572967529296875,
+        21.67087745666504,
+        26.52704620361328,
+        24.317296981811523,
+        12.070378303527832,
+        7.619635581970215
+      ],
+      "minimum_world_sphere_margin_m": 0.05262552574276924,
+      "minimum_self_sphere_margin_m": 0.009844616055488586,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1041,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu1",
+      "joint_positions_rad": [
+        0.4396179987843328,
+        -3.0338554935779904,
+        -1.9055908361206277,
+        -0.4376026690852959,
+        -2.436559242937666,
+        2.7674414378241905
+      ],
+      "coarse_requested_clear": false,
+      "worst_peak_speed_deg_s": 176.68382263183594,
+      "worst_peak_by_joint_deg_s": [
+        63.6953010559082,
+        85.21420288085938,
+        154.5834197998047,
+        176.68382263183594,
+        66.42198944091797,
+        52.43031692504883
+      ],
+      "minimum_joint_range_deg": [
+        13.948116302490234,
+        22.773351669311523,
+        31.715879440307617,
+        24.953126907348633,
+        13.143905639648438,
+        7.223197937011719
+      ],
+      "minimum_world_sphere_margin_m": 0.015352252870798111,
+      "minimum_self_sphere_margin_m": -0.0028479844331741333,
+      "sphere_clear": false,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1055,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu7",
+      "joint_positions_rad": [
+        0.41787161674959544,
+        -3.08865847897028,
+        -1.7599913895919757,
+        -0.8531741040305418,
+        -2.4741916791596816,
+        3.153021017215758
+      ],
+      "coarse_requested_clear": false,
+      "worst_peak_speed_deg_s": 184.3881072998047,
+      "worst_peak_by_joint_deg_s": [
+        60.2767219543457,
+        78.07759094238281,
+        151.42189025878906,
+        184.3881072998047,
+        72.86963653564453,
+        137.34246826171875
+      ],
+      "minimum_joint_range_deg": [
+        12.098058700561523,
+        21.905452728271484,
+        31.321134567260742,
+        31.301986694335938,
+        12.93589973449707,
+        13.302339553833008
+      ],
+      "minimum_world_sphere_margin_m": 0.05262528732419014,
+      "minimum_self_sphere_margin_m": 0.009450793266296387,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1078,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu6",
+      "joint_positions_rad": [
+        0.4483255358625329,
+        -2.9551038936333196,
+        -1.7714412239165147,
+        -0.9374761251470229,
+        -2.5356281195959482,
+        3.0871022674159043
+      ],
+      "coarse_requested_clear": false,
+      "worst_peak_speed_deg_s": 186.2494354248047,
+      "worst_peak_by_joint_deg_s": [
+        66.11174011230469,
+        81.02027130126953,
+        151.81475830078125,
+        186.2494354248047,
+        70.44910430908203,
+        55.549468994140625
+      ],
+      "minimum_joint_range_deg": [
+        12.469660758972168,
+        21.73310089111328,
+        30.870254516601562,
+        33.18350601196289,
+        11.251096725463867,
+        9.207545280456543
+      ],
+      "minimum_world_sphere_margin_m": 0.05262528732419014,
+      "minimum_self_sphere_margin_m": 0.009604498744010925,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1037,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu5",
+      "joint_positions_rad": [
+        0.3237393981783472,
+        -2.931385050220634,
+        -1.7127078576310792,
+        -0.7366159825934063,
+        -2.672867883288617,
+        2.8780294640624686
+      ],
+      "coarse_requested_clear": false,
+      "worst_peak_speed_deg_s": 190.4979248046875,
+      "worst_peak_by_joint_deg_s": [
+        75.25495147705078,
+        85.7559814453125,
+        148.9025115966797,
+        190.4979248046875,
+        55.014102935791016,
+        142.55831909179688
+      ],
+      "minimum_joint_range_deg": [
+        14.35309886932373,
+        19.93588638305664,
+        29.988367080688477,
+        28.925254821777344,
+        11.243391990661621,
+        2.256216287612915
+      ],
+      "minimum_world_sphere_margin_m": 0.05262552574276924,
+      "minimum_self_sphere_margin_m": 0.010673142969608307,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1101,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu5",
+      "joint_positions_rad": [
+        0.38122710399294585,
+        -2.3376255488942657,
+        -1.9444975133352052,
+        0.1425754532653306,
+        2.176572402103629,
+        1.2434303251238406
+      ],
+      "coarse_requested_clear": false,
+      "worst_peak_speed_deg_s": 203.16812133789062,
+      "worst_peak_by_joint_deg_s": [
+        60.20281219482422,
+        75.24888610839844,
+        156.855224609375,
+        134.62930297851562,
+        130.21934509277344,
+        203.16812133789062
+      ],
+      "minimum_joint_range_deg": [
+        10.863794326782227,
+        20.010513305664062,
+        30.056190490722656,
+        20.33333969116211,
+        33.754295349121094,
+        23.168943405151367
+      ],
+      "minimum_world_sphere_margin_m": 0.05262552574276924,
+      "minimum_self_sphere_margin_m": 0.015007562935352325,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1070,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu6",
+      "joint_positions_rad": [
+        0.37866472408178364,
+        -2.567867584518441,
+        -1.9101810822774112,
+        -0.726101784155019,
+        -2.5795830349004523,
+        2.9713394166788283
+      ],
+      "coarse_requested_clear": false,
+      "worst_peak_speed_deg_s": 209.8757781982422,
+      "worst_peak_by_joint_deg_s": [
+        75.70953369140625,
+        81.68276977539062,
+        164.28268432617188,
+        209.8757781982422,
+        50.505531311035156,
+        27.745656967163086
+      ],
+      "minimum_joint_range_deg": [
+        14.913280487060547,
+        21.013418197631836,
+        31.732284545898438,
+        32.13513946533203,
+        13.124822616577148,
+        1.9729410409927368
+      ],
+      "minimum_world_sphere_margin_m": 0.05262528732419014,
+      "minimum_self_sphere_margin_m": 0.01088462769985199,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1077,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu5",
+      "joint_positions_rad": [
+        0.5759695889964586,
+        -3.4641867953643226,
+        -1.4317453768773933,
+        -0.4261344489529929,
+        -2.389588444967513,
+        3.3080745194085783
+      ],
+      "coarse_requested_clear": false,
+      "worst_peak_speed_deg_s": 216.86524963378906,
+      "worst_peak_by_joint_deg_s": [
+        61.64689254760742,
+        84.73088836669922,
+        147.81744384765625,
+        216.86524963378906,
+        62.15171813964844,
+        74.3590087890625
+      ],
+      "minimum_joint_range_deg": [
+        13.708474159240723,
+        17.345523834228516,
+        34.00721740722656,
+        34.721160888671875,
+        14.058932304382324,
+        9.935848236083984
+      ],
+      "minimum_world_sphere_margin_m": -0.018392320722341537,
+      "minimum_self_sphere_margin_m": -0.011435620486736298,
+      "sphere_clear": false,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1125,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu5",
+      "joint_positions_rad": [
+        0.6436789975136905,
+        -2.61382492529048,
+        -2.093836209156193,
+        -0.36031415263545624,
+        2.133314092380275,
+        0.9089541998064279
+      ],
+      "coarse_requested_clear": true,
+      "worst_peak_speed_deg_s": 219.54722595214844,
+      "worst_peak_by_joint_deg_s": [
+        55.67570114135742,
+        84.27803802490234,
+        136.7665252685547,
+        132.59207153320312,
+        60.78840637207031,
+        219.54722595214844
+      ],
+      "minimum_joint_range_deg": [
+        11.016951560974121,
+        23.67637062072754,
+        27.9095516204834,
+        19.466175079345703,
+        17.687580108642578,
+        37.17341232299805
+      ],
+      "minimum_world_sphere_margin_m": -0.0030130520462989807,
+      "minimum_self_sphere_margin_m": 0.0161701962351799,
+      "sphere_clear": false,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1104,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu0",
+      "joint_positions_rad": [
+        0.5182133287999018,
+        -2.24027299358801,
+        -2.093682141842356,
+        -0.04939281275085383,
+        2.210158717192099,
+        1.1918513593109286
+      ],
+      "coarse_requested_clear": false,
+      "worst_peak_speed_deg_s": 235.50198364257812,
+      "worst_peak_by_joint_deg_s": [
+        52.52621841430664,
+        75.41029357910156,
+        155.74850463867188,
+        116.8683853149414,
+        107.10983276367188,
+        235.50198364257812
+      ],
+      "minimum_joint_range_deg": [
+        9.911145210266113,
+        22.327648162841797,
+        30.546005249023438,
+        19.343578338623047,
+        29.648422241210938,
+        31.600534439086914
+      ],
+      "minimum_world_sphere_margin_m": 0.05262552574276924,
+      "minimum_self_sphere_margin_m": 0.014888130128383636,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1097,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu1",
+      "joint_positions_rad": [
+        0.6131897132529779,
+        -2.307900707082186,
+        -1.7758746564043115,
+        -0.08489392024549769,
+        2.33630654056065,
+        0.9097015253497783
+      ],
+      "coarse_requested_clear": false,
+      "worst_peak_speed_deg_s": 237.566650390625,
+      "worst_peak_by_joint_deg_s": [
+        53.33196258544922,
+        75.25254821777344,
+        169.24061584472656,
+        150.02999877929688,
+        116.70874786376953,
+        237.566650390625
+      ],
+      "minimum_joint_range_deg": [
+        9.631778717041016,
+        18.47269630432129,
+        33.407047271728516,
+        28.684118270874023,
+        30.30766487121582,
+        25.305965423583984
+      ],
+      "minimum_world_sphere_margin_m": 0.03996122255921364,
+      "minimum_self_sphere_margin_m": 0.006513457745313644,
+      "sphere_clear": true,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    },
+    {
+      "candidate": 1108,
+      "preview_directory": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_poses_gpu4",
+      "joint_positions_rad": [
+        0.5823692263994406,
+        -2.5224565107747328,
+        -2.277297370958603,
+        -0.22708764361183392,
+        2.2594711746247604,
+        1.0685712287455487
+      ],
+      "coarse_requested_clear": true,
+      "worst_peak_speed_deg_s": 252.62081909179688,
+      "worst_peak_by_joint_deg_s": [
+        50.212650299072266,
+        78.53681182861328,
+        141.27816772460938,
+        72.58519744873047,
+        65.53680419921875,
+        252.62081909179688
+      ],
+      "minimum_joint_range_deg": [
+        10.801012992858887,
+        24.386533737182617,
+        30.546865463256836,
+        10.105306625366211,
+        16.720684051513672,
+        43.396907806396484
+      ],
+      "minimum_world_sphere_margin_m": -0.04935836419463158,
+      "minimum_self_sphere_margin_m": 0.014648735523223877,
+      "sphere_clear": false,
+      "speed_screen_pass": false,
+      "simulation_speed_cap_active": false,
+      "models": [
+        "fit_gpu6_generation_1",
+        "fit_generation_1",
+        "fit_gpu0_generation_1"
+      ]
+    }
+  ],
+  "source_summary": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/local_search_summary.json",
+  "source_models": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/77_half_fast_only_fit_pose_search_20260919/early_pose_models.json"
+}

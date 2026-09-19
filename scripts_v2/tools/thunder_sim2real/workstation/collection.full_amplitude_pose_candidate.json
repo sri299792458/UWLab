@@ -1,0 +1,103 @@
+{
+  "robot_ip": "10.33.55.89",
+  "payload_mass_kg": 1.04,
+  "payload_cog_m": [
+    -0.002,
+    0.001,
+    0.047
+  ],
+  "polyscope_version": "5.26.1.140514",
+  "gripper_configuration": "open_empty",
+  "start_joint_positions_rad": [
+    0.2328343391418457,
+    -2.1665337085723877,
+    -2.385446548461914,
+    -1.7299463748931885,
+    -1.8568737506866455,
+    -1.5858118534088135
+  ],
+  "start_joint_tolerance_rad": 0.02,
+  "joint_excursion_limit_rad": [
+    0.3756471729270058,
+    0.7408621155598226,
+    0.4310450728292087,
+    1.1316173236236728,
+    0.6261703887047309,
+    0.7293144304888931
+  ],
+  "duration_s": 8.0,
+  "f0_hz": 0.1,
+  "f1_hz": 3.0,
+  "amplitudes_m_rad": [
+    0.1,
+    0.1,
+    0.15000000000000002,
+    0.5,
+    0.25,
+    0.5
+  ],
+  "motion_stiffness": [
+    1000,
+    1000,
+    1000,
+    50,
+    50,
+    50
+  ],
+  "motion_damping_ratio": [
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0
+  ],
+  "torque_max": [
+    150,
+    150,
+    150,
+    28,
+    28,
+    28
+  ],
+  "notes": "Full-amplitude 0.1\u20133 Hz candidate at reviewed pose 65, fitted only to the latest half-fast recording. All eight model responses and the complete requested path pass saved-state source-hull checks. Worst predicted speed is 147.872 deg/s: below the displayed 191 deg/s setting but above the unchanged 120 deg/s planning target. Review candidate only; no physical run or positioning transition is implied. Same controller gains as the recorded run; no claim of optimal tracking.",
+  "simulation_review_status": "geometry_pass_120_deg_s_planning_screen_failed_physical_run_not_collected",
+  "joint_excursion_limit_basis": {
+    "method": "Maximum absolute excursion across eight fitted models and full requested IK, plus five degrees per joint",
+    "observed_max_rad": [
+      0.2883807103272893,
+      0.6535956529601061,
+      0.3437786102294922,
+      1.0443508610239565,
+      0.5389039261050144,
+      0.6420479678891766
+    ],
+    "allowance_rad": 0.08726646259971647,
+    "scope": "Existing excursion stop guard; not a stopping-distance guarantee."
+  },
+  "robot_base_quaternion_world_wxyz": [
+    0.5,
+    0.5,
+    0.5,
+    0.5
+  ],
+  "hardware_settings_source": {
+    "method": "Read-only live RTDE and dashboard queries",
+    "timestamp_utc": "2026-09-19T15:44:00.116231+00:00",
+    "payload_status": "Controller-configured values; not a new physical mass/CoG measurement",
+    "dashboard_report": "dashboard-readonly.json",
+    "rtde_report": "current-state.json"
+  },
+  "prediction_report": "validation_results/full_amplitude_pose_20260919/simulation.json",
+  "prediction_max_joint_speed_deg_s": [
+    59.94954299926758,
+    97.85888671875,
+    133.91880798339844,
+    147.8722381591797,
+    144.2925262451172,
+    80.2863540649414
+  ],
+  "excitation_amplitude_scale_vs_uw_defaults": 1.0,
+  "planning_speed_target_deg_s": 120.0,
+  "planning_speed_screen_pass": false
+}

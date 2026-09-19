@@ -1,4 +1,8 @@
-# Next collection: half amplitude, 0.1–3 Hz
+# Completed collection: half amplitude, 0.1–3 Hz
+
+This recording completed on 2026-09-19. The instructions and predictions below
+are retained as the experiment record. The latest fit uses only this recording;
+see [the new model and full-amplitude pose review](FULL_AMPLITUDE_POSE_REVIEW.md).
 
 Use `workstation/collection.half_fast_candidate.json`. The compatibility file
 `workstation/collection.simulation_candidate.json` contains the same configuration.
@@ -65,10 +69,10 @@ The existing joint-excursion guards use maximum excursion across the eight
 simulations and requested path, plus five degrees per joint. Evidence and method
 are in [the published review](validation_results/half_fast_review_20260919/README.md).
 
-## After this recording
+## Follow-up
 
-Compare the measured response with the saved predictions, then fit using the
-usable interrupted recording and both half-amplitude recordings, normalizing
-each recording's contribution by sample count. Preserve raw recordings and their
-timing and completion metadata. Replays must use the controller settings recorded
-with each dataset. This run does not promote a final dynamics profile for training.
+The completed recording was compared against its saved predictions and fitted on
+its own, following the latest requested scope. Older recordings supplied no fitting
+samples. See [the model package](validation_results/half_fast_only_fit_20260919/README.md)
+and [the full-amplitude pose review](FULL_AMPLITUDE_POSE_REVIEW.md). Raw recording
+timestamps and completion metadata remain intact; no deployment profile was promoted.
