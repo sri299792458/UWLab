@@ -1,7 +1,15 @@
 # Outward collection-pose handoff
 
+**Hardware update, September 19:** the full-amplitude run at this pose stopped
+after 4.064 seconds with C283A7 (Wrist 1 speed violation). The recorded peak was
+205.893 degrees/s; the pendant shows 191 degrees/s in both safety modes.
+Do not repeat the unchanged sweep. The [hardware review and raw evidence](validation_results/hardware_20260919/README.md)
+document the simulation speed-limit mismatch and recording-timing failures.
+Excitation and joint-speed handling need revision and validation; keep the
+robot's safety settings unchanged.
+
 The selected start is shifted **15 cm outward from the columns**, with the same
-27 cm grasp-center height and wrist orientation. Use
+27 cm grasp-center height and wrist orientation. The tested configuration is
 [`workstation/collection.outward_candidate.json`](workstation/collection.outward_candidate.json).
 `collection.simulation_candidate.json` is an identical compatibility copy.
 The eight-second, 500 Hz, 0.1–3 Hz waveform and UW collection gains are unchanged;
@@ -33,8 +41,10 @@ cases passed source-convex-hull checks. Minimum modeled column clearance is
 121.229 mm; minimum distance to other lab geometry is 93.729 mm. Minimum
 nonadjacent moving-arm clearance is 12.699 mm on the ideal path and 14.446 mm
 across simulated responses. Internal open-hand clearance is approximately 5.2 mm.
-These are sampled model distances; no real robot recording or positioning path
-is supplied. The video replays the UW-reference-dynamics case with 4 ms delay.
+These are sampled model distances. The supplemental simulation release contains
+no physical positioning path; the later hardware evidence linked above contains
+the interrupted outward recording. The video replays the UW-reference-dynamics case
+with 4 ms delay.
 
 Joint travel is maximum minus minimum angle. UW calculated values use the original
 pinned UW calibration and default pose `[0,-90,90,-90,-90,0]` degrees. Calculated

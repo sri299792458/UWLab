@@ -1,5 +1,12 @@
 # Thunder / UMI state-policy sim-to-real
 
+**Hardware update, September 19:** the outward full-amplitude collection stopped
+with C283A7 after Wrist 1 reached 205.893 degrees/s against a displayed
+191 degrees/s safety setting. Do not repeat the unchanged sweep. Its excitation,
+joint-speed handling and sample synchronization require revision and validation.
+The [hardware evidence](validation_results/hardware_20260919/README.md) includes
+the interrupted recording, log, configuration, timing analysis and pendant photos.
+
 For the **complete portable lab, calibrated assets, cuRobo map and software setup**, start with
 [portable/README.md](portable/README.md). The default download is the **150 MB core package**; the full
 map/reset dataset is optional and remains prepared locally. The robot-side agent handoff is included there.
@@ -8,8 +15,9 @@ The physical mounting correction and rebuilt 20 mm map are documented in
 
 This branch prepares UWLab's Stage-2 state-policy fine-tuning for Thunder and
 provides a standalone package for the robot workstation. The current Stage-1
-training run remains in its original checkout. No real-robot data has been
-collected and no Stage-2 training has been launched by this implementation.
+training run remains in its original checkout. The interrupted outward real-robot
+collection is now available for diagnosis. It is ineligible for fitting;
+no fitted Thunder dynamics profile or Stage-2 training result is available.
 
 ## What is implemented
 
@@ -138,8 +146,10 @@ Fill `/tmp/thunder-collection.json` with Thunder's IP, installed PolyScope
 version, and configured tool payload mass and center of gravity.
 The selected pose is shifted 15 cm outward from the columns at the same 27 cm
 height. Its full UW motion amplitudes and
-UW collection gains are already filled in. Preserve them to reproduce the
-checked candidate. `collection.example.json` is a separate blank motion template.
+UW collection gains are already filled in. These values document the tested
+candidate that triggered the hardware speed violation; they require revision
+and validation before another physical collection. `collection.example.json`
+is a separate blank motion template.
 The candidate's joint excursion stop limits are the largest deviations seen
 across the three simulated responses and requested path, plus 5 degrees per
 joint. They stop collection after excessive departure from the start pose;
@@ -174,8 +184,9 @@ python scripts_v2/tools/thunder_sim2real/workstation/collect_thunder.py \
   --config /tmp/thunder-collection.json
 ```
 
-With Thunder positioned at the configured start pose and the planned
-excitation checked in the physical workspace, run collection:
+After the hardware findings above have been addressed, the revised excitation
+has been validated, and Thunder is positioned at its configured start pose,
+the collection invocation is:
 
 ```bash
 python scripts_v2/tools/thunder_sim2real/workstation/collect_thunder.py \

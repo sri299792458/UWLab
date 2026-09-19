@@ -1,0 +1,314 @@
+{
+  "run": "thunder-workstation/data/20260919T163903086675Z",
+  "completed": false,
+  "failure": "RuntimeError: directTorque returned failure",
+  "cleanup_errors": [],
+  "samples": 2031,
+  "planned_samples": 4000,
+  "elapsed_robot_s": 4.0640000000130385,
+  "elapsed_host_s": 4.063884751999467,
+  "joint_names": [
+    "shoulder_pan_joint",
+    "shoulder_lift_joint",
+    "elbow_joint",
+    "wrist_1_joint",
+    "wrist_2_joint",
+    "wrist_3_joint"
+  ],
+  "max_abs_joint_velocity_rad_s": [
+    0.6273256540298462,
+    1.6209478378295898,
+    3.024768829345703,
+    3.593505859375,
+    1.6868597269058228,
+    1.8691298961639404
+  ],
+  "max_abs_joint_velocity_deg_s": [
+    35.94311235619423,
+    92.87346991849171,
+    173.30648792423554,
+    205.89271939771942,
+    96.64994298229428,
+    107.09325441191959
+  ],
+  "velocity_peak_time_s": [
+    3.1299999998882413,
+    3.708000000100583,
+    4.0179999999236315,
+    4.0640000000130385,
+    2.8519999999552965,
+    3.327999999979511
+  ],
+  "last_q_rad": [
+    -3.049900833760397,
+    -0.6212979120067139,
+    1.414288345967428,
+    0.7966152864643554,
+    0.9718999862670898,
+    1.1471959352493286
+  ],
+  "last_velocity_rad_s": [
+    0.2738557457923889,
+    1.443215250968933,
+    2.5176169872283936,
+    -3.593505859375,
+    -0.7925920486450195,
+    -1.6836001873016357
+  ],
+  "max_joint_excursion_rad": [
+    0.10100841522216797,
+    0.19385254383087158,
+    0.36650848388671875,
+    0.4056882858276367,
+    0.2793627977371216,
+    0.24210822582244873
+  ],
+  "joint_excursion_limit_rad": [
+    0.3292888081187303,
+    0.4000643354946013,
+    0.717272035316823,
+    0.5355994776884873,
+    0.6532458137524079,
+    0.7895004569386592
+  ],
+  "minimum_remaining_excursion_margin_rad": [
+    0.22828039289656232,
+    0.20621179166372972,
+    0.3507635514301043,
+    0.12991119186085054,
+    0.3738830160152863,
+    0.5473922311162105
+  ],
+  "max_commanded_torque_nm": [
+    28.770216762026436,
+    92.76845171056334,
+    72.56595425883707,
+    17.05823589529183,
+    6.232911587949031,
+    8.228437886668843
+  ],
+  "torque_limits_nm": [
+    150,
+    150,
+    150,
+    28,
+    28,
+    28
+  ],
+  "torque_saturated_samples_by_joint": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "host_interval_s": {
+    "min": 0.0019989769998574047,
+    "median": 0.002000991999921098,
+    "p99": 0.002004203199994663,
+    "max": 0.003632568999819341
+  },
+  "robot_interval_s": {
+    "min": 0.0,
+    "median": 0.0020000000949949026,
+    "p99": 0.003999999957159162,
+    "max": 0.004000000189989805
+  },
+  "precommand_compute_s": {
+    "min": 0.0004520249995039194,
+    "median": 0.0004667129996960284,
+    "p99": 0.0007164323002143649,
+    "max": 0.0014397960003407206
+  },
+  "duplicate_robot_timestamps": 45,
+  "last_20_wrist1": [
+    {
+      "t_s": 4.0260000000707805,
+      "qd_rad_s": -3.254594326019287,
+      "torque_nm": -14.675938842736109,
+      "robot_interval_s": 0.0020000000949949026
+    },
+    {
+      "t_s": 4.027999999932945,
+      "qd_rad_s": -3.2952497005462646,
+      "torque_nm": -14.43884911578971,
+      "robot_interval_s": 0.001999999862164259
+    },
+    {
+      "t_s": 4.03000000002794,
+      "qd_rad_s": -3.331207036972046,
+      "torque_nm": -14.157812277998726,
+      "robot_interval_s": 0.0020000000949949026
+    },
+    {
+      "t_s": 4.031999999890104,
+      "qd_rad_s": -3.361947774887085,
+      "torque_nm": -13.856578430401568,
+      "robot_interval_s": 0.001999999862164259
+    },
+    {
+      "t_s": 4.033999999985099,
+      "qd_rad_s": -3.3927624225616455,
+      "torque_nm": -13.288962053357539,
+      "robot_interval_s": 0.0020000000949949026
+    },
+    {
+      "t_s": 4.036000000080094,
+      "qd_rad_s": -3.4108545780181885,
+      "torque_nm": -12.887973593178952,
+      "robot_interval_s": 0.0020000000949949026
+    },
+    {
+      "t_s": 4.037999999942258,
+      "qd_rad_s": -3.4141383171081543,
+      "torque_nm": -13.006051345709412,
+      "robot_interval_s": 0.001999999862164259
+    },
+    {
+      "t_s": 4.040000000037253,
+      "qd_rad_s": -3.4085264205932617,
+      "torque_nm": -13.72259178985488,
+      "robot_interval_s": 0.0020000000949949026
+    },
+    {
+      "t_s": 4.041999999899417,
+      "qd_rad_s": -3.408625602722168,
+      "torque_nm": -14.522034130683435,
+      "robot_interval_s": 0.001999999862164259
+    },
+    {
+      "t_s": 4.043999999994412,
+      "qd_rad_s": -3.4222617149353027,
+      "torque_nm": -15.117535471635172,
+      "robot_interval_s": 0.0020000000949949026
+    },
+    {
+      "t_s": 4.046000000089407,
+      "qd_rad_s": -3.428497076034546,
+      "torque_nm": -15.670183964666391,
+      "robot_interval_s": 0.0020000000949949026
+    },
+    {
+      "t_s": 4.047999999951571,
+      "qd_rad_s": -3.425340414047241,
+      "torque_nm": -16.354133117866333,
+      "robot_interval_s": 0.001999999862164259
+    },
+    {
+      "t_s": 4.050000000046566,
+      "qd_rad_s": -3.4315083026885986,
+      "torque_nm": -16.926242048404443,
+      "robot_interval_s": 0.0020000000949949026
+    },
+    {
+      "t_s": 4.05199999990873,
+      "qd_rad_s": -3.4559683799743652,
+      "torque_nm": -17.05823589529183,
+      "robot_interval_s": 0.001999999862164259
+    },
+    {
+      "t_s": 4.054000000003725,
+      "qd_rad_s": -3.482145309448242,
+      "torque_nm": -16.917315179602603,
+      "robot_interval_s": 0.0020000000949949026
+    },
+    {
+      "t_s": 4.05600000009872,
+      "qd_rad_s": -3.5058393478393555,
+      "torque_nm": -16.2460222415556,
+      "robot_interval_s": 0.0020000000949949026
+    },
+    {
+      "t_s": 4.0579999999608845,
+      "qd_rad_s": -3.525583028793335,
+      "torque_nm": -15.255603055438257,
+      "robot_interval_s": 0.001999999862164259
+    },
+    {
+      "t_s": 4.060000000055879,
+      "qd_rad_s": -3.5496342182159424,
+      "torque_nm": -14.332893052546456,
+      "robot_interval_s": 0.0020000000949949026
+    },
+    {
+      "t_s": 4.061999999918044,
+      "qd_rad_s": -3.580111265182495,
+      "torque_nm": -13.686975804009903,
+      "robot_interval_s": 0.001999999862164259
+    },
+    {
+      "t_s": 4.0640000000130385,
+      "qd_rad_s": -3.593505859375,
+      "torque_nm": -13.397007375131139,
+      "robot_interval_s": 0.0020000000949949026
+    }
+  ],
+  "pendant_evidence": {
+    "file": "pendant-safety-message.png",
+    "sha256": "ddb08db81c47ee0c6a3d6057d60464c1c3b44104a01a81e833a467e703f1c17d",
+    "code": "C283A7",
+    "joint": "Wrist 1",
+    "message": "Safety system: Wrist 1 joint exceeded the speed limit of the safety settings",
+    "source": "User-supplied photo; pendant and workstation clocks have not been synchronized for this analysis."
+  },
+  "validator_rejection": "completed must be True",
+  "four_ms_timestamp_intervals": 47,
+  "read_crossed_robot_tick": 4,
+  "simulation_wrist1_peak_rad_s": {
+    "zero_added_friction_inertia_delay": 3.12715220451355,
+    "UW_reference_dynamics_delay_4ms": 2.405484437942505,
+    "UW_reference_120percent_delay_10ms": 2.2776758670806885
+  },
+  "simulation_velocity_limit_rad_s": [
+    1.5708,
+    1.5708,
+    1.5708,
+    3.1415,
+    3.1415,
+    3.1415
+  ],
+  "findings": [
+    "The last saved Wrist 1 velocity is -3.593505859375 rad/s (205.892719 deg/s magnitude), consistent with the user-supplied C283A7 photo.",
+    "All saved commanded torques and joint excursions remained within collector configuration limits; neither establishes compliance with joint-speed safety settings.",
+    "The simulation uses explicit velocity_limit_sim values; the hardware collector has no runtime joint-velocity limit check. The supplied simulation trajectories did not bound the recorded physical speed.",
+    "Robot sampling has 45 duplicate timestamps, 47 approximately 4 ms gaps, and four updates crossing the sequential state reads. These separately violate the fixed-step record contract; they do not by themselves explain C283A7.",
+    "The prior collision checks concern modeled clearance. They do not qualify this excitation for physical joint-speed compliance."
+  ],
+  "next_step": "Revise and validate the excitation and joint-speed handling against the displayed 191 deg/s settings, with operating margin; separately correct sample synchronization. Keep robot safety settings unchanged. Do not repeat the unchanged collection.",
+  "official_references": [
+    "https://www.universal-robots.com/manuals/EN/HTML/SW5_26/Content/prod-err-codes/topics/CODE_283.html",
+    "https://www.universal-robots.com/manuals/EN/HTML/SW5_26/Content/prod-scriptmanual/all_scripts/direct_torque.htm"
+  ],
+  "displayed_joint_speed_settings": {
+    "source": "User-supplied pendant photo",
+    "file": "pendant-joint-speed-settings.png",
+    "sha256": "b547dda12e82c48108201d49cac4a8ec45bb452b3fecbeb7c73e2da3b9fc4c08",
+    "normal_deg_s": [
+      191,
+      191,
+      191,
+      191,
+      191,
+      191
+    ],
+    "reduced_deg_s": [
+      191,
+      191,
+      191,
+      191,
+      191,
+      191
+    ],
+    "displayed_margin_annotation_deg_s": -11,
+    "normal_rad_s": [
+      3.3335788713091694,
+      3.3335788713091694,
+      3.3335788713091694,
+      3.3335788713091694,
+      3.3335788713091694,
+      3.3335788713091694
+    ],
+    "wrist1_peak_excess_over_displayed_setting_deg_s": 14.892719397719418
+  }
+}

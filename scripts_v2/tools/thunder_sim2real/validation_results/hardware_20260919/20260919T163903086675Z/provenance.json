@@ -1,0 +1,15 @@
+{
+  "git_commit": "169e6e0619689011cdd2c247104e434242cd0d73",
+  "source_sha256": {
+    "workstation/thunder_calibration.json": "a19ba762879ed8c40a351613d545981ae75ef2e36645a2cdf9028a230e82edd9",
+    "workstation/collection.simulation_candidate.json": "e25fc6dc7257b465d1ca3b43021ba73e8cf6cc309dbb6ca8b21bbf46aa1dc420",
+    "workstation/collect_thunder.py": "b82df1f9e39ef47cfa3a9bfa71c26fcf2c8ed7c3c1b74801fe0e1e81339bc133",
+    "workstation/simulation_payload_reference.json": "c172943c7dcb7b69b1111aa2ac54706a0bad0536e5761494ae393b3df6b4c18b",
+    "workstation/collection.outward_candidate.json": "e25fc6dc7257b465d1ca3b43021ba73e8cf6cc309dbb6ca8b21bbf46aa1dc420",
+    "workstation/collection.example.json": "3972db78ca84a1a31768dcac529dbd2961768f11ac0d23313d5c80e2133f0a28",
+    "workstation/vendor/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "workstation/vendor/ur5e_kinematics.py": "cba2822b9ae05c0a761735f8da7e02b79ee04214ee3e09d03561ef2c267d6813",
+    "workstation/vendor/PROVENANCE.json": "38e63aeb3871a5ee0df0171295a317e5b1caaaca1974e4d417fbc717cbb28c10"
+  },
+  "bundle_release": "thunder-lab-20260917-mount-v2"
+}

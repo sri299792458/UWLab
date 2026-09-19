@@ -1,0 +1,91 @@
+{
+  "robot_ip": "10.33.55.89",
+  "payload_mass_kg": 1.04,
+  "payload_cog_m": [
+    -0.002,
+    0.001,
+    0.047
+  ],
+  "polyscope_version": "5.26.1.140514",
+  "gripper_configuration": "open_empty",
+  "start_joint_positions_rad": [
+    -2.993292290506895,
+    -0.535319188812487,
+    1.2787251865362697,
+    0.7397816280081531,
+    1.047210420309825,
+    1.2056523007278044
+  ],
+  "start_joint_tolerance_rad": 0.02,
+  "joint_excursion_limit_rad": [
+    0.3292888081187303,
+    0.4000643354946013,
+    0.717272035316823,
+    0.5355994776884873,
+    0.6532458137524079,
+    0.7895004569386592
+  ],
+  "duration_s": 8.0,
+  "f0_hz": 0.1,
+  "f1_hz": 3.0,
+  "amplitudes_m_rad": [
+    0.1,
+    0.1,
+    0.15000000000000002,
+    0.5,
+    0.25,
+    0.5
+  ],
+  "motion_stiffness": [
+    1000,
+    1000,
+    1000,
+    50,
+    50,
+    50
+  ],
+  "motion_damping_ratio": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    1
+  ],
+  "torque_max": [
+    150,
+    150,
+    150,
+    28,
+    28,
+    28
+  ],
+  "notes": "Candidate shifted 0.15 m outward (world -Y) from the columns, with the same 0.27 m grasp-center height and wrist orientation. Unchanged full pinned UW 8-second excitation and collection gains. All 4,000 ideal requested poses and 4,001 states in each of three simulated responses passed source-hull checks. No real robot execution.",
+  "simulation_review_status": "outward_15cm_requested_and_three_simulated_responses_checked_no_hardware_data",
+  "joint_excursion_limit_basis": {
+    "method": "maximum absolute deviation across three simulated responses and full-rate requested IK, plus 5 degrees per joint",
+    "observed_max_rad": [
+      0.2420223455190138,
+      0.3127978728948848,
+      0.6300055727171066,
+      0.44833301508877077,
+      0.5659793511526914,
+      0.7022339943389427
+    ],
+    "allowance_rad": 0.08726646259971647,
+    "scope": "Stop guards only, not online collision detection or bounds on every possible physical response."
+  },
+  "robot_base_quaternion_world_wxyz": [
+    0.5,
+    0.5,
+    0.5,
+    0.5
+  ],
+  "hardware_settings_source": {
+    "method": "Read-only live RTDE and dashboard queries",
+    "timestamp_utc": "2026-09-19T15:44:00.116231+00:00",
+    "payload_status": "Controller-configured values; not a new physical mass/CoG measurement",
+    "dashboard_report": "dashboard-readonly.json",
+    "rtde_report": "current-state.json"
+  }
+}

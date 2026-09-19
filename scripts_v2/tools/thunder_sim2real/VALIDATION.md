@@ -1,7 +1,11 @@
 # Validation and readiness
 
-This package is ready to clone and configure on the robot workstation. No
-physical Thunder recording or fitted Thunder dynamics profile exists yet.
+The unchanged full-amplitude candidate is **not ready for another physical
+collection**. The September 19 outward run stopped with C283A7 after Wrist 1
+reached 205.893 degrees/s against a displayed 191 degrees/s setting. The
+interrupted outward recording is retained for diagnosis; it is ineligible
+for fitting, and no fitted Thunder dynamics profile exists. See the
+[hardware results](validation_results/hardware_20260919/README.md).
 The candidate keeps UW's collection gains and full excitation amplitudes;
 the Thunder-specific start pose is 15 cm outward from the columns and 27 cm above
 the modeled table. See [the current handoff](OUTWARD_POSE_HANDOFF.md).
@@ -50,6 +54,24 @@ that a Stage-1 policy has learned stacking. No trained policy is part of this de
   map's 50 mm column requirement are retained.
 - All 4,000 waveform samples match the pinned UW collector exactly.
 
+## Physical collection findings
+
+- The outward attempt saved 2,031 samples spanning 4.064 seconds before
+  `directTorque returned failure`. The user's pendant photo reports C283A7 for
+  Wrist 1; a second photo shows all six joints set to 191 degrees/s in both
+  Normal and Reduced modes. Wrist 1's last saved speed is 205.893 degrees/s.
+- All saved torques and joint excursions remain within the collector's configured
+  limits. The collector has no runtime joint-speed guard. The simulation applies
+  joint velocity limits (3.1415 rad/s on wrists, 1.5708 rad/s on the first three
+  joints); its three reference cases did not bound the observed physical speed.
+- The outward recording also contains 45 duplicate robot timestamps, 47 roughly
+  4 ms intervals and four state reads spanning a robot update. These violate the
+  fixed-step fitting contract independently of the incomplete run.
+- Before another collection, revise and validate excitation and speed handling
+  against the observed safety settings with operating margin, and correct
+  sample synchronization. Preserve robot safety settings. Earlier modeled
+  collision passes do not establish physical joint-speed compliance.
+
 Current motion reports are in `validation_results/outward_20260919/`. The older
 `motion_*` reports remain historical. The current joint-range report distinguishes
 calculated UW/default motion from simulated Thunder response. In the video case,
@@ -62,7 +84,7 @@ traceability. Their presence does not require those paths on the workstation.
 The geometry checks are discrete samples in the modeled, cleared scene; the
 three dynamics cases are assumptions rather than measured Thunder parameters.
 
-## Workstation setup remaining
+## Workstation workflow after the hardware findings are addressed
 
 Copy `workstation/collection.outward_candidate.json` and fill the robot IP,
 installed PolyScope version, and actual mounted tool mass/center of gravity.

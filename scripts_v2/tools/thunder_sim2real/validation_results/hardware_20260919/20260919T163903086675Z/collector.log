@@ -1,0 +1,8 @@
+Run directory: /home/srinivas/Documents/ChatGPT/omnireset/thunder-workstation/data/20260919T163903086675Z
+Saved 2031 samples to /home/srinivas/Documents/ChatGPT/omnireset/thunder-workstation/data/20260919T163903086675Z/thunder-fit.pt; completed=False
+Traceback (most recent call last):
+  File "/home/srinivas/Documents/ChatGPT/omnireset/thunder-workstation/collect_checked.py", line 72, in main
+    collector.collect(config, offsets, output)
+  File "/home/srinivas/Documents/ChatGPT/omnireset/UWLab/scripts_v2/tools/thunder_sim2real/workstation/collect_thunder.py", line 176, in collect
+    raise RuntimeError("directTorque returned failure")
+RuntimeError: directTorque returned failure

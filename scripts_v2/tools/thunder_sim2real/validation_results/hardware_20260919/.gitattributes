@@ -1,0 +1,2 @@
+# Keep this small diagnostic record available without an LFS download.
+20260919T163903086675Z/thunder-fit.pt -filter -diff -merge -text
