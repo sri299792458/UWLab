@@ -14,6 +14,9 @@ parser.add_argument("--preview", required=True, type=Path)
 parser.add_argument("--candidate", required=True, type=int)
 parser.add_argument("--variant", default="UW_reference_dynamics_delay_4ms")
 parser.add_argument("--output", required=True, type=Path)
+parser.add_argument("--fps", type=int, default=30)
+parser.add_argument("--width", type=int, default=1280)
+parser.add_argument("--height", type=int, default=960)
 AppLauncher.add_app_launcher_args(parser)
 args = parser.parse_args()
 args.output.mkdir(parents=True, exist_ok=True)
@@ -40,7 +43,7 @@ def main():
     cfg.scene.table = copy.deepcopy(lab.scene.table)
     cfg.scene.ground = copy.deepcopy(lab.scene.ground)
     cfg.scene.num_envs = 1; cfg.sim.device = args.device; cfg.seed = 42
-    cfg.viewer.resolution = (1280, 960)
+    cfg.viewer.resolution = (args.width, args.height)
     cfg.viewer.eye = (1.45, -1.75, 2.0); cfg.viewer.lookat = (.05, -.03, 1.2)
     env = gym.make("OmniReset-Thunder-UMI-Sysid-v0", cfg=cfg, render_mode="rgb_array").unwrapped
     try:
@@ -57,7 +60,7 @@ def main():
         for _ in range(15):
             frame, _ = frame_at(0)
         imageio.imwrite(args.output / "start_pose.png", frame)
-        fps = 30
+        fps = args.fps
         indices = np.round(np.arange(0, 8, 1/fps)/manifest["dt"]).astype(int)
         max_error = 0.
         with imageio.get_writer(args.output / "collection_sweep.mp4", fps=fps, codec="libx264", quality=8) as writer:
