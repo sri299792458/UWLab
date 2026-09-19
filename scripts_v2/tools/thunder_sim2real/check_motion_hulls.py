@@ -17,6 +17,8 @@ ROOT = Path(os.environ.get('UWLAB_DATA_ROOT', '/data/kanth042/datasets/thunder_m
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument("--preview", type=Path, required=True)
 parser.add_argument("--candidate", type=int)
+parser.add_argument("--include_sphere_failures", action="store_true",
+                    help="Check exact source geometry even when conservative sphere screening fails")
 args = parser.parse_args()
 report = json.loads((args.preview / "preview.json").read_text())
 trajectory = np.load(args.preview / "trajectories.npz")
@@ -37,11 +39,12 @@ a, b = pairs.T
 dynamic_pair = np.array([not (checker.shapes[i]["body"] in checker.fixed_hand and
                              checker.shapes[j]["body"] in checker.fixed_hand) for i, j in pairs])
 passed_candidates = [c["candidate"] for c in report["candidates"] if all(
-    row.get("sphere_clear_all_samples", False) or row.get("requires_direct_hull_check", False)
+    args.include_sphere_failures or row.get("sphere_clear_all_samples", False) or row.get("requires_direct_hull_check", False)
     for row in report["rows"] if row["candidate"] == c["candidate"])]
 if args.candidate is not None:
     passed_candidates = [candidate for candidate in passed_candidates if candidate == args.candidate]
-output = {"source": str(args.preview), "sample_dt_s": report["dt"], "candidates": []}
+output = {"source": str(args.preview), "sample_dt_s": report["dt"],
+          "include_sphere_failures": args.include_sphere_failures, "candidates": []}
 
 for candidate in passed_candidates:
     indices = [i for i, row in enumerate(report["rows"]) if row["candidate"] == candidate]

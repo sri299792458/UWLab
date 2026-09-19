@@ -139,32 +139,28 @@ python3.11 -m venv .venv-thunder
 source .venv-thunder/bin/activate
 python -m pip install torch==2.7.1 --index-url https://download.pytorch.org/whl/cpu
 python -m pip install -r scripts_v2/tools/thunder_sim2real/workstation/requirements.txt
-cp scripts_v2/tools/thunder_sim2real/workstation/collection.outward_candidate.json /tmp/thunder-collection.json
+cp scripts_v2/tools/thunder_sim2real/workstation/collection.half_slow_candidate.json /tmp/thunder-collection.json
 ```
 
-Fill `/tmp/thunder-collection.json` with Thunder's IP, installed PolyScope
-version, and configured tool payload mass and center of gravity.
-The selected pose is shifted 15 cm outward from the columns at the same 27 cm
-height. Its full UW motion amplitudes and
-UW collection gains are already filled in. These values document the tested
-candidate that triggered the hardware speed violation; they require revision
-and validation before another physical collection. `collection.example.json`
-is a separate blank motion template.
-The candidate's joint excursion stop limits are the largest deviations seen
-across the three simulated responses and requested path, plus 5 degrees per
-joint. They stop collection after excessive departure from the start pose;
-they are not an online collision checker.
+The current configuration is the eight-second, half-amplitude, 0.1–1.5 Hz
+collection described in [HALF_AMPLITUDE_HANDOFF.md](HALF_AMPLITUDE_HANDOFF.md).
+It keeps the reviewed outward start pose and the UW controller gains. Connection
+and configured payload values are carried from the last physical recording.
+The full-amplitude outward candidate is retained as historical evidence of the
+speed-limit violation; use the new half-amplitude configuration for the next run.
+Its existing joint excursion guards are derived from eight fitted-model responses
+and the requested path, plus five degrees per joint.
 Angles are radians. Amplitudes are explicit XYZ meters followed by XYZ
 axis-angle radians in `base_link`; there are no hidden per-axis multipliers.
-The eight-second 0.1–3 Hz sweep has a two-second ramp-up and three-second
+The eight-second 0.1–1.5 Hz sweep has a two-second ramp-up and three-second
 ramp-down. Commands are issued every 2 ms; the waveform uses UW's original
 `linspace(0, duration, N)` phase grid and sample-based ramp construction.
 
 The collector uses the `directTorque` interface expected by UWLab's pinned
 `ur-rtde==1.6.2`; the robot must support that interface. Newer RTDE releases
 have changed its signature, so the recorder checks the installed version.
-The supplied payload fields are deliberately empty; they must describe the
-actual mounted Thunder tool rather than UWLab's reference payload.
+The current candidate carries the controller-configured payload from the previous
+physical recording; the separate blank example template leaves these fields empty.
 
 For comparison, the current simulation's open, empty tool has mass
 **1.002607 kg** and center of gravity **[-0.00027272, 0.00714345, 0.06427591] m**
@@ -197,8 +193,10 @@ python scripts_v2/tools/thunder_sim2real/workstation/collect_thunder.py \
 The script does not move to the start pose. It checks position tolerance and
 stationary joints before enabling collection. Ctrl-C aborts; cleanup follows
 the UWLab torque-to-hold handoff. Partial/error recordings are saved when
-samples exist, marked incomplete, and rejected by the fitter. Existing output
-files are not overwritten. Following UWLab's published procedure, use this same
+samples exist and retain their incomplete status. The standard fit/export path
+rejects them; `fit_partial.py` can optimize their usable measured prefix, as
+described in [PARTIAL_FIT_REVIEW.md](PARTIAL_FIT_REVIEW.md). Existing output files
+are not overwritten. Following UWLab's published procedure, use this same
 recording for fitting and for the subsequent simulated-versus-real overlay.
 A separate held-out trajectory is not required by that procedure.
 
@@ -305,38 +303,30 @@ process; it does not create an admissible production profile.
 
 The committed `validation_results/` directory contains the native replay,
 Stage-2 reset/step, and selected-motion reports. See `VALIDATION.md` for their
-scope. These are simulation/software checks; they do not claim a real Thunder
-recording, a fitted Thunder dynamics profile, or successful physical transfer.
+scope. The hardware folder contains the interrupted real recording, and
+`partial_fit_20260919` contains provisional parameter fits and next-motion
+predictions. These do not establish a final dynamics profile or physical transfer.
 
 ## Sources
 
 - [UWLab system identification and fine-tuning guide](https://uw-lab.github.io/UWLab/main/source/publications/omnireset/sim2real.html)
 - [Pinned UWLab real-robot collector](https://github.com/WEIRDLabUW/diffusion_policy/blob/3cd87c830b3a46967fb2291f5bc18e8d746ab4b6/scripts/sim2real/collect_sysid_data.py)
 - [Pinned UWLab robot environment](https://github.com/WEIRDLabUW/diffusion_policy/blob/3cd87c830b3a46967fb2291f5bc18e8d746ab4b6/conda_environment_real.yaml)
-# Current motion candidate — 15 cm outward, unchanged UW excitation
+# Current motion candidate — half amplitude, slower sweep
 
-Use `workstation/collection.outward_candidate.json`. The compatibility filename
-`collection.simulation_candidate.json` contains the same candidate. The grasp center
-moves 15 cm outward along world -Y, keeping its height 27 cm above the table and
-its orientation unchanged. The corrected mounting remains `[0.5, 0.5, 0.5, 0.5]`.
-Starting joint angles are `[-171.50302, -30.67153, 73.26556, 42.38637, 60.00074, 69.07879]` degrees.
+Use `workstation/collection.half_slow_candidate.json`; the compatibility filename
+`collection.simulation_candidate.json` is identical. The pose remains 15 cm
+outward from the columns at the same height and orientation. The motion is eight
+seconds at 500 Hz, with half UW's amplitudes and a 0.1–1.5 Hz frequency sweep.
+Controller gains and torque limits are unchanged.
 
-The eight-second 0.1–3 Hz waveform, full amplitudes and collection gains remain exactly
-UW's. All 4,000 six-axis offset samples are identical to the pinned collector.
-The 4,000 requested-path poses and 4,001 states in each of three simulated responses
-pass the source-hull checks. Minimum modeled column clearance is 121.229 mm;
-minimum distance to other lab geometry is 93.729 mm. Minimum nonadjacent moving-arm
-separation is 12.699 mm on the requested path and 14.446 mm across simulated responses.
+Eight models fitted to the saved hardware prefix predict a maximum joint speed
+of 65.8 degrees/second over this proposed motion. Every saved 2 ms state passed
+source-hull checks. These provisional estimates support another collection;
+they are not the final dynamics model for policy training.
 
-The [outward-pose handoff](OUTWARD_POSE_HANDOFF.md) links the video, raw trajectories,
-checksummed download and UW-versus-outward joint-range comparison. The selected video
-shows the UW-reference-dynamics case with 4 ms delay. The UW joint comparison is
-calculated ideal tracking with UW's default pose and calibration, not UW hardware data.
-Collision clearance does not establish good identification data: in the shown simulation,
-shoulder pan travels only 5.88 degrees. The zero-added-friction/inertia scenario has
-only 0.54 degrees of wrist-3 travel despite high speed. Real recording and fit verification
-remain necessary; the simulated scenarios are not measured Thunder dynamics.
-
-The existing corrected-mount core bundle remains compatible. Its `lower_full` motion
-is historical; download the supplemental outward-pose evidence linked in the handoff.
-No physical robot connection or motion command was made for this update.
+See [the half-amplitude handoff](HALF_AMPLITUDE_HANDOFF.md) for the workstation
+command, speed table, geometric checks, and the plan for incorporating new data.
+The [outward-pose handoff](OUTWARD_POSE_HANDOFF.md) documents the historical
+full-amplitude candidate. The existing corrected-mount core bundle remains
+compatible; no model reinstall is needed for this collection change.

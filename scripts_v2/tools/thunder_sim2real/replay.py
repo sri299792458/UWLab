@@ -53,6 +53,7 @@ class ThunderReplay:
         self.targets_pos = record["waypoint_target_pos"].to(self.device).float()
         self.targets_quat = record["waypoint_target_quat"].to(self.device).float()
         self.real_q = record["joint_positions"].to(self.device).float()
+        self.real_qd = record["joint_velocities"].to(self.device).float()
 
     def prepare(self, params):
         params = torch.as_tensor(params, device=self.device, dtype=torch.float32)
@@ -84,22 +85,29 @@ class ThunderReplay:
             buffer.set_time_lag(delays)
         return delays
 
-    def run(self, params, *, trajectory=False, max_steps=None, capture_bodies=False, progress_every=0):
+    def run(self, params, *, trajectory=False, max_steps=None, capture_bodies=False, progress_every=0,
+            velocity_weight_s=0.):
+        if not np.isfinite(velocity_weight_s) or velocity_weight_s < 0:
+            raise ValueError("velocity_weight_s must be finite and nonnegative")
         delays = self.prepare(params)
         count = len(self.real_q) if max_steps is None else min(max_steps, len(self.real_q))
         sum_sq = torch.zeros(self.n, 6, device=self.device)
         legacy_sum_sq = torch.zeros_like(sum_sq)
+        velocity_sum_sq = torch.zeros_like(sum_sq)
         before_rows, after_rows, torque_rows = [], [], []
+        pre_velocity_rows = []
         body_rows, full_joint_rows, velocity_rows = [], [], []
         for t in range(count):
             # record[t] is the robot state before command[t]. Compare the state
             # at the same phase, then apply that command and advance by dt.
             before = self.robot.data.joint_pos[:, self.joint_ids].clone()
+            before_velocity = self.robot.data.joint_vel[:, self.joint_ids].clone()
             if capture_bodies:
                 body_rows.append(self.robot.data.body_pose_w.cpu().numpy().copy())
                 full_joint_rows.append(self.robot.data.joint_pos.cpu().numpy().copy())
                 velocity_rows.append(self.robot.data.joint_vel[:, self.joint_ids].cpu().numpy().copy())
             sum_sq += (before - self.real_q[t]) ** 2
+            velocity_sum_sq += (before_velocity - self.real_qd[t]) ** 2
             pos, quat = subtract_frame_transforms(
                 self.robot.data.root_pos_w, self.robot.data.root_quat_w,
                 self.robot.data.body_pos_w[:, self.ee_id], self.robot.data.body_quat_w[:, self.ee_id],
@@ -113,17 +121,22 @@ class ThunderReplay:
             legacy_sum_sq += (after - self.real_q[t]) ** 2
             if trajectory:
                 before_rows.append(before.cpu().numpy())
+                pre_velocity_rows.append(before_velocity.cpu().numpy())
                 after_rows.append(after.cpu().numpy().copy())
                 torque_rows.append(self.robot.data.computed_torque[:, self.joint_ids].cpu().numpy().copy())
             if progress_every and (t+1) % progress_every == 0:
                 print(f"Replayed {t+1}/{count} steps", flush=True)
-        result = {"scores": (sum_sq.sum(dim=1) / count).cpu().numpy(),
+        result = {"scores": ((sum_sq + velocity_weight_s**2 * velocity_sum_sq).sum(dim=1) / count).cpu().numpy(),
+                  "position_scores": (sum_sq.sum(dim=1) / count).cpu().numpy(),
                   "per_joint_rmse_rad": torch.sqrt(sum_sq / count).cpu().numpy(),
+                  "per_joint_velocity_rmse_rad_s": torch.sqrt(velocity_sum_sq / count).cpu().numpy(),
+                  "velocity_weight_s": velocity_weight_s,
                   "upstream_post_step_scores": (legacy_sum_sq.sum(dim=1) / count).cpu().numpy(),
                   "delay_steps": delays.cpu().tolist(), "steps": count}
         if trajectory:
             result.update(joint_positions=np.array(before_rows), post_step_joint_positions=np.array(after_rows),
-                          computed_torques=np.array(torque_rows))
+                          computed_torques=np.array(torque_rows),
+                          pre_command_joint_velocities=np.array(pre_velocity_rows))
         if capture_bodies:
             body_rows.append(self.robot.data.body_pose_w.cpu().numpy().copy())
             full_joint_rows.append(self.robot.data.joint_pos.cpu().numpy().copy())
