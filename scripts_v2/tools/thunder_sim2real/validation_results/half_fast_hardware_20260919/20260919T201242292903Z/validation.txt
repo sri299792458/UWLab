@@ -1,0 +1,12 @@
+Traceback (most recent call last):
+  File "/home/srinivas/Documents/ChatGPT/omnireset/UWLab/scripts_v2/tools/thunder_sim2real/records.py", line 154, in <module>
+    main()
+  File "/home/srinivas/Documents/ChatGPT/omnireset/UWLab/scripts_v2/tools/thunder_sim2real/records.py", line 149, in main
+    result = load_record(args.record)[1] if args.mode == "validate" else export_profile(args.fit, args.output)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/srinivas/Documents/ChatGPT/omnireset/UWLab/scripts_v2/tools/thunder_sim2real/records.py", line 108, in load_record
+    return record, validate_record(record, allow_synthetic=allow_synthetic)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/srinivas/Documents/ChatGPT/omnireset/UWLab/scripts_v2/tools/thunder_sim2real/records.py", line 94, in validate_record
+    raise ValueError("Robot timestamps contain duplicate/missing samples; fixed 500 Hz replay is invalid")
+ValueError: Robot timestamps contain duplicate/missing samples; fixed 500 Hz replay is invalid

@@ -1,0 +1,69 @@
+{
+  "run_id": "20260919T201242292903Z",
+  "record_sha256": "4bb0140cfd3bb93a74a4d1040fd073f0529b886c5ab5a2837b68e7e7c4b71b36",
+  "source_commit": "b5e2efd92cde47319e89248e8a2306a630ebb87e",
+  "completed": true,
+  "failure": null,
+  "cleanup_errors": [],
+  "samples": 4000,
+  "nominal_duration_s": 8.0,
+  "recorded_robot_timestamp_span_s": 8.002000000094995,
+  "recorded_host_timestamp_span_s": 8.00317793600334,
+  "config_matches_half_fast_candidate": true,
+  "strict_record_validation_passed": false,
+  "validation_failure": "Robot timestamps contain duplicate/missing samples; fixed 500 Hz replay is invalid",
+  "duplicate_robot_timestamp_intervals": 42,
+  "robot_intervals_above_2_4ms": 44,
+  "robot_interval_min_s": 0.0,
+  "robot_interval_max_s": 0.004000000189989805,
+  "reads_spanning_robot_update": 6,
+  "joint_names": [
+    "shoulder_pan_joint",
+    "shoulder_lift_joint",
+    "elbow_joint",
+    "wrist_1_joint",
+    "wrist_2_joint",
+    "wrist_3_joint"
+  ],
+  "measured_max_joint_speed_deg_s": [
+    11.961828114206513,
+    52.541079926161345,
+    57.279660266641095,
+    97.54741617885561,
+    34.06446199479306,
+    47.0925867988234
+  ],
+  "predicted_ensemble_max_joint_speed_deg_s": [
+    17.254657745361328,
+    47.784786224365234,
+    59.88325119018555,
+    102.75565338134766,
+    41.672332763671875,
+    51.233848571777344
+  ],
+  "peak_speed_time_s": [
+    5.054000000003725,
+    4.716000000014901,
+    4.013999999966472,
+    4.6940000001341105,
+    2.884000000078231,
+    4.652000000001863
+  ],
+  "max_joint_excursion_rad": [
+    0.031056642532348633,
+    0.08867549896240234,
+    0.12566184997558594,
+    0.16066288948059082,
+    0.09951925277709961,
+    0.11076951026916504
+  ],
+  "max_abs_commanded_torque_nm": [
+    18.188517678812268,
+    53.391243198692834,
+    38.01417262276389,
+    9.958530004002505,
+    3.7705151319587618,
+    5.182538466924154
+  ],
+  "scope": "Original raw recording preserved. Completion does not make irregular timestamps valid for fixed-step production replay. Peak-speed comparison alone is not a trajectory/model validation."
+}

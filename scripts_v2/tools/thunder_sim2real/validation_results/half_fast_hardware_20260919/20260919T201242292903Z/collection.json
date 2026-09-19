@@ -1,0 +1,101 @@
+{
+  "robot_ip": "10.33.55.89",
+  "payload_mass_kg": 1.04,
+  "payload_cog_m": [
+    -0.002,
+    0.001,
+    0.047
+  ],
+  "polyscope_version": "5.26.1.140514",
+  "gripper_configuration": "open_empty",
+  "start_joint_positions_rad": [
+    -2.993292290506895,
+    -0.535319188812487,
+    1.2787251865362697,
+    0.7397816280081531,
+    1.047210420309825,
+    1.2056523007278044
+  ],
+  "start_joint_tolerance_rad": 0.02,
+  "joint_excursion_limit_rad": [
+    0.20041622951776195,
+    0.23128933063399665,
+    0.34083942236257825,
+    0.263549931446727,
+    0.36730398664113595,
+    0.3763250143913611
+  ],
+  "duration_s": 8.0,
+  "f0_hz": 0.1,
+  "f1_hz": 3.0,
+  "amplitudes_m_rad": [
+    0.05,
+    0.05,
+    0.07500000000000001,
+    0.25,
+    0.125,
+    0.25
+  ],
+  "motion_stiffness": [
+    1000,
+    1000,
+    1000,
+    50,
+    50,
+    50
+  ],
+  "motion_damping_ratio": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    1
+  ],
+  "torque_max": [
+    150,
+    150,
+    150,
+    28,
+    28,
+    28
+  ],
+  "notes": "Next data-collection experiment: half amplitude, 0.1\u20133 Hz over 8 seconds, with the same outward start pose and controller used in the completed half-slow recording. Prior model predictions matched that recording with 0.722 degree position RMSE and 2.640 degree/s speed RMSE; this is model agreement, not target-tracking validation or evidence that these gains are optimal for Thunder. The new motion has a predicted maximum joint speed of 102.756 degrees/s across eight fitted models. No physical half-fast run is implied.",
+  "simulation_review_status": "eight_fitted_models_speed_and_source_hulls_pass_physical_half_fast_run_not_yet_collected",
+  "joint_excursion_limit_basis": {
+    "method": "Maximum absolute excursion across eight fitted models and full requested IK, plus five degrees per joint",
+    "observed_max_rad": [
+      0.11314976691804546,
+      0.14402286803428016,
+      0.25357295976286176,
+      0.17628346884701052,
+      0.28003752404141946,
+      0.28905855179164464
+    ],
+    "allowance_rad": 0.08726646259971647,
+    "scope": "Existing excursion stop guard; not a stopping-distance guarantee."
+  },
+  "robot_base_quaternion_world_wxyz": [
+    0.5,
+    0.5,
+    0.5,
+    0.5
+  ],
+  "hardware_settings_source": {
+    "method": "Read-only live RTDE and dashboard queries",
+    "timestamp_utc": "2026-09-19T15:44:00.116231+00:00",
+    "payload_status": "Controller-configured values; not a new physical mass/CoG measurement",
+    "dashboard_report": "dashboard-readonly.json",
+    "rtde_report": "current-state.json"
+  },
+  "prediction_report": "validation_results/half_fast_review_20260919/half_fast_simulation.json",
+  "prediction_max_joint_speed_deg_s": [
+    17.254657745361328,
+    47.784786224365234,
+    59.88325119018555,
+    102.75565338134766,
+    41.672332763671875,
+    51.233848571777344
+  ],
+  "excitation_amplitude_scale_vs_uw_defaults": 0.5
+}
