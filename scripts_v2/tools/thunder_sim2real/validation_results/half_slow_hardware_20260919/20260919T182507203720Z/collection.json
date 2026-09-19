@@ -1,0 +1,101 @@
+{
+  "robot_ip": "10.33.55.89",
+  "payload_mass_kg": 1.04,
+  "payload_cog_m": [
+    -0.002,
+    0.001,
+    0.047
+  ],
+  "polyscope_version": "5.26.1.140514",
+  "gripper_configuration": "open_empty",
+  "start_joint_positions_rad": [
+    -2.993292290506895,
+    -0.535319188812487,
+    1.2787251865362697,
+    0.7397816280081531,
+    1.047210420309825,
+    1.2056523007278044
+  ],
+  "start_joint_tolerance_rad": 0.02,
+  "joint_excursion_limit_rad": [
+    0.20041696623974803,
+    0.23128852795872012,
+    0.34083731267529827,
+    0.279593415657695,
+    0.36730580371612753,
+    0.37632411767660123
+  ],
+  "duration_s": 8.0,
+  "f0_hz": 0.1,
+  "f1_hz": 1.5,
+  "amplitudes_m_rad": [
+    0.05,
+    0.05,
+    0.075,
+    0.25,
+    0.125,
+    0.25
+  ],
+  "motion_stiffness": [
+    1000,
+    1000,
+    1000,
+    50,
+    50,
+    50
+  ],
+  "motion_damping_ratio": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    1
+  ],
+  "torque_max": [
+    150,
+    150,
+    150,
+    28,
+    28,
+    28
+  ],
+  "notes": "Next provisional data-collection run: same outward start pose and UW controller, half amplitude, 0.1\u20131.5 Hz over 8 seconds. Eight models fitted to the saved hardware prefix predict peaks below 66 degrees/s and pass source-hull checks. Payload and connection settings carried from the previous physical recording. Compare the new recording with these predictions, then fit both datasets.",
+  "simulation_review_status": "partial_data_fitted_models_speed_and_source_hulls_pass_physical_run_not_yet_collected",
+  "joint_excursion_limit_basis": {
+    "method": "Maximum absolute excursion across eight fitted-dynamics simulations and the complete requested IK path, plus 5 degrees per joint",
+    "observed_max_rad": [
+      0.11315050364003154,
+      0.14402206535900364,
+      0.2535708500755818,
+      0.19232695305797853,
+      0.28003934111641104,
+      0.28905765507688475
+    ],
+    "allowance_rad": 0.08726646259971647,
+    "scope": "Existing excursion stop guards, not online collision detection or a stopping-distance guarantee."
+  },
+  "robot_base_quaternion_world_wxyz": [
+    0.5,
+    0.5,
+    0.5,
+    0.5
+  ],
+  "hardware_settings_source": {
+    "method": "Read-only live RTDE and dashboard queries",
+    "timestamp_utc": "2026-09-19T15:44:00.116231+00:00",
+    "payload_status": "Controller-configured values; not a new physical mass/CoG measurement",
+    "dashboard_report": "dashboard-readonly.json",
+    "rtde_report": "current-state.json"
+  },
+  "prediction_report": "validation_results/partial_fit_20260919/half_slow_simulation.json",
+  "prediction_max_joint_speed_deg_s": [
+    15.40113639831543,
+    27.295860290527344,
+    54.19915771484375,
+    65.8120346069336,
+    40.5120964050293,
+    42.498836517333984
+  ],
+  "excitation_amplitude_scale_vs_uw_defaults": 0.5
+}
