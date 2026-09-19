@@ -1,0 +1,271 @@
+{
+  "source": "/data/kanth042/datasets/thunder_mount_corrected_20mm_20260917/75_full_amplitude_review_20260919/half_amplitude_3hz",
+  "sample_dt_s": 0.002,
+  "include_sphere_failures": true,
+  "candidates": [
+    {
+      "candidate": 2,
+      "variants": [
+        {
+          "variant": "broad_train_rank_1",
+          "samples": 4001,
+          "exact_distance_calls": 80500,
+          "world_margin_m": 0.07122935737773547,
+          "world_gap_m": 0.09372936386424432,
+          "self_gap_m": 0.0052002837646817025,
+          "moving_self_gap_m": 0.016264804482126624,
+          "nearest_pairs": {
+            "self_gap_m": {
+              "time_s": 4.354,
+              "a": "right_outer_finger_shape_0",
+              "b": "robotiq_base_link_shape_0"
+            },
+            "moving_self_gap_m": {
+              "time_s": 4.614,
+              "a": "forearm_link_shape_0",
+              "b": "wrist_2_link_shape_0"
+            },
+            "world_gap_m": {
+              "time_s": 2.854,
+              "a": "shoulder_link_shape_0",
+              "b": "lab_18"
+            },
+            "world_margin_m": {
+              "time_s": 2.854,
+              "a": "shoulder_link_shape_0",
+              "b": "lab_7"
+            }
+          },
+          "clear": true
+        },
+        {
+          "variant": "broad_train_rank_2",
+          "samples": 4001,
+          "exact_distance_calls": 80538,
+          "world_margin_m": 0.07122935737504686,
+          "world_gap_m": 0.09372936386388438,
+          "self_gap_m": 0.005200293206715968,
+          "moving_self_gap_m": 0.016355206845079254,
+          "nearest_pairs": {
+            "self_gap_m": {
+              "time_s": 4.332,
+              "a": "right_outer_finger_shape_0",
+              "b": "robotiq_base_link_shape_0"
+            },
+            "moving_self_gap_m": {
+              "time_s": 4.6080000000000005,
+              "a": "forearm_link_shape_0",
+              "b": "wrist_2_link_shape_0"
+            },
+            "world_gap_m": {
+              "time_s": 1.728,
+              "a": "shoulder_link_shape_0",
+              "b": "lab_18"
+            },
+            "world_margin_m": {
+              "time_s": 1.728,
+              "a": "shoulder_link_shape_0",
+              "b": "lab_7"
+            }
+          },
+          "clear": true
+        },
+        {
+          "variant": "broad_train_rank_3",
+          "samples": 4001,
+          "exact_distance_calls": 70625,
+          "world_margin_m": 0.07122911894577007,
+          "world_gap_m": 0.09372911668801315,
+          "self_gap_m": 0.005200444291982393,
+          "moving_self_gap_m": 0.01617306630228239,
+          "nearest_pairs": {
+            "self_gap_m": {
+              "time_s": 4.874,
+              "a": "right_outer_finger_shape_0",
+              "b": "robotiq_base_link_shape_0"
+            },
+            "moving_self_gap_m": {
+              "time_s": 2.392,
+              "a": "forearm_link_shape_0",
+              "b": "wrist_2_link_shape_0"
+            },
+            "world_gap_m": {
+              "time_s": 2.23,
+              "a": "shoulder_link_shape_0",
+              "b": "lab_18"
+            },
+            "world_margin_m": {
+              "time_s": 2.916,
+              "a": "shoulder_link_shape_0",
+              "b": "lab_7"
+            }
+          },
+          "clear": true
+        },
+        {
+          "variant": "broad_train_rank_4",
+          "samples": 4001,
+          "exact_distance_calls": 69997,
+          "world_margin_m": 0.07122911895443934,
+          "world_gap_m": 0.09372911668944524,
+          "self_gap_m": 0.005200454267261827,
+          "moving_self_gap_m": 0.016589585565209626,
+          "nearest_pairs": {
+            "self_gap_m": {
+              "time_s": 5.454,
+              "a": "right_outer_finger_shape_0",
+              "b": "robotiq_base_link_shape_0"
+            },
+            "moving_self_gap_m": {
+              "time_s": 5.152,
+              "a": "forearm_link_shape_0",
+              "b": "wrist_2_link_shape_0"
+            },
+            "world_gap_m": {
+              "time_s": 2.316,
+              "a": "shoulder_link_shape_0",
+              "b": "lab_18"
+            },
+            "world_margin_m": {
+              "time_s": 1.704,
+              "a": "shoulder_link_shape_0",
+              "b": "lab_7"
+            }
+          },
+          "clear": true
+        },
+        {
+          "variant": "broad_train_rank_5",
+          "samples": 4001,
+          "exact_distance_calls": 78599,
+          "world_margin_m": 0.07122923822183927,
+          "world_gap_m": 0.09372924465598023,
+          "self_gap_m": 0.00520048128593424,
+          "moving_self_gap_m": 0.01659707984316978,
+          "nearest_pairs": {
+            "self_gap_m": {
+              "time_s": 2.8120000000000003,
+              "a": "right_outer_finger_shape_0",
+              "b": "robotiq_base_link_shape_0"
+            },
+            "moving_self_gap_m": {
+              "time_s": 4.61,
+              "a": "forearm_link_shape_0",
+              "b": "wrist_2_link_shape_0"
+            },
+            "world_gap_m": {
+              "time_s": 2.86,
+              "a": "shoulder_link_shape_0",
+              "b": "lab_18"
+            },
+            "world_margin_m": {
+              "time_s": 2.86,
+              "a": "shoulder_link_shape_0",
+              "b": "lab_7"
+            }
+          },
+          "clear": true
+        },
+        {
+          "variant": "broad_train_rank_6",
+          "samples": 4001,
+          "exact_distance_calls": 77703,
+          "world_margin_m": 0.07122923816280793,
+          "world_gap_m": 0.09372923589587287,
+          "self_gap_m": 0.005200467163045195,
+          "moving_self_gap_m": 0.016568800091640568,
+          "nearest_pairs": {
+            "self_gap_m": {
+              "time_s": 5.434,
+              "a": "right_outer_finger_shape_0",
+              "b": "robotiq_base_link_shape_0"
+            },
+            "moving_self_gap_m": {
+              "time_s": 5.142,
+              "a": "forearm_link_shape_0",
+              "b": "wrist_2_link_shape_0"
+            },
+            "world_gap_m": {
+              "time_s": 2.458,
+              "a": "shoulder_link_shape_0",
+              "b": "lab_18"
+            },
+            "world_margin_m": {
+              "time_s": 1.706,
+              "a": "shoulder_link_shape_0",
+              "b": "lab_7"
+            }
+          },
+          "clear": true
+        },
+        {
+          "variant": "broad_train_rank_7",
+          "samples": 4001,
+          "exact_distance_calls": 80355,
+          "world_margin_m": 0.0712293573725204,
+          "world_gap_m": 0.09372935510514625,
+          "self_gap_m": 0.0052002596689704386,
+          "moving_self_gap_m": 0.0164267311340887,
+          "nearest_pairs": {
+            "self_gap_m": {
+              "time_s": 4.926,
+              "a": "right_outer_finger_shape_0",
+              "b": "robotiq_base_link_shape_0"
+            },
+            "moving_self_gap_m": {
+              "time_s": 4.6080000000000005,
+              "a": "forearm_link_shape_0",
+              "b": "wrist_2_link_shape_0"
+            },
+            "world_gap_m": {
+              "time_s": 2.286,
+              "a": "shoulder_link_shape_0",
+              "b": "lab_18"
+            },
+            "world_margin_m": {
+              "time_s": 2.858,
+              "a": "shoulder_link_shape_0",
+              "b": "lab_7"
+            }
+          },
+          "clear": true
+        },
+        {
+          "variant": "broad_train_rank_8",
+          "samples": 4001,
+          "exact_distance_calls": 80392,
+          "world_margin_m": 0.07122935737275686,
+          "world_gap_m": 0.09372935510516242,
+          "self_gap_m": 0.005200356344263108,
+          "moving_self_gap_m": 0.016282116935986135,
+          "nearest_pairs": {
+            "self_gap_m": {
+              "time_s": 5.434,
+              "a": "right_outer_finger_shape_0",
+              "b": "robotiq_base_link_shape_0"
+            },
+            "moving_self_gap_m": {
+              "time_s": 3.29,
+              "a": "forearm_link_shape_0",
+              "b": "wrist_2_link_shape_0"
+            },
+            "world_gap_m": {
+              "time_s": 2.2800000000000002,
+              "a": "shoulder_link_shape_0",
+              "b": "lab_18"
+            },
+            "world_margin_m": {
+              "time_s": 2.836,
+              "a": "shoulder_link_shape_0",
+              "b": "lab_7"
+            }
+          },
+          "clear": true
+        }
+      ],
+      "clear": true
+    }
+  ],
+  "selected_candidate": 2,
+  "scope": "All 2 ms saved body samples; source convex hulls, 33 lab boxes, same-body/adjacent-link and fixed mounting exclusions. Source manifest distinguishes physics states from ideal-tracking geometry. No unknown real-world obstacles modeled."
+}

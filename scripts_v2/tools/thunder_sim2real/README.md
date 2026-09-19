@@ -139,10 +139,10 @@ python3.11 -m venv .venv-thunder
 source .venv-thunder/bin/activate
 python -m pip install torch==2.7.1 --index-url https://download.pytorch.org/whl/cpu
 python -m pip install -r scripts_v2/tools/thunder_sim2real/workstation/requirements.txt
-cp scripts_v2/tools/thunder_sim2real/workstation/collection.half_slow_candidate.json /tmp/thunder-collection.json
+cp scripts_v2/tools/thunder_sim2real/workstation/collection.half_fast_candidate.json /tmp/thunder-collection.json
 ```
 
-The current configuration is the eight-second, half-amplitude, 0.1–1.5 Hz
+The current configuration is the eight-second, half-amplitude, 0.1–3 Hz
 collection described in [HALF_AMPLITUDE_HANDOFF.md](HALF_AMPLITUDE_HANDOFF.md).
 It keeps the reviewed outward start pose and the UW controller gains. Connection
 and configured payload values are carried from the last physical recording.
@@ -152,7 +152,7 @@ Its existing joint excursion guards are derived from eight fitted-model response
 and the requested path, plus five degrees per joint.
 Angles are radians. Amplitudes are explicit XYZ meters followed by XYZ
 axis-angle radians in `base_link`; there are no hidden per-axis multipliers.
-The eight-second 0.1–1.5 Hz sweep has a two-second ramp-up and three-second
+The eight-second 0.1–3 Hz sweep has a two-second ramp-up and three-second
 ramp-down. Commands are issued every 2 ms; the waveform uses UW's original
 `linspace(0, duration, N)` phase grid and sample-based ramp construction.
 
@@ -312,21 +312,25 @@ predictions. These do not establish a final dynamics profile or physical transfe
 - [UWLab system identification and fine-tuning guide](https://uw-lab.github.io/UWLab/main/source/publications/omnireset/sim2real.html)
 - [Pinned UWLab real-robot collector](https://github.com/WEIRDLabUW/diffusion_policy/blob/3cd87c830b3a46967fb2291f5bc18e8d746ab4b6/scripts/sim2real/collect_sysid_data.py)
 - [Pinned UWLab robot environment](https://github.com/WEIRDLabUW/diffusion_policy/blob/3cd87c830b3a46967fb2291f5bc18e8d746ab4b6/conda_environment_real.yaml)
-# Current motion candidate — half amplitude, slower sweep
+# Current motion candidate — half amplitude, 0.1–3 Hz
 
-Use `workstation/collection.half_slow_candidate.json`; the compatibility filename
+Use `workstation/collection.half_fast_candidate.json`; the compatibility filename
 `collection.simulation_candidate.json` is identical. The pose remains 15 cm
 outward from the columns at the same height and orientation. The motion is eight
-seconds at 500 Hz, with half UW's amplitudes and a 0.1–1.5 Hz frequency sweep.
-Controller gains and torque limits are unchanged.
+seconds at 500 Hz, with half UW's amplitudes and a 0.1–3 Hz frequency sweep.
+It uses the same controller gains and torque limits as the completed half-slow run.
+The previous `collection.half_slow_candidate.json` remains available for reference.
 
-Eight models fitted to the saved hardware prefix predict a maximum joint speed
-of 65.8 degrees/second over this proposed motion. Every saved 2 ms state passed
-source-hull checks. These provisional estimates support another collection;
-they are not the final dynamics model for policy training.
+Eight models fitted to the interrupted hardware recording predict a maximum joint
+speed of 102.8 degrees/second for this motion. Every saved 2 ms state and the complete
+requested path passed source-hull checks. Before this frequency increase, the best
+training-fit model predicted the completed half-slow recording with 0.722 degree
+position RMSE and 2.640 degree/second speed RMSE. This measures model agreement;
+it does not establish that the controller gains provide the desired target tracking.
 
 See [the half-amplitude handoff](HALF_AMPLITUDE_HANDOFF.md) for the workstation
-command, speed table, geometric checks, and the plan for incorporating new data.
-The [outward-pose handoff](OUTWARD_POSE_HANDOFF.md) documents the historical
-full-amplitude candidate. The existing corrected-mount core bundle remains
-compatible; no model reinstall is needed for this collection change.
+command and [the published review](validation_results/half_fast_review_20260919/README.md)
+for the existing prediction and geometry evidence. The
+[outward-pose handoff](OUTWARD_POSE_HANDOFF.md) documents the historical full-amplitude
+candidate. The existing corrected-mount core bundle remains compatible; no model
+reinstall is needed for this collection change.
