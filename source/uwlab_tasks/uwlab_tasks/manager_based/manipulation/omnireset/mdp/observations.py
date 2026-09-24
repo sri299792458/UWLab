@@ -128,18 +128,18 @@ def asset_link_velocity_in_root_asset_frame(
     target_asset_cfg: SceneEntityCfg,
     root_asset_cfg: SceneEntityCfg = SceneEntityCfg("robot"),
 ):
+    """Return link linear and angular velocities expressed in the fixed root asset frame."""
     target_asset: RigidObject | Articulation = env.scene[target_asset_cfg.name]
     root_asset: RigidObject | Articulation = env.scene[root_asset_cfg.name]
 
     target_body_idx = 0 if isinstance(target_asset_cfg.body_ids, slice) else target_asset_cfg.body_ids
 
-    asset_lin_vel_b, _ = math_utils.subtract_frame_transforms(
-        root_asset.data.root_pos_w,
+    # Velocities are vectors: rotate their axes without translating by the root position.
+    asset_lin_vel_b = math_utils.quat_apply_inverse(
         root_asset.data.root_quat_w,
         target_asset.data.body_lin_vel_w[:, target_body_idx].view(-1, 3),
     )
-    asset_ang_vel_b, _ = math_utils.subtract_frame_transforms(
-        root_asset.data.root_pos_w,
+    asset_ang_vel_b = math_utils.quat_apply_inverse(
         root_asset.data.root_quat_w,
         target_asset.data.body_ang_vel_w[:, target_body_idx].view(-1, 3),
     )
