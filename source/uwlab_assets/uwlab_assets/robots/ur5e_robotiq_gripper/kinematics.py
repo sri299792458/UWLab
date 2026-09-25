@@ -52,12 +52,14 @@ R_180Z = torch.tensor([[-1, 0, 0], [0, -1, 0], [0, 0, 1]], dtype=torch.float32)
 # ============================================================================
 
 
-@functools.lru_cache(maxsize=1)
-def _load_calibration() -> dict[str, torch.Tensor]:
-    """Download (once) and parse calibrated kinematics from the robot metadata."""
-    from .ur5e_robotiq_2f85_gripper import UR5E_ARTICULATION
+@functools.lru_cache(maxsize=None)
+def _load_calibration(usd_path: str | None = None) -> dict[str, torch.Tensor]:
+    """Load metadata beside the selected robot; default to the upstream asset."""
+    if usd_path is None:
+        from .ur5e_robotiq_2f85_gripper import UR5E_ARTICULATION
 
-    usd_dir = os.path.dirname(UR5E_ARTICULATION.spawn.usd_path)
+        usd_path = UR5E_ARTICULATION.spawn.usd_path
+    usd_dir = os.path.dirname(usd_path)
     meta_path = os.path.join(usd_dir, "metadata.yaml")
     local = retrieve_file_path(meta_path, download_dir=tempfile.gettempdir())
     with open(local) as f:
@@ -116,18 +118,21 @@ def rpy_to_matrix_torch(rpy: torch.Tensor) -> torch.Tensor:
 # ============================================================================
 
 
-def compute_jacobian_analytical(joint_angles: torch.Tensor, device: str = "cuda") -> torch.Tensor:
+def compute_jacobian_analytical(
+    joint_angles: torch.Tensor, device: str = "cuda", usd_path: str | None = None
+) -> torch.Tensor:
     """Compute geometric Jacobian using calibrated kinematics (batched).
 
     Computes to wrist_3_link frame origin (NOT COM), matching real robot code.
 
     Args:
         joint_angles: (N, 6) joint angles in radians.
+        usd_path: Robot asset whose adjacent metadata supplies the calibration.
     Returns:
         J: (N, 6, 6) Jacobian [linear; angular].
     """
     N = joint_angles.shape[0]
-    cal = _load_calibration()
+    cal = _load_calibration(usd_path)
     xyz_all = cal["joints_xyz"].to(device)
     rpy_all = cal["joints_rpy"].to(device)
     R_180Z_dev = R_180Z.to(device)
@@ -185,18 +190,21 @@ def compute_jacobian_analytical(joint_angles: torch.Tensor, device: str = "cuda"
 # ============================================================================
 
 
-def compute_mass_matrix_analytical(joint_angles: torch.Tensor, device: str = "cuda") -> torch.Tensor:
+def compute_mass_matrix_analytical(
+    joint_angles: torch.Tensor, device: str = "cuda", usd_path: str | None = None
+) -> torch.Tensor:
     """Compute 6x6 joint-space mass matrix using CRBA.
 
     Uses the same inertia parameters as real robot for consistency.
 
     Args:
         joint_angles: (N, 6) joint angles in radians.
+        usd_path: Robot asset whose adjacent metadata supplies the calibration.
     Returns:
         M: (N, 6, 6) mass matrix.
     """
     N = joint_angles.shape[0]
-    cal = _load_calibration()
+    cal = _load_calibration(usd_path)
     xyz_all = cal["joints_xyz"].to(device)
     rpy_all = cal["joints_rpy"].to(device)
     masses = cal["link_masses"].to(device)

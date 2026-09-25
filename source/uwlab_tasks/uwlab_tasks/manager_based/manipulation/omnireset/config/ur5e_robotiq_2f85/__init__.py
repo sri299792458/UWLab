@@ -85,6 +85,30 @@ gym.register(
     },
 )
 
+# Calibration-only Thunder port, retaining the upstream easy scene.
+for reset_family in (
+    "ObjectAnywhereEEAnywhere",
+    "ObjectRestingEEGrasped",
+    "ObjectAnywhereEEGrasped",
+    "ObjectPartiallyAssembledEEGrasped",
+):
+    gym.register(
+        id=f"OmniReset-UR5eRobotiq2f85-CubeEasyThunderCalibration-{reset_family}-v0",
+        entry_point="isaaclab.envs:ManagerBasedRLEnv",
+        disable_env_checker=True,
+        kwargs={"env_cfg_entry_point": f"{__name__}.thunder_calibration_cfg:ThunderCalibration{reset_family}Cfg"},
+    )
+
+gym.register(
+    id="OmniReset-Ur5eRobotiq2f85-RelCartesianOSC-State-CubeEasyThunderCalibration-v0",
+    entry_point="isaaclab.envs:ManagerBasedRLEnv",
+    disable_env_checker=True,
+    kwargs={
+        "env_cfg_entry_point": f"{__name__}.thunder_calibration_cfg:ThunderCalibrationTrainCfg",
+        "rsl_rl_cfg_entry_point": f"{agents.__name__}.rsl_rl_cfg:Base_PPORunnerCfg",
+    },
+)
+
 # Register SysID env
 gym.register(
     id="OmniReset-Ur5eRobotiq2f85-Sysid-v0",
