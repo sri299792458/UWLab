@@ -207,6 +207,28 @@ gym.register(
     },
 )
 
+# Corrected stock D405 inertials, separately selectable from the geometry-only stage.
+for stage in (
+    "GraspSampling", "ObjectAnywhereEEAnywhere", "ObjectRestingEEGrasped",
+    "ObjectAnywhereEEGrasped", "ObjectPartiallyAssembledEEGrasped",
+):
+    gym.register(
+        id=f"OmniReset-UR5eRobotiq2f85-CubeEasyThunderStockCorrected60-{stage}-v0",
+        entry_point="isaaclab.envs:ManagerBasedRLEnv",
+        disable_env_checker=True,
+        kwargs={"env_cfg_entry_point": f"{__name__}.thunder_stock_corrected_cfg:ThunderStockCorrected{stage}Cfg"},
+    )
+
+gym.register(
+    id="OmniReset-Ur5eRobotiq2f85-RelCartesianOSC-State-CubeEasyThunderStockCorrected60-v0",
+    entry_point="isaaclab.envs:ManagerBasedRLEnv",
+    disable_env_checker=True,
+    kwargs={
+        "env_cfg_entry_point": f"{__name__}.thunder_stock_corrected_cfg:ThunderStockCorrectedTrainCfg",
+        "rsl_rl_cfg_entry_point": f"{agents.__name__}.rsl_rl_cfg:Base_PPORunnerCfg",
+    },
+)
+
 # Register SysID env
 gym.register(
     id="OmniReset-Ur5eRobotiq2f85-Sysid-v0",
