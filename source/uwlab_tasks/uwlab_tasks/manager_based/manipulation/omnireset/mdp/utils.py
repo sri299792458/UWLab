@@ -559,6 +559,20 @@ def _cached_local_path(url: str) -> str:
     return os.path.join(os.path.expanduser("~"), ".cache", "uwlab", "assets", rel)
 
 
+def joint_positions_within_limits(positions: torch.Tensor, limits: torch.Tensor) -> torch.Tensor:
+    """Return a per-state validity mask, allowing only 1e-6 rad of roundoff.
+
+    ``limits`` has a final (lower, upper) axis and broadcasts across states.
+    Reject non-finite angles; do not clamp or wrap the recorded positions.
+    """
+    tolerance = 1.0e-6
+    return (
+        torch.isfinite(positions)
+        & (positions >= limits[..., 0] - tolerance)
+        & (positions <= limits[..., 1] + tolerance)
+    ).all(dim=-1)
+
+
 # ---- OSC / script helpers (unscaled action = Cartesian delta) ----
 def target_pose_to_action(
     ee_pos_b: torch.Tensor,

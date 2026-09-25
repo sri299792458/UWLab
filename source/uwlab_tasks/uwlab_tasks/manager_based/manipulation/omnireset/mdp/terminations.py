@@ -251,6 +251,11 @@ class check_reset_state_success(ManagerTermBase):
         self.robot_asset = env.scene[self.robot_cfg.name]
         self.assets_to_check = self.object_assets + [self.robot_asset]
         self.ee_body_idx = self.robot_asset.data.body_names.index(self.ee_body_name)
+        joint_limit_joint_names = cfg.params.get("joint_limit_joint_names")
+        self.joint_limit_ids = (
+            [self.robot_asset.joint_names.index(name) for name in joint_limit_joint_names]
+            if joint_limit_joint_names is not None else None
+        )
 
         # Optional assembly alignment filter
         self.assembly_success_prob = cfg.params.get("assembly_success_prob")
@@ -328,6 +333,7 @@ class check_reset_state_success(ManagerTermBase):
         receptive_asset_cfg: SceneEntityCfg | None = None,
         assembly_success_prob: float | None = None,
         assembly_threshold_scale: float = 1.0,
+        joint_limit_joint_names: list[str] | None = None,
     ) -> torch.Tensor:
 
         # Check time out
@@ -409,6 +415,12 @@ class check_reset_state_success(ManagerTermBase):
             & collision_free
             & time_out
         )
+
+        if self.joint_limit_ids is not None:
+            reset_success &= utils.joint_positions_within_limits(
+                self.robot_asset.data.joint_pos[:, self.joint_limit_ids],
+                self.robot_asset.data.joint_pos_limits[:, self.joint_limit_ids],
+            )
 
         if self.assembly_success_prob is not None:
             ins_pos_w, ins_quat_w = self.insertive_asset_offset.apply(self.insertive_asset)

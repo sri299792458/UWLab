@@ -1018,6 +1018,11 @@ class MultiResetManager(ManagerTermBase):
         # Load all datasets
         self.datasets = []
         num_states = []
+        joint_limit_joint_names = cfg.params.get("joint_limit_joint_names")
+        if joint_limit_joint_names is not None:
+            robot = env.scene["robot"]
+            joint_limit_ids = [robot.joint_names.index(name) for name in joint_limit_joint_names]
+            joint_limits = robot.data.joint_pos_limits[0, joint_limit_ids]
         for dataset_file in dataset_files:
             local_file_path = utils.safe_retrieve_file_path(dataset_file)
 
@@ -1026,6 +1031,20 @@ class MultiResetManager(ManagerTermBase):
                 raise FileNotFoundError(f"Dataset file {dataset_file} could not be accessed or downloaded.")
 
             dataset = torch.load(local_file_path)
+            if joint_limit_joint_names is not None:
+                positions = dataset["initial_state"]["articulation"]["robot"]["joint_position"]
+                if isinstance(positions, list):
+                    positions = torch.stack(positions)
+                if positions.ndim != 2 or positions.shape[1] != len(robot.joint_names):
+                    raise ValueError(f"Unexpected robot joint-position shape in {dataset_file}: {positions.shape}")
+                valid = utils.joint_positions_within_limits(
+                    positions[:, joint_limit_ids], joint_limits.to(positions.device)
+                )
+                if not valid.all():
+                    raise ValueError(
+                        f"{dataset_file}: {int((~valid).sum())} reset states violate native limits for "
+                        f"{joint_limit_joint_names}. Generate compatible resets; angles are not clamped or wrapped."
+                    )
             num_states.append(len(dataset["initial_state"]["articulation"]["robot"]["joint_position"]))
             init_indices = torch.arange(num_states[-1], device=env.device)
             self.datasets.append(sample_state_data_set(dataset, init_indices, env.device))
@@ -1052,6 +1071,7 @@ class MultiResetManager(ManagerTermBase):
         reset_types: list[str],
         probs: list[float],
         success: str | None = None,
+        joint_limit_joint_names: list[str] | None = None,
     ) -> None:
         if env_ids is None:
             env_ids = torch.arange(self.num_envs, device=self._env.device)

@@ -1,5 +1,10 @@
 # Thunder calibration on the upstream stock robot
 
+The simulation setup applies Thunder arm calibration and then the paper's
+±180° wrist limits as separate changes. Commit `8b15b3d` is the calibration-only
+reference. Real deployment must use compatible initialization and angle handling;
+that follow-up does not block applying these limits in simulation.
+
 `build_asset.py` copies the pinned upstream D415 UR5e/Robotiq USD and changes
 only Thunder's six calibrated arm joint frames and the rigid-body zero poses
 that depend on them. It retains the upstream gripper, camera, collision shapes,
@@ -38,11 +43,9 @@ Both exactly match the retained R86 pure-calibration outputs.
 
 ## Select the calibrated tasks
 
-Set `UWLAB_THUNDER_CALIBRATION_ASSET_DIR` to the generated asset directory.
-Set `UWLAB_THUNDER_CALIBRATION_DATASET_DIR` to a separate directory for resets
-generated with this calibration; its default is
-`Datasets/OmniResetCubeEasyThunderCalibration`, relative to the working directory.
-The task checks the calibration identity when instantiated. Importing or using
+The calibration-only validation used the asset above with its original wrist
+limits. The next wrist-limit task step is described below; use its separate
+asset and reset directory when instantiating the current task. Importing or using
 the existing upstream tasks does not require these variables.
 
 The training task is
@@ -55,10 +58,11 @@ Generation tasks use
 The Cartesian controller passes the selected robot USD path to the analytical
 Jacobian, so the controller reads the calibrated joint transforms beside that
 asset. The analytical mass-matrix helper accepts the same optional path.
-Calls without a path keep the original upstream calibration. These task
-configurations change only the robot asset and reset dataset paths relative to
-their upstream easy-task parents. New compatible reset banks are required
-before training; the calibration validation did not generate them.
+Calls without a path keep the original upstream calibration. The calibration
+commit changes only the robot asset and reset dataset paths relative to the
+upstream easy-task parents. The wrist-limit follow-up also enables reset checks
+for the three wrist joints. New compatible reset banks are required before
+training; the calibration validation did not generate them.
 
 ## Native simulator validation
 
@@ -79,12 +83,51 @@ The reproducible probe, launch record, saved configurations and result are in
 This checks calibration integration; it does not establish learning performance
 or validate the later Thunder mount, D405 assembly or custom fingers.
 
-## Wrist-limit discrepancy
+## Wrist-limit step after calibration-only commit `8b15b3d`
 
-Native readback of all three wrist joints is still **[-360, 360] degrees**.
-The paper's [Appendix A.3.1](https://arxiv.org/html/2603.15789v3#A3.SS1)
-describes **[-180, 180] degrees** in simulation, but that restriction was not
-found in the selected released asset or active task configuration. The section
-does not identify an implementing file or a training-stage switch. Adopting
-the narrower limits is a separate task change to decide before generating the
-next bank; this calibration commit retains the upstream limits.
+Commit `8b15b3d` deliberately retained the upstream **[-360, 360] degree**
+wrist limits. For the next experiment, `apply_wrist_limits.py` copies its
+calibrated USD to a new empty output directory and changes only the lower and
+upper limit attributes of wrist joints 1–3 to **[-180, 180] degrees**:
+
+```bash
+/data/kanth042/envs/uwlab-isaac51/bin/python scripts_v2/tools/thunder_calibration/apply_wrist_limits.py \
+  --source-dir /data/kanth042/datasets/umi_reset_from_defaults_20260911/105_thunder_calibration_port_20260924/assets/thunder_calibration \
+  --output-dir /data/kanth042/datasets/umi_reset_from_defaults_20260911/105_thunder_calibration_port_20260924/assets/thunder_wrist180
+```
+
+The generated `robot.usd` SHA-256 is
+`b00829fbce65001dc3dc88e6078fc353b3df3946b069efcb276f7d9016f7b817`.
+`metadata.yaml` remains byte-identical to the calibration-only asset. The
+`wrist_limit_report.json` records the six allowed attribute changes and the
+source/output hashes. All other USD attributes and prim relationships are
+checked unchanged. The output is outside Git.
+
+Set `UWLAB_THUNDER_CALIBRATION_ASSET_DIR` to the `thunder_wrist180` directory.
+The same four generation task IDs and training task ID now require native USD
+wrist limits of ±180 degrees. Their default dataset directory is distinct:
+`Datasets/OmniResetCubeEasyThunderWrist180`. Each generation task requests a
+wrist-limit acceptance check; training requests a wrist-limit check when it
+loads reset banks. These checks use the three named wrist joints only and allow
+`1e-6 rad` of floating-point roundoff. Invalid angles are rejected without
+clamping or wrapping. Fresh full-arm reset banks are required.
+
+`verify_wrist_limits.py` checks the PhysX limits, generates a small set of
+accepted reset states, and tests the real success term and training-bank loader
+with above-limit, below-limit and non-finite angles on each wrist. Its negative
+acceptance tests temporarily change observation buffers and restore them before
+recording or advancing physics. They are deliberate validation cases, not
+naturally generated failures. This probe does not launch training or generate
+a production reset bank.
+
+The September 24 native probe passed: PhysX read back `[-180, 180]` degrees
+for all three wrists; 27 successful states were exported after 20 policy steps.
+All exported wrist angles were finite and inside their limits. All nine
+deliberately invalid cases were rejected by generation acceptance, and all
+nine were rejected by the training-bank loader. Valid bank rows loaded without
+modification, and existing upstream tasks retained their original behavior.
+The result and exact launch are recorded in
+`105_thunder_calibration_port_20260924/wrist180_native_check_v2/report.json`
+and `wrist180_native_launch_v2.json` under the dataset experiment root above.
+The first probe attempt confirmed the limits but failed in its temporary test
+hook's reset delegation; the corrected probe passed.
