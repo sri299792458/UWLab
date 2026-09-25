@@ -181,6 +181,32 @@ gym.register(
     },
 )
 
+# Rounded 60 mm cubes on the centered D405 stock-hand setup, with fresh data.
+for stage in (
+    "GraspSampling",
+    "PartialAssemblies",
+    "ObjectAnywhereEEAnywhere",
+    "ObjectRestingEEGrasped",
+    "ObjectAnywhereEEGrasped",
+    "ObjectPartiallyAssembledEEGrasped",
+):
+    gym.register(
+        id=f"OmniReset-UR5eRobotiq2f85-CubeEasyThunderD40560-{stage}-v0",
+        entry_point="isaaclab.envs:ManagerBasedRLEnv",
+        disable_env_checker=True,
+        kwargs={"env_cfg_entry_point": f"{__name__}.thunder_60mm_cfg:ThunderD40560{stage}Cfg"},
+    )
+
+gym.register(
+    id="OmniReset-Ur5eRobotiq2f85-RelCartesianOSC-State-CubeEasyThunderD40560-v0",
+    entry_point="isaaclab.envs:ManagerBasedRLEnv",
+    disable_env_checker=True,
+    kwargs={
+        "env_cfg_entry_point": f"{__name__}.thunder_60mm_cfg:ThunderD40560TrainCfg",
+        "rsl_rl_cfg_entry_point": f"{agents.__name__}.rsl_rl_cfg:Base_PPORunnerCfg",
+    },
+)
+
 # Register SysID env
 gym.register(
     id="OmniReset-Ur5eRobotiq2f85-Sysid-v0",
