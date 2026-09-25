@@ -13,6 +13,7 @@ from pxr import Gf, Usd, UsdPhysics
 from scipy.spatial.transform import Rotation
 
 from extract_hand import extract
+from robotiq_linkage import patch_asset
 
 SOURCE_SHA = "00eb01b7c169b223bfe3e76f8be1285bc008e784db43a4a21b6eef9f5372ee90"
 META_SHA = "625bed4ccddbc19392fc7ea317ebd000d2217f3a936f7970bb979a36f7329242"
@@ -36,6 +37,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--source-dir", type=Path, required=True)
     parser.add_argument("--output-dir", type=Path, required=True)
+    parser.add_argument("--remove-inner-mimics", action="store_true")
     args = parser.parse_args()
     source = args.source_dir.resolve() / "robot.usd"
     output = args.output_dir.resolve()
@@ -86,6 +88,13 @@ def main():
         assert {k: v for k, v in a["attrs"].items() if k not in ignored} == {
             k: v for k, v in b["attrs"].items() if k not in ignored}
     assert set(changes) == expected
+    linkage = None
+    if args.remove_inner_mimics:
+        # Reuse the previously validated surgical joint patch before extracting
+        # the standalone hand, so both carry the identical corrected linkage.
+        linkage = patch_asset(target)
+        assert len(linkage["removed_mimics"]) == 4
+        stage.GetRootLayer().Reload()
     hand = extract(target, output / "hand/hand.usd")
     hand_stage = Usd.Stage.Open(hand["output"])
     for name in props["bodies"]:
@@ -97,9 +106,10 @@ def main():
         "source": str(source), "source_sha256": sha(source),
         "properties_sha256": sha(props_path), "robot_sha256": sha(target),
         "hand_sha256": sha(hand["output"]), "metadata_sha256": META_SHA,
-        "changed_bodies": sorted(changes), "only_mass_properties_changed": True,
+        "changed_bodies": sorted(changes), "inertial_port_only_mass_properties_changed": True,
         "standalone_matches_robot_mass_properties": True,
         "assembly_mass_kg": props["total_mass_kg"],
+        "linkage_correction": linkage,
     }
     (output / "build_report.json").write_text(json.dumps(report, indent=2) + "\n")
     print(json.dumps(report, indent=2))

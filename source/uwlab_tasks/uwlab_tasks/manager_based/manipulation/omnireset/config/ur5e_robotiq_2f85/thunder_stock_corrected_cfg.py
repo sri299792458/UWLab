@@ -2,13 +2,14 @@
 import os
 from pathlib import Path
 
+from isaaclab.managers import EventTermCfg
 from isaaclab.utils import configclass
 
 from . import thunder_60mm_cfg as previous
 from .thunder_d405_cfg import _digest
 
-ROBOT_SHA256 = "1dbff7240e9f0210daceca04cca9e824ebe2c0dd70a01bf204bcd1ed04e2b4d9"
-HAND_SHA256 = "dbcc0acc7905eb9634904e84f2273e0c56f97e974998a39f71704ab22104ea1a"
+ROBOT_SHA256 = "6eedaa50cbad355679f0885baf595f7dd4a30b5b897c68d6ca7421e3ebe51783"
+HAND_SHA256 = "5055b7e335b074dc5934f9b47957a9243962ef7aba3034bfa630c3ed0e39f383"
 METADATA_SHA256 = "625bed4ccddbc19392fc7ea317ebd000d2217f3a936f7970bb979a36f7329242"
 
 
@@ -24,6 +25,14 @@ def configure_stock_model(cfg, *, standalone=False):
     cfg.scene.robot.spawn.usd_path = str(path)
     # In particular, remove the standalone hand's inherited 0.5 kg override.
     cfg.scene.robot.spawn.mass_props = None
+    # A changed hand model requires newly generated grasps and full-robot resets.
+    dataset = str(Path(os.environ.get(
+        "UWLAB_THUNDER_STOCK_CORRECTED_DATASET_DIR",
+        "Datasets/OmniResetCubeEasyThunderStockCorrected60",
+    )).expanduser().resolve())
+    for term in vars(cfg.events).values():
+        if isinstance(term, EventTermCfg) and "dataset_dir" in term.params:
+            term.params["dataset_dir"] = dataset
 
 
 @configclass
