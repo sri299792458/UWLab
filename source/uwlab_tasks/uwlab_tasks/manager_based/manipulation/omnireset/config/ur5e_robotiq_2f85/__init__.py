@@ -109,6 +109,30 @@ gym.register(
     },
 )
 
+# Thunder mount/table, retaining the calibrated D415 stock hand and 40 mm cubes.
+for reset_family in (
+    "ObjectAnywhereEEAnywhere",
+    "ObjectRestingEEGrasped",
+    "ObjectAnywhereEEGrasped",
+    "ObjectPartiallyAssembledEEGrasped",
+):
+    gym.register(
+        id=f"OmniReset-UR5eRobotiq2f85-CubeEasyThunderLab-{reset_family}-v0",
+        entry_point="isaaclab.envs:ManagerBasedRLEnv",
+        disable_env_checker=True,
+        kwargs={"env_cfg_entry_point": f"{__name__}.thunder_lab_cfg:ThunderLab{reset_family}Cfg"},
+    )
+
+gym.register(
+    id="OmniReset-Ur5eRobotiq2f85-RelCartesianOSC-State-CubeEasyThunderLab-v0",
+    entry_point="isaaclab.envs:ManagerBasedRLEnv",
+    disable_env_checker=True,
+    kwargs={
+        "env_cfg_entry_point": f"{__name__}.thunder_lab_cfg:ThunderLabTrainCfg",
+        "rsl_rl_cfg_entry_point": f"{agents.__name__}.rsl_rl_cfg:Base_PPORunnerCfg",
+    },
+)
+
 # Register SysID env
 gym.register(
     id="OmniReset-Ur5eRobotiq2f85-Sysid-v0",

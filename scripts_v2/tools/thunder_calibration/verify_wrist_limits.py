@@ -11,6 +11,7 @@ parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument("--output", type=Path, required=True)
 parser.add_argument("--num_envs", type=int, default=32)
 parser.add_argument("--max_steps", type=int, default=80)
+parser.add_argument("--lab-scene", action="store_true", help="Also check the measured Thunder mount/table scene.")
 AppLauncher.add_app_launcher_args(parser)
 args = parser.parse_args()
 launcher = AppLauncher(args)
@@ -18,11 +19,13 @@ app = launcher.app
 
 import copy
 import json
+import numpy as np
 import torch
 
 import gymnasium as gym
 from isaaclab.managers import EventTermCfg
 from isaaclab.managers.recorder_manager import DatasetExportMode
+from pxr import UsdGeom
 
 from uwlab.utils.datasets.torch_dataset_file_handler import TorchDatasetFileHandler
 
@@ -30,6 +33,15 @@ import uwlab_tasks  # noqa: F401
 from uwlab_tasks.manager_based.manipulation.omnireset import mdp
 from uwlab_tasks.manager_based.manipulation.omnireset.config.ur5e_robotiq_2f85 import easy_cube_cfg as easy
 from uwlab_tasks.manager_based.manipulation.omnireset.config.ur5e_robotiq_2f85 import thunder_calibration_cfg as thunder
+
+if args.lab_scene:
+    from uwlab_tasks.manager_based.manipulation.omnireset.config.ur5e_robotiq_2f85 import thunder_lab_cfg as profile
+    class_prefix = "ThunderLab"
+    task_suffix = "CubeEasyThunderLab"
+else:
+    profile = thunder
+    class_prefix = "ThunderCalibration"
+    task_suffix = "CubeEasyThunderCalibration"
 
 
 def main():
@@ -46,7 +58,7 @@ def main():
         "ObjectAnywhereEEGrasped", "ObjectPartiallyAssembledEEGrasped", "Train",
     )
     for family in families:
-        cfg = getattr(thunder, f"ThunderCalibration{family}Cfg")()
+        cfg = getattr(profile, f"{class_prefix}{family}Cfg")()
         parent = getattr(easy, f"CubeEasy{family}Cfg")()
         term = cfg.events.reset_from_reset_states if family == "Train" else cfg.terminations.success
         parent_term = parent.events.reset_from_reset_states if family == "Train" else parent.terminations.success
@@ -54,7 +66,7 @@ def main():
         assert "joint_limit_joint_names" not in parent_term.params
     report["all_five_thunder_configs_opt_in_upstream_configs_unchanged"] = True
 
-    cfg = thunder.ThunderCalibrationObjectAnywhereEEAnywhereCfg()
+    cfg = getattr(profile, f"{class_prefix}ObjectAnywhereEEAnywhereCfg")()
     cfg.scene.num_envs = args.num_envs
     cfg.sim.device = args.device
     cfg.seed = 20260925
@@ -64,7 +76,7 @@ def main():
     cfg.recorders.dataset_export_mode = DatasetExportMode.EXPORT_SUCCEEDED_ONLY
     cfg.recorders.dataset_file_handler_class_type = TorchDatasetFileHandler
     env = gym.make(
-        "OmniReset-UR5eRobotiq2f85-CubeEasyThunderCalibration-ObjectAnywhereEEAnywhere-v0", cfg=cfg
+        f"OmniReset-UR5eRobotiq2f85-{task_suffix}-ObjectAnywhereEEAnywhere-v0", cfg=cfg
     ).unwrapped
     try:
         with torch.inference_mode():
@@ -82,6 +94,29 @@ def main():
                 robot.data.default_joint_pos[:, ids], robot.data.joint_pos_limits[:, ids]
             ).all())
             assert report["default_wrists_inside_limits"]
+            if args.lab_scene:
+                roots = robot.data.root_pos_w - env.scene.env_origins
+                offsets = roots - torch.tensor(profile.ROBOT_POS, device=env.device)
+                assert (offsets.abs() <= torch.tensor([0.01001, 0.02001, 0.01001], device=env.device)).all()
+                expected_rot = torch.tensor(profile.ROBOT_ROT, device=env.device)
+                assert torch.allclose(robot.data.root_quat_w.abs(), expected_rot.expand(env.num_envs, 4), atol=1e-6)
+                table_prim = next(p for p in env.sim.stage.Traverse() if p.GetName() == "vention_mat")
+                vertices = np.asarray(UsdGeom.Mesh(table_prim).GetPointsAttr().Get())
+                transform = np.asarray(UsdGeom.XformCache().GetLocalToWorldTransform(table_prim))
+                world = (np.c_[vertices, np.ones(len(vertices))] @ transform)[:, :3]
+                world -= env.scene.env_origins[0].cpu().numpy()
+                bounds = np.array([world.min(0), world.max(0)])
+                assert abs(bounds[1, 2] - profile.TABLE_TOP_Z) < 1e-5, bounds.tolist()
+                goals = env.scene["receptive_object"].data.root_pos_w - env.scene.env_origins
+                expected_goal = torch.tensor([0.45, 0.15, profile.TABLE_TOP_Z + 0.02], device=env.device)
+                assert torch.allclose(goals, expected_goal.expand(env.num_envs, 3), atol=1e-5), goals
+                report["lab_scene"] = {
+                    "tabletop_bounds_m": bounds.tolist(),
+                    "robot_root_offset_min_m": offsets.min(0).values.cpu().tolist(),
+                    "robot_root_offset_max_m": offsets.max(0).values.cpu().tolist(),
+                    "robot_quaternion_wxyz": robot.data.root_quat_w[0].cpu().tolist(),
+                    "fixed_goal_root_m": goals[0].cpu().tolist(),
+                }
 
             # Inject invalid numerical joint angles only during acceptance checks.
             # Restore buffers before recording or advancing physics.
