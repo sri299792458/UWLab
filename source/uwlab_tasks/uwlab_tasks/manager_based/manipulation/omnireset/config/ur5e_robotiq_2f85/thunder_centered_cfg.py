@@ -25,6 +25,21 @@ START_X_RANGE = (0.2239104, 0.2439104)
 START_Y_RANGE = (-0.1573046, -0.1373046)
 
 
+def _configure_raised_ik_seed(cfg):
+    # User-approved native preview: open hand raised above the centered cubes.
+    # These are solver initial guesses, not final recorded reset poses. Table
+    # grasps still load a generated free-hand row before running their grasp IK.
+    cfg.scene.robot.init_state.joint_pos = {
+        **cfg.scene.robot.init_state.joint_pos,
+        "shoulder_pan_joint": -3.0015607313021806,
+        "shoulder_lift_joint": -0.8110030543876264,
+        "elbow_joint": 1.5580659727905724,
+        "wrist_1_joint": 0.7315590938511076,
+        "wrist_2_joint": 0.39939942528637573,
+        "wrist_3_joint": -0.6652712715093365,
+    }
+
+
 def _configure_centered_workspace(cfg):
     if hasattr(cfg.events, "reset_receptive_object_pose"):
         goal = cfg.events.reset_receptive_object_pose.params["pose_range"]
@@ -54,6 +69,7 @@ class ThunderCenteredObjectAnywhereEEAnywhereCfg(lab.ThunderLabObjectAnywhereEEA
     def __post_init__(self):
         super().__post_init__()
         _configure_centered_workspace(self)
+        _configure_raised_ik_seed(self)
 
 
 @configclass
@@ -61,6 +77,7 @@ class ThunderCenteredObjectRestingEEGraspedCfg(lab.ThunderLabObjectRestingEEGras
     def __post_init__(self):
         super().__post_init__()
         _configure_centered_workspace(self)
+        _configure_raised_ik_seed(self)
 
 
 @configclass
@@ -68,6 +85,7 @@ class ThunderCenteredObjectAnywhereEEGraspedCfg(lab.ThunderLabObjectAnywhereEEGr
     def __post_init__(self):
         super().__post_init__()
         _configure_centered_workspace(self)
+        _configure_raised_ik_seed(self)
 
 
 @configclass
@@ -77,6 +95,7 @@ class ThunderCenteredObjectPartiallyAssembledEEGraspedCfg(
     def __post_init__(self):
         super().__post_init__()
         _configure_centered_workspace(self)
+        _configure_raised_ik_seed(self)
 
 
 @configclass
