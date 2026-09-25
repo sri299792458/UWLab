@@ -79,3 +79,46 @@ keep the previous banks as historical artifacts. The cube-only partial-assembly
 inputs can be reused because their geometry and physics are unchanged. A chirp
 replay instead starts from the recorded hardware joint state and uses no reset
 bank. No generation or training process is started by building these assets.
+
+## Fixed-gain chirp comparison
+
+The subsequent `replay_chirp.py` experiment replays the existing eight-second
+0.1–3 Hz half-amplitude hardware chirp with the already fitted armature/friction
+parameters. It uses two environments per rate: UWLab 200/3 stiffness with
+damping 84.853/3.464, and Thunder's recorded 1000/50 stiffness with damping
+63.246/14.142. The controller implementation is the existing task action;
+gains are installed per environment. Nothing is fitted or selected by a sweep.
+
+Both rates start from exactly equal saved joint positions/velocities, body
+masses/inertias/COMs and fitted arm parameters. The 500 Hz recording has one
+target per servo step; the 120 Hz replay interpolates position and uses SLERP
+for orientation at corresponding times. This preserves the eight-second
+trajectory and frequency; it does not simulate the training policy's 10 Hz
+target-hold behavior. Comparison remains on the original fit's nominal 2 ms
+command-index timeline; original timestamp anomalies are not repaired.
+The fitted 6 ms delay is three steps at 500 Hz and nearest one step (8.333 ms)
+at 120 Hz. The rate comparison includes that quantization. The existing fit's
+inactive 1000 rad/s simulation cap is retained to expose excessive speed.
+
+Completed results (joint RMS pooled over time and six arm joints):
+
+| Gains | 120-vs-500 Hz angle difference | Speed difference | 120 Hz error vs recorded hardware | 500 Hz error vs recorded hardware |
+|---|---:|---:|---:|---:|
+| UWLab | 0.00214 degrees | 0.0497 degrees/s | 2.73887 degrees | 2.73949 degrees |
+| Thunder | 0.07982 degrees | 1.31724 degrees/s | 0.50562 degrees | 0.50391 degrees |
+
+All four traces remain finite without reaching the torque clamps. UWLab gains
+produce almost no motion in five joints under these fitted dynamics; only the
+shoulder-lift joint moves appreciably. The small rate difference in that row
+therefore does not imply good motion tracking. UWLab Stage 1 normally omits
+this fitted friction, so this is not a rejection of its initial-training recipe.
+Thunder gains preserve similar motion at 120 and 500 Hz on this trajectory.
+
+Hardware comparison is descriptive: the physical hand had UMI fingers, and
+this is the same recording used to fit dynamics. It is not an independent
+stock-hand validation, a contact/grasp test, or evidence of PPO learning.
+`analyze_chirp.py` independently checks paired inputs, computes the rate
+difference at common times, and saves joint-position/velocity plots. Reports,
+exact launch commands and hashes are in the external R111 folder. The first
+attempt stopped before replay on an input float64/float32 mismatch; corrected
+attempt 2 completed all four conditions. Both attempts are preserved.
