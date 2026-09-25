@@ -157,6 +157,30 @@ gym.register(
     },
 )
 
+# Same centered task with the D405 R2 camera assembly and stock fingers.
+for reset_family in (
+    "ObjectAnywhereEEAnywhere",
+    "ObjectRestingEEGrasped",
+    "ObjectAnywhereEEGrasped",
+    "ObjectPartiallyAssembledEEGrasped",
+):
+    gym.register(
+        id=f"OmniReset-UR5eRobotiq2f85-CubeEasyThunderD405-{reset_family}-v0",
+        entry_point="isaaclab.envs:ManagerBasedRLEnv",
+        disable_env_checker=True,
+        kwargs={"env_cfg_entry_point": f"{__name__}.thunder_d405_cfg:ThunderD405{reset_family}Cfg"},
+    )
+
+gym.register(
+    id="OmniReset-Ur5eRobotiq2f85-RelCartesianOSC-State-CubeEasyThunderD405-v0",
+    entry_point="isaaclab.envs:ManagerBasedRLEnv",
+    disable_env_checker=True,
+    kwargs={
+        "env_cfg_entry_point": f"{__name__}.thunder_d405_cfg:ThunderD405TrainCfg",
+        "rsl_rl_cfg_entry_point": f"{agents.__name__}.rsl_rl_cfg:Base_PPORunnerCfg",
+    },
+)
+
 # Register SysID env
 gym.register(
     id="OmniReset-Ur5eRobotiq2f85-Sysid-v0",
