@@ -1,0 +1,104 @@
+{
+  "robot_ip": "10.33.55.89",
+  "payload_mass_kg": 1.04,
+  "payload_cog_m": [
+    -0.002,
+    0.001,
+    0.047
+  ],
+  "polyscope_version": "5.26.1.140514",
+  "gripper_configuration": "open_empty",
+  "start_joint_positions_rad": [
+    0.501928,
+    -1.409,
+    -2.415507,
+    -2.003571,
+    -2.19601,
+    0.076039
+  ],
+  "start_joint_tolerance_rad": 0.02,
+  "joint_excursion_limit_rad": [
+    0.5095,
+    0.5234,
+    0.4788,
+    1.1767,
+    0.4303,
+    0.7427
+  ],
+  "duration_s": 8.0,
+  "f0_hz": 0.1,
+  "f1_hz": 3.0,
+  "amplitudes_m_rad": [
+    0.1,
+    0.15,
+    0.1,
+    0.25,
+    0.5,
+    0.5
+  ],
+  "motion_stiffness": [
+    1000,
+    1000,
+    1000,
+    50,
+    50,
+    50
+  ],
+  "motion_damping_ratio": [
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0
+  ],
+  "torque_max": [
+    150,
+    150,
+    150,
+    28,
+    28,
+    28
+  ],
+  "notes": "Full-amplitude 0.1-3 Hz chirp with UWLab's amplitude pattern remapped to Thunder's mount (same world directions as an upright robot: base y = vertical), started in the S-W-E- arm shape chosen in R181 (other shoulder side, elbow and wrist 2 negative). Start pose c675 from R182: 6,002 S-W-E- candidates simulated with the half-amplitude-recording fit; peak predicted joint speed 143.2 deg/s (wrist 1); every joint moves >= 16.8 deg; stays in S-W-E- (min |sin wrist2| 0.70). Saved-state source-hull check passes (obstacle margin 71.2 mm after the 50 mm column buffer, moving self gap 16.4 mm) and the 4000-sample ideal-tracking requested path passes (within limits). Same controller gains as the recorded run. No physical run collected. The collector does not move the arm: the move from the current pose into this start pose (a large reconfiguration) is the operator's and is not checked.",
+  "simulation_review_status": "remapped_full_amplitude_swe_geometry_pass_physical_run_not_collected",
+  "joint_excursion_limit_basis": {
+    "method": "Maximum absolute excursion of the native half-amplitude-fit simulation and the full requested IK path, plus five degrees per joint",
+    "observed_max_rad": [
+      0.4222,
+      0.4362,
+      0.3915,
+      1.0894,
+      0.3431,
+      0.6554
+    ],
+    "allowance_rad": 0.08726646259971647,
+    "scope": "Existing excursion stop guard; not a stopping-distance guarantee."
+  },
+  "robot_base_quaternion_world_wxyz": [
+    0.5,
+    0.5,
+    0.5,
+    0.5
+  ],
+  "hardware_settings_source": {
+    "method": "Read-only live RTDE and dashboard queries",
+    "timestamp_utc": "2026-09-19T15:44:00.116231+00:00",
+    "payload_status": "Controller-configured values; not a new physical mass/CoG measurement",
+    "dashboard_report": "dashboard-readonly.json",
+    "rtde_report": "current-state.json"
+  },
+  "prediction_report": "R182 (datasets/umi_reset_from_defaults_20260911/182_swe_chirp_start_pose_20261002)",
+  "prediction_max_joint_speed_deg_s": [
+    53.1,
+    85.2,
+    102.4,
+    143.2,
+    69.6,
+    66.9
+  ],
+  "excitation_amplitude_scale_vs_uw_defaults": 1.0,
+  "planning_speed_target_deg_s": 120.0,
+  "planning_speed_screen_pass": false,
+  "prediction_model": "R77 single_record_fit (fit of the Sep 19 half-amplitude 8 s recording, sha 4bb0140c); identical to the training fitted profile"
+}
