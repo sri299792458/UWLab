@@ -38,7 +38,8 @@ def synthetic_record(n=200):
         "calibration": json.loads((HERE / "workstation/thunder_calibration.json").read_text()),
         "calibration_sha256": sha256(HERE / "workstation/thunder_calibration.json"),
         "controller_provenance": json.loads((HERE / "workstation/vendor/PROVENANCE.json").read_text()),
-        "ur_rtde_version": "1.6.2",
+        "ur_rtde_version": "1.6.5",
+        "direct_torque_params": {"viscous_scale": [0.0]*6, "coulomb_scale": [0.0]*6},
     }
 
 
@@ -63,6 +64,13 @@ class ContractTests(unittest.TestCase):
         for key in ("robot_sample_times_s", "robot_after_read_times_s", "host_command_times_s"):
             record = synthetic_record()
             record[key][10] = -1
+            with self.subTest(key=key), self.assertRaises(ValueError):
+                validate_record(record, allow_synthetic=True)
+
+    def test_rtde165_record_requires_disabled_friction_compensation(self):
+        for key in ("viscous_scale", "coulomb_scale"):
+            record = synthetic_record()
+            record["direct_torque_params"][key][2] = 0.8
             with self.subTest(key=key), self.assertRaises(ValueError):
                 validate_record(record, allow_synthetic=True)
 
@@ -113,7 +121,7 @@ class ContractTests(unittest.TestCase):
             collect_thunder.make_plan(config)
 
     def run_mock_collection(self, *, wrong_start=False, invalid_velocity=False, fail_command=False,
-                            robot_period_s=0.002, midread_every=0, samples=6):
+                            robot_period_s=0.002, midread_every=0, samples=6, fail_rt_interface=None):
         """No RTDE sockets or on-disk robot records: interfaces, clock and save are mocked.
 
         A fake host clock drives a mock robot that publishes a new 2 ms-stamped state every robot_period_s host
@@ -144,30 +152,60 @@ class ContractTests(unittest.TestCase):
         receive.getTimestamp.side_effect = lambda: (advance(1e-5), 100. + cycle()*0.002)[1]
         control = Mock()
         control.setPayload.return_value = True
-        control.directTorque.side_effect = [True, False, True] if fail_command else None
-        control.directTorque.return_value = True
-        factory = Mock(return_value=control)
+        torque_calls = [0]
+        scheduler = {"policy": 0, "priority": 0}
+
+        def set_scheduler(tid, policy, param):
+            scheduler.update(policy=policy, priority=param.sched_priority)
+
+        def direct_torque(torque, *, viscous_scale, coulomb_scale):
+            # Enforce the actual 1.6.5 call signature, including cleanup. Mock
+            # objects alone would accept the removed friction_comp keyword.
+            self.assertEqual(len(torque), 6)
+            self.assertEqual(viscous_scale, [0.0]*6)
+            self.assertEqual(coulomb_scale, [0.0]*6)
+            self.assertEqual(scheduler, {"policy": collect_thunder.os.SCHED_FIFO, "priority": 80})
+            torque_calls[0] += 1
+            return not (fail_command and torque_calls[0] == 2)
+
+        control.directTorque.side_effect = direct_torque
+        def construct_control(*args, **kwargs):
+            self.assertEqual(scheduler, {"policy": collect_thunder.os.SCHED_FIFO, "priority": 85})
+            return control
+        def construct_receive(*args, **kwargs):
+            self.assertEqual(scheduler, {"policy": collect_thunder.os.SCHED_FIFO, "priority": 90})
+            return receive
+        def verify_worker(before, priority, interface):
+            if interface == fail_rt_interface:
+                raise RuntimeError(f'{interface}: mocked worker stayed at normal priority')
+            return {priority: {"policy": collect_thunder.os.SCHED_FIFO, "priority": priority}}
+        factory = Mock(side_effect=construct_control)
         factory.FLAG_VERBOSE = 1; factory.FLAG_UPLOAD_SCRIPT = 2
         saved = []
         with tempfile.TemporaryDirectory() as directory, ExitStack() as stack:
             stack.enter_context(patch.dict(sys.modules, {
                 "rtde_control": SimpleNamespace(RTDEControlInterface=factory),
-                "rtde_receive": SimpleNamespace(RTDEReceiveInterface=Mock(return_value=receive)),
+                "rtde_receive": SimpleNamespace(RTDEReceiveInterface=Mock(side_effect=construct_receive)),
             }))
-            stack.enter_context(patch.object(collect_thunder.importlib.metadata, "version", return_value="1.6.2"))
+            stack.enter_context(patch.object(collect_thunder.importlib.metadata, "version", return_value="1.6.5"))
             stack.enter_context(patch.object(collect_thunder.time, "monotonic", side_effect=lambda: clock[0]))
             stack.enter_context(patch.object(collect_thunder.time, "sleep", side_effect=advance))
-            stack.enter_context(patch.object(collect_thunder.os, "sched_setscheduler", side_effect=PermissionError("test double")))
+            stack.enter_context(patch.object(collect_thunder.os, "sched_setscheduler", side_effect=set_scheduler))
+            stack.enter_context(patch.object(collect_thunder.os, "sched_getscheduler", side_effect=lambda tid: scheduler["policy"]))
+            stack.enter_context(patch.object(collect_thunder.os, "sched_getparam", side_effect=lambda tid: collect_thunder.os.sched_param(scheduler["priority"])))
+            stack.enter_context(patch.object(collect_thunder, "thread_schedule_snapshot", return_value={}))
+            stack.enter_context(patch.object(collect_thunder, "require_new_fifo_thread", side_effect=verify_worker))
             stack.enter_context(patch.object(torch, "save", side_effect=lambda record, _: saved.append(record)))
             stack.enter_context(patch("builtins.print"))
             offsets = collect_thunder.make_plan(config)[:samples]
-            if wrong_start or invalid_velocity or fail_command:
+            if wrong_start or invalid_velocity or fail_command or fail_rt_interface:
                 with self.assertRaises(RuntimeError):
                     collect_thunder.collect(config, offsets, Path(directory) / "mock-only.pt")
             else:
                 collect_thunder.collect(config, offsets, Path(directory) / "mock-only.pt")
             self.assertFalse((Path(directory) / "mock-only.pt").exists())
         receive.disconnect.assert_called_once()
+        self.assertEqual(scheduler, {"policy": 0, "priority": 0})
         return saved, control, factory
 
     def test_collector_locks_to_robot_cycles_under_clock_drift(self):
@@ -179,8 +217,63 @@ class ContractTests(unittest.TestCase):
                 self.assertEqual(record["timing_summary"]["duplicate_intervals"], 0)
                 self.assertEqual(record["timing_summary"]["intervals_over_2p4ms"], 0)
                 self.assertEqual(record["timing_mode"], "robot_state_locked")
-                self.assertTrue(record["rt_priorities"]["loop"].startswith("unavailable"))
+                self.assertEqual(record["rt_priorities"]["loop"], "SCHED_FIFO 80")
                 self.assertEqual(factory.call_args.kwargs["rt_priority"], 85)
+
+    def test_rt_permission_failure_prevents_robot_connections(self):
+        sys.path.insert(0, str(HERE / "workstation"))
+        import collect_thunder
+        config = json.loads((HERE / "workstation/collection.remapped_full_amplitude_swe_candidate.json").read_text())
+        receive_factory, control_factory = Mock(), Mock()
+        with tempfile.TemporaryDirectory() as directory, patch.dict(sys.modules, {
+                "rtde_control": SimpleNamespace(RTDEControlInterface=control_factory),
+                "rtde_receive": SimpleNamespace(RTDEReceiveInterface=receive_factory),
+                }), patch.object(collect_thunder.importlib.metadata, "version", return_value="1.6.5"), \
+                patch.object(collect_thunder.os, "sched_setscheduler", side_effect=[PermissionError("test double"), None]):
+            with self.assertRaisesRegex(RuntimeError, "Real-time scheduling required"):
+                collect_thunder.collect(config, collect_thunder.make_plan(config)[:6], Path(directory)/'never.pt')
+        receive_factory.assert_not_called()
+        control_factory.assert_not_called()
+
+    def test_actual_worker_priority_failure_prevents_torque(self):
+        for interface in ('RTDEReceiveInterface', 'RTDEControlInterface'):
+            with self.subTest(interface=interface):
+                saved, control, factory = self.run_mock_collection(fail_rt_interface=interface)
+                self.assertFalse(saved)
+                control.directTorque.assert_not_called()
+                control.servoJ.assert_not_called()
+                if interface == 'RTDEReceiveInterface':
+                    factory.assert_not_called()
+                else:
+                    control.stopScript.assert_called_once()
+                    control.disconnect.assert_called_once()
+
+    def test_collector_rejects_old_sdk_before_robot_connection(self):
+        sys.path.insert(0, str(HERE / "workstation"))
+        import collect_thunder
+        config = json.loads((HERE / "workstation/collection.remapped_full_amplitude_swe_candidate.json").read_text())
+        control_factory, receive_factory = Mock(), Mock()
+        with tempfile.TemporaryDirectory() as directory, patch.dict(sys.modules, {
+                "rtde_control": SimpleNamespace(RTDEControlInterface=control_factory),
+                "rtde_receive": SimpleNamespace(RTDEReceiveInterface=receive_factory),
+                }), patch.object(collect_thunder.importlib.metadata, "version", return_value="1.6.2"):
+            with self.assertRaisesRegex(RuntimeError, "1.6.5"):
+                collect_thunder.collect(config, collect_thunder.make_plan(config)[:6], Path(directory)/"never.pt")
+        control_factory.assert_not_called()
+        receive_factory.assert_not_called()
+
+    def test_state_stream_timeout(self):
+        sys.path.insert(0, str(HERE / "workstation"))
+        import collect_thunder
+        clock = [0.0]
+        receive = Mock(); receive.getTimestamp.return_value = 100.0
+        def advance(dt):
+            clock[0] += dt
+        with patch.object(collect_thunder.time, "monotonic", side_effect=lambda: clock[0]), \
+                patch.object(collect_thunder.time, "sleep", side_effect=advance):
+            with self.assertRaisesRegex(RuntimeError, "20 ms"):
+                collect_thunder.read_new_state(receive, 100.0)
+        receive.getActualQ.assert_not_called()
 
     def test_collector_rereads_a_state_updated_mid_read_and_reports_the_gap(self):
         saved, _, _ = self.run_mock_collection(midread_every=50, samples=200)

@@ -11,6 +11,7 @@ some robot states twice and skips others (42-82 duplicate robot timestamps per 8
 from __future__ import annotations
 
 import argparse
+from contextlib import contextmanager
 import hashlib
 import importlib.metadata
 import json
@@ -25,6 +26,7 @@ from vendor import ur5e_kinematics as kin
 HERE = Path(__file__).resolve().parent
 CALIBRATION = HERE / "thunder_calibration.json"
 DT = 1 / 500
+REQUIRED_RTDE_VERSION = "1.6.5"
 JOINT_NAMES = ["shoulder_pan_joint", "shoulder_lift_joint", "elbow_joint",
                "wrist_1_joint", "wrist_2_joint", "wrist_3_joint"]
 # ur_rtde realtime_control_example priorities: receive thread, control thread, this control loop.
@@ -107,13 +109,61 @@ def generate_offsets(config):
     return offsets
 
 
-def set_app_realtime_priority():
-    """Request SCHED_FIFO for this loop; record the outcome instead of failing when the OS does not permit it."""
+def set_fifo_priority(priority):
+    """Require the requested FIFO priority; never silently run at normal priority."""
     try:
-        os.sched_setscheduler(0, os.SCHED_FIFO, os.sched_param(RT_APP_PRIORITY))
-        return f"SCHED_FIFO {RT_APP_PRIORITY}"
+        os.sched_setscheduler(0, os.SCHED_FIFO, os.sched_param(priority))
+        if os.sched_getscheduler(0) != os.SCHED_FIFO or os.sched_getparam(0).sched_priority != priority:
+            raise OSError("Scheduler did not apply the requested priority")
+        return f"SCHED_FIFO {priority}"
     except (OSError, AttributeError) as exc:
-        return f"unavailable ({type(exc).__name__}: {exc})"
+        raise RuntimeError(f"Real-time scheduling required: cannot set SCHED_FIFO {priority}. "
+                           "Use the configured Thunder real-time launcher / rtprio limits.") from exc
+
+
+def set_app_realtime_priority():
+    return set_fifo_priority(RT_APP_PRIORITY)
+
+
+def check_realtime_permissions():
+    """Probe all requested priorities and restore scheduling before any robot connection."""
+    previous = os.sched_getscheduler(0), os.sched_getparam(0)
+    try:
+        for priority in (RT_RECEIVE_PRIORITY, RT_CONTROL_PRIORITY, RT_APP_PRIORITY):
+            set_fifo_priority(priority)
+    finally:
+        os.sched_setscheduler(0, *previous)
+
+
+@contextmanager
+def fifo_thread_creation(priority):
+    """Make SDK workers inherit FIFO even when the SDK skips its PREEMPT_RT-only setup."""
+    previous = os.sched_getscheduler(0), os.sched_getparam(0)
+    try:
+        set_fifo_priority(priority)
+        yield
+    finally:
+        os.sched_setscheduler(0, *previous)
+
+
+def thread_schedule_snapshot():
+    threads = {}
+    for task in Path('/proc/self/task').iterdir():
+        tid = int(task.name)
+        try:
+            threads[tid] = {"policy": os.sched_getscheduler(tid),
+                            "priority": os.sched_getparam(tid).sched_priority}
+        except ProcessLookupError:
+            pass
+    return threads
+
+
+def require_new_fifo_thread(before, priority, interface):
+    """Check the SDK's actual worker scheduler, rather than just its requested argument."""
+    workers = {tid: state for tid, state in thread_schedule_snapshot().items() if tid not in before}
+    if not any(state == {"policy": os.SCHED_FIFO, "priority": priority} for state in workers.values()):
+        raise RuntimeError(f"{interface} has no new SCHED_FIFO {priority} worker: {workers}")
+    return workers
 
 
 def read_new_state(receive, last_robot_time):
@@ -158,8 +208,10 @@ def collect(config, offsets, output):
     from rtde_receive import RTDEReceiveInterface
 
     version = importlib.metadata.version("ur-rtde")
-    if version != "1.6.2":
-        raise RuntimeError(f"Expected UWLab's ur-rtde 1.6.2, found {version}")
+    if version != REQUIRED_RTDE_VERSION:
+        raise RuntimeError(f"Expected Thunder collector ur-rtde {REQUIRED_RTDE_VERSION}, found {version}")
+    check_realtime_permissions()
+    initial_scheduler = os.sched_getscheduler(0), os.sched_getparam(0)
     output = Path(output)
     if output.exists():
         raise FileExistsError(output)
@@ -171,15 +223,23 @@ def collect(config, offsets, output):
         motion_stiffness=kp, motion_damping_ratio=dr,
         torque_max=np.asarray(config["torque_max"]),
     )
+    # In 1.6.5 these explicit scales replace friction_comp=False. Never use
+    # the SDK's nonzero defaults: the fitted controller disables friction compensation.
+    direct_torque_params = {"viscous_scale": [0.0] * 6, "coulomb_scale": [0.0] * 6}
     control = receive = None
     app_priority = "not requested"
+    rt_threads = {}
     rows = []
     initial_q = None
     completed = False
+    torque_started = False
     failure = None
     cleanup_errors = []
     try:
-        receive = RTDEReceiveInterface(config["robot_ip"], 500, rt_priority=RT_RECEIVE_PRIORITY)
+        before_receive = thread_schedule_snapshot()
+        with fifo_thread_creation(RT_RECEIVE_PRIORITY):
+            receive = RTDEReceiveInterface(config["robot_ip"], 500, rt_priority=RT_RECEIVE_PRIORITY)
+        rt_threads["receive"] = require_new_fifo_thread(before_receive, RT_RECEIVE_PRIORITY, "RTDEReceiveInterface")
         initial_q = np.asarray(receive.getActualQ())
         if initial_q.shape != (6,) or not np.isfinite(initial_q).all():
             raise RuntimeError("Received invalid initial joint positions")
@@ -192,14 +252,18 @@ def collect(config, offsets, output):
         if np.max(np.abs(initial_qd)) > 0.01:
             raise RuntimeError("Robot must be stationary before collection")
         center_pos, center_quat = kin.get_ee_pose(initial_q)
-        control = RTDEControlInterface(
-            config["robot_ip"], 500,
-            RTDEControlInterface.FLAG_VERBOSE | RTDEControlInterface.FLAG_UPLOAD_SCRIPT,
-            rt_priority=RT_CONTROL_PRIORITY,
-        )
+        before_control = thread_schedule_snapshot()
+        with fifo_thread_creation(RT_CONTROL_PRIORITY):
+            control = RTDEControlInterface(
+                config["robot_ip"], 500,
+                RTDEControlInterface.FLAG_VERBOSE | RTDEControlInterface.FLAG_UPLOAD_SCRIPT,
+                rt_priority=RT_CONTROL_PRIORITY,
+            )
+        rt_threads["control"] = require_new_fifo_thread(before_control, RT_CONTROL_PRIORITY, "RTDEControlInterface")
         if not control.setPayload(config["payload_mass_kg"], config["payload_cog_m"]):
             raise RuntimeError("setPayload failed")
         app_priority = set_app_realtime_priority()
+        print(f"Timing mode: robot_state_locked; loop priority: {app_priority}", flush=True)
         last_robot_time = None
         for offset in offsets:
             # One fresh, consistent robot state per cycle; the command follows immediately.
@@ -218,7 +282,8 @@ def collect(config, offsets, output):
             if not np.isfinite(torque).all():
                 raise RuntimeError("Non-finite torque command")
             command_time = time.monotonic()
-            if not control.directTorque(torque.tolist(), friction_comp=False):
+            torque_started = True
+            if not control.directTorque(torque.tolist(), **direct_torque_params):
                 raise RuntimeError("directTorque returned failure")
             rows.append((q.copy(), qd.copy(), torque.copy(), target_pos.copy(), target_quat.copy(),
                          host_before, command_time, robot_before, robot_after))
@@ -229,13 +294,14 @@ def collect(config, offsets, output):
     finally:
         if control is not None:
             # Same torque-to-hold handoff used by the pinned UWLab collector.
-            try:
-                control.directTorque([0.0] * 6, friction_comp=False)
-                q_hold = receive.getActualQ()
-                control.servoJ(q_hold, 0.5, 0.5, 0.1, 0.1, 300)
-                control.servoStop()
-            except Exception as exc:
-                cleanup_errors.append(str(exc))
+            if torque_started:
+                try:
+                    control.directTorque([0.0] * 6, **direct_torque_params)
+                    q_hold = receive.getActualQ()
+                    control.servoJ(q_hold, 0.5, 0.5, 0.1, 0.1, 300)
+                    control.servoStop()
+                except Exception as exc:
+                    cleanup_errors.append(str(exc))
             try:
                 control.stopScript()
             except Exception as exc:
@@ -249,6 +315,10 @@ def collect(config, offsets, output):
                 receive.disconnect()
             except Exception as exc:
                 cleanup_errors.append(str(exc))
+        try:
+            os.sched_setscheduler(0, *initial_scheduler)
+        except OSError as exc:
+            cleanup_errors.append(f"Restore application scheduler: {exc}")
         if rows:
             columns = list(zip(*rows))
             tensor = lambda index: torch.tensor(np.asarray(columns[index]), dtype=torch.float64)
@@ -271,8 +341,10 @@ def collect(config, offsets, output):
                 "calibration_sha256": hashlib.sha256(CALIBRATION.read_bytes()).hexdigest(),
                 "controller_provenance": json.loads((HERE / "vendor/PROVENANCE.json").read_text()),
                 "ur_rtde_version": version,
+                "direct_torque_params": direct_torque_params,
                 "timing_mode": "robot_state_locked",
                 "rt_priorities": {"receive": RT_RECEIVE_PRIORITY, "control": RT_CONTROL_PRIORITY, "loop": app_priority},
+                "rt_threads": rt_threads,
                 "timing_summary": timing_summary([row[7] for row in rows]),
             }
             torch.save(record, output)

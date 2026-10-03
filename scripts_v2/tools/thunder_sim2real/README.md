@@ -59,8 +59,9 @@ The controller formula remains UWLab's explicit Cartesian PD torque law:
 `torque = J.T @ (Kp * pose_error - Kd * wrist_velocity)`, with
 `Kd = 2 * sqrt(Kp) * damping_ratio` and joint torque limits. `J` maps joint
 velocities to wrist motion. This controller has no learned gains and no added
-inertial compensation. The real command uses `directTorque(...,
-friction_comp=False)` as in the pinned collector. Robot gravity compensation
+inertial compensation. The real command uses ur-rtde 1.6.5's `directTorque` with
+six zero `viscous_scale` and `coulomb_scale` values, preserving disabled friction
+compensation from the original collector. Robot gravity compensation
 remains the robot controller's responsibility; the fitting robot retains
 UWLab's disabled-gravity configuration.
 
@@ -126,6 +127,25 @@ Candidate parameters and delay lags are applied after environment reset and
 settling. Delayed actuator resets clear their buffers and reset their lags,
 so this order is required to test the intended candidate delay.
 
+The collector now waits for a fresh robot state for each command, rather than
+pacing independently with the host clock. Reads that cross a robot update are
+retried. It requires receive/control/app FIFO priorities 90/85/80. It probes
+scheduling permissions before connecting, creates SDK workers with the corresponding
+inherited priority, and verifies their actual schedulers before the first torque
+command. This also handles the SDK skipping its own setup on a generic kernel.
+Unavailable permissions or incorrect worker priorities abort collection; there is
+no normal-priority fallback. The prior application scheduler is restored after cleanup.
+FIFO scheduling on a generic kernel does not provide PREEMPT_RT kernel behavior.
+The actual hardware intervals still need validation after collection.
+
+Linux permission setup and the launcher are documented in
+[workstation/REALTIME_SETUP.md](workstation/REALTIME_SETUP.md).
+The October 3 full-amplitude run under SDK 1.6.5 completed all 4,000 commands and
+passed strict robot-state timing validation with actual FIFO priorities 90/85/80.
+It still had three host command intervals above 2.4 ms and a 151.2 degrees/s
+measured peak; see the unchanged raw record and review in
+[validation_results/remapped_full_rtde165_hardware_20261003/](validation_results/remapped_full_rtde165_hardware_20261003/).
+
 Real records contain robot timestamps before and after reading Q/Qd, plus host
 sample and command times. The validator rejects duplicate/missing samples or
 state reads spanning a robot update. There is no silent resampling. If the
@@ -165,9 +185,12 @@ The eight-second 0.1–3 Hz sweep has a two-second ramp-up and three-second
 ramp-down. Commands are issued every 2 ms; the waveform uses UW's original
 `linspace(0, duration, N)` phase grid and sample-based ramp construction.
 
-The collector uses the `directTorque` interface expected by UWLab's pinned
-`ur-rtde==1.6.2`; the robot must support that interface. Newer RTDE releases
-have changed its signature, so the recorder checks the installed version.
+The collector pins `ur-rtde==1.6.5` and checks the installed version before
+connecting. Its torque interface requires PolyScope 5.26 or later; Thunder's
+recorded installation is 5.26.1.140514. Both normal commands and cleanup pass
+explicit zero friction scales. New records include those scales and the actual
+SDK version. The validator still reads historical 1.6.2 records without changing
+their provenance or relaxing timestamp checks.
 The current candidate carries the controller-configured payload from the previous
 physical recording; the separate blank example template leaves these fields empty.
 

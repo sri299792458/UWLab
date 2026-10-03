@@ -56,8 +56,17 @@ def validate_record(record, *, allow_synthetic=False):
         raise ValueError("Recording uses a different robot calibration")
     if record.get("calibration_sha256") != sha256(HERE / "workstation/thunder_calibration.json"):
         raise ValueError("Calibration fingerprint does not match")
-    if record.get("ur_rtde_version") != "1.6.2":
-        raise ValueError("Recording did not use the pinned UWLab RTDE version")
+    version = record.get("ur_rtde_version")
+    if version not in ("1.6.2", "1.6.5"):
+        raise ValueError("Recording did not use a reviewed Thunder RTDE version")
+    # Original 1.6.2 captures predate friction-scale metadata. New captures
+    # must explicitly preserve the controller's disabled compensation.
+    if version == "1.6.5":
+        scales = record.get("direct_torque_params", {})
+        for key in ("viscous_scale", "coulomb_scale"):
+            value = array(scales, key, (6,))
+            if np.any(value != 0):
+                raise ValueError(f"{key} must be zero for the fitted Thunder controller")
     expected_controller = json.loads((HERE / "workstation/vendor/PROVENANCE.json").read_text())
     if record.get("controller_provenance") != expected_controller:
         raise ValueError("Controller provenance differs from the pinned collector")
