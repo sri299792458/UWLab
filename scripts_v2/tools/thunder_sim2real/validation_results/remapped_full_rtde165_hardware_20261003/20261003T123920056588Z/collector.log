@@ -1,0 +1,4 @@
+Run directory: /home/srinivas/Documents/ChatGPT/omnireset/thunder-workstation/data/20261003T123920056588Z
+Timing mode: robot_state_locked; loop priority: SCHED_FIFO 80
+Saved 4000 samples to /home/srinivas/Documents/ChatGPT/omnireset/thunder-workstation/data/20261003T123920056588Z/thunder-fit.pt; completed=True
+Timing: {"samples": 4000, "robot_span_s": 7.9979999996721745, "duplicate_intervals": 0, "intervals_over_2p4ms": 0, "max_interval_s": 0.0020000003278255463, "loop_priority": "SCHED_FIFO 80"}
