@@ -1,5 +1,11 @@
 # Thunder / UMI state-policy sim-to-real
 
+**Latest hardware recording, October 2:** the remapped full-amplitude sweep at the
+new S-W-E- pose completed all 4,000 commands. Timestamp validation failed, and
+several measured joint-speed peaks exceeded the reported predictions. Preserve
+the raw record and review these issues before repeating the run; see the
+[recording and review](validation_results/remapped_full_hardware_20261002/README.md).
+
 **Hardware update, September 19:** the outward full-amplitude collection stopped
 with C283A7 after Wrist 1 reached 205.893 degrees/s against a displayed
 191 degrees/s safety setting. Do not repeat the unchanged sweep. Its excitation,

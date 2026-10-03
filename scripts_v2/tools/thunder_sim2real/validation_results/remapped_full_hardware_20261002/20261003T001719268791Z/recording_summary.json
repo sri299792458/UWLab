@@ -1,0 +1,126 @@
+{
+  "run_id": "20261003T001719268791Z",
+  "record_sha256": "22198670b54725de43af36bc8de8adf77e7e9a9d36425dc48cc225d40eea4a5a",
+  "source_commit": "0bd14897cc27b9bfbc9208515ad799b8e173b975",
+  "completed": true,
+  "failure": null,
+  "cleanup_errors": [],
+  "samples": 4000,
+  "nominal_duration_s": 8.0,
+  "recorded_robot_timestamp_span_s": 8.011999999638647,
+  "recorded_host_timestamp_span_s": 8.012035796185955,
+  "config_matches_remapped_full_candidate": true,
+  "record_config_matches_saved_config": true,
+  "controller_matches_config": true,
+  "strict_record_validation_passed": false,
+  "validation_failure": "Robot timestamps contain duplicate/missing samples; fixed 500 Hz replay is invalid",
+  "all_numeric_fields_finite": true,
+  "duplicate_robot_timestamp_intervals": 82,
+  "robot_intervals_above_2_4ms": 86,
+  "robot_interval_min_s": 0.0,
+  "robot_interval_max_s": 0.009999999776482582,
+  "reads_spanning_robot_update": 15,
+  "host_sample_times_increase": true,
+  "host_commands_follow_samples": true,
+  "joint_names": [
+    "shoulder_pan_joint",
+    "shoulder_lift_joint",
+    "elbow_joint",
+    "wrist_1_joint",
+    "wrist_2_joint",
+    "wrist_3_joint"
+  ],
+  "measured_max_joint_speed_deg_s": [
+    122.19011715704715,
+    100.24602391992765,
+    117.8198889185062,
+    141.50649318649016,
+    138.54434942648237,
+    117.54819765370142
+  ],
+  "reported_predicted_max_joint_speed_deg_s": [
+    53.1,
+    85.2,
+    102.4,
+    143.2,
+    69.6,
+    66.9
+  ],
+  "peak_speed_time_s": [
+    2.669999999925494,
+    2.8519999999552965,
+    3.685999999754131,
+    4.145999999716878,
+    3.9979999996721745,
+    2.761999999638647
+  ],
+  "samples_above_reported_191_deg_s": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "samples_above_planning_120_deg_s": [
+    20,
+    0,
+    0,
+    139,
+    245,
+    0
+  ],
+  "max_joint_excursion_rad": [
+    0.3902470991015434,
+    0.2595096826553345,
+    0.24114251136779785,
+    0.38751840591430664,
+    0.3125267028808594,
+    0.2267211601138115
+  ],
+  "joint_excursion_limits_rad": [
+    0.5095,
+    0.5234,
+    0.4788,
+    1.1767,
+    0.4303,
+    0.7427
+  ],
+  "excursion_guards_respected": true,
+  "joint_motion_ranges_deg": [
+    36.422840510947005,
+    26.065598656858235,
+    27.509734354006916,
+    33.53497206995532,
+    30.851937160190918,
+    23.99486971561796
+  ],
+  "within_model_joint_limits": true,
+  "max_abs_commanded_torque_nm": [
+    51.486073411086245,
+    46.12345692645115,
+    56.201075604248324,
+    21.319901830115025,
+    12.174012437326638,
+    14.947217864307968
+  ],
+  "samples_at_torque_limit": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "initial_joint_positions_deg": [
+    28.759443821160396,
+    -80.72980601547451,
+    -138.3990030009445,
+    -114.79688249254346,
+    -125.82322136244767,
+    4.355825504015518
+  ],
+  "start_pose_max_error_deg": 0.0011165939237644446,
+  "recorded_rtde_version": "1.6.2",
+  "scope": "Offline raw-record review. Original recording preserved. Timestamp irregularities are not resampled. Configuration predictions are not physical bounds; peak agreement is not full trajectory validation."
+}
