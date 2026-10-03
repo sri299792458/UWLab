@@ -1,0 +1,30 @@
+{
+  "git_commit": "b638e3d8b03ee5d45c4a2ea57076dbae000fe56b",
+  "git_worktree_dirty": true,
+  "source_sha256": {
+    "workstation/collection.full_amplitude_pose_candidate.json": "ac8d1b168cd75c7d97272133e7294c6a5b85ade5029429b02c9847b1edf2a3f7",
+    "workstation/thunder_calibration.json": "a19ba762879ed8c40a351613d545981ae75ef2e36645a2cdf9028a230e82edd9",
+    "workstation/collection.remapped_swe_timing_check.json": "01824d82d660313ecfb7408b8c41e5ec3a7cbf2396d19f90a15edc6ea7de4871",
+    "workstation/collection.simulation_candidate.json": "cdb885bb2d80467cadcb3945c6746757cf4eb851c9d0aae1d396d8b39ffbb5a0",
+    "workstation/collect_thunder.py": "45d96bfc7d551f81bacc3fab94450730add839be30d20f3965e74f8df0bdd1bb",
+    "workstation/collection.half_slow_candidate.json": "38f85cda37bd73a3cf52be73126fe1a84bd77a1f659cc608245b40c9ec0e860c",
+    "workstation/simulation_payload_reference.json": "c172943c7dcb7b69b1111aa2ac54706a0bad0536e5761494ae393b3df6b4c18b",
+    "workstation/collection.half_fast_candidate.json": "cdb885bb2d80467cadcb3945c6746757cf4eb851c9d0aae1d396d8b39ffbb5a0",
+    "workstation/collection.outward_candidate.json": "e25fc6dc7257b465d1ca3b43021ba73e8cf6cc309dbb6ca8b21bbf46aa1dc420",
+    "workstation/collection.example.json": "3972db78ca84a1a31768dcac529dbd2961768f11ac0d23313d5c80e2133f0a28",
+    "workstation/collection.remapped_full_amplitude_swe_candidate.json": "52c1f8c4fa30c87ec9155fde31c895d175126a9bcd061336c20bdbb286747ff5",
+    "workstation/vendor/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "workstation/vendor/ur5e_kinematics.py": "cba2822b9ae05c0a761735f8da7e02b79ee04214ee3e09d03561ef2c267d6813",
+    "workstation/vendor/PROVENANCE.json": "38e63aeb3871a5ee0df0171295a317e5b1caaaca1974e4d417fbc717cbb28c10"
+  },
+  "bundle_release": "thunder-lab-20260917-mount-v2",
+  "ur_rtde_version": "1.6.5",
+  "candidate_file": "collection.remapped_full_amplitude_swe_candidate.json",
+  "workstation_helpers_sha256": {
+    "collect_checked.py": "982fc0723607c107d3ec443e4378ffa4c9fffa9bf13eb2309b2a21b42110078b",
+    "run.sh": "50a2de00100f5972455b72619564512f1806b96efe5d19ec6a2473964e0f92d9",
+    "run_realtime.sh": "55d0b23d633b10414bfb0390918e0c4978dc3aedce3ba78ca7b4d322d10eef0d",
+    "verify_realtime.py": "3d6c2140eaae53254db58c38ba35619f0a51bda7307f664f8630c4f849f8fb0f",
+    "robot_readiness.py": "a7ce22bd024ab04936ef8552e65103581b2535e238008d2cd5c993ca0f433d23"
+  }
+}

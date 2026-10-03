@@ -1,0 +1,214 @@
+{
+  "run_id": "20261003T123920056588Z",
+  "reviewed_utc": "2026-10-03T12:44:06.510808+00:00",
+  "record_sha256": "4f021dd094a4a625ef82638a7566371c80efcedd8467d075ab49e96753c31c49",
+  "record_size_bytes": 970695,
+  "source_commit_at_capture": "b638e3d8b03ee5d45c4a2ea57076dbae000fe56b",
+  "source_worktree_dirty_at_capture": true,
+  "reviewed_implementation_commit": "239daa093a6cbefcf3d6fc989aa33a9887a06500",
+  "collector_sha256_matches_reviewed_implementation": true,
+  "completed": true,
+  "failure": null,
+  "cleanup_errors": [],
+  "samples": 4000,
+  "nominal_duration_s": 8.0,
+  "recorded_robot_timestamp_span_s": 7.9979999996721745,
+  "recorded_host_timestamp_span_s": 7.997973721008748,
+  "config_matches_remapped_full_candidate": true,
+  "record_config_matches_saved_config": true,
+  "configuration_matches_previous_full_run": true,
+  "controller_matches_config": true,
+  "strict_record_validation_passed": true,
+  "strict_validation_result": {
+    "samples": 4000,
+    "duration_s": 8.0,
+    "source_kind": "real_robot",
+    "sample_phase": "pre_command",
+    "robot_dt_min_s": 0.001999999862164259,
+    "robot_dt_max_s": 0.0020000003278255463,
+    "joint_excursion_rad": [
+      0.396478109061718,
+      0.26120302081108093,
+      0.24272847175598145,
+      0.39980649948120117,
+      0.3198204040527344,
+      0.2270531952381134
+    ],
+    "max_torque_nm": [
+      51.030521830863705,
+      49.410726382632745,
+      55.692529777301395,
+      20.57071579669088,
+      12.646001902509248,
+      14.898129490580219
+    ]
+  },
+  "all_numeric_fields_finite": true,
+  "duplicate_robot_timestamp_intervals": 0,
+  "robot_intervals_above_2_4ms": 0,
+  "robot_interval_min_s": 0.001999999862164259,
+  "robot_interval_max_s": 0.0020000003278255463,
+  "reads_spanning_robot_update": 0,
+  "host_sample_times_increase": true,
+  "host_commands_follow_samples": true,
+  "host_sample_to_command_latency_max_s": 0.0013913600705564022,
+  "host_sample_to_command_latency_p99_s": 0.0007066194969229396,
+  "host_command_interval_min_s": 0.0005709999240934849,
+  "host_command_interval_max_s": 0.003607829101383686,
+  "host_command_interval_p99_s": 0.002215559449978173,
+  "host_command_intervals_above_2_4ms": 3,
+  "recorded_rtde_version": "1.6.5",
+  "direct_torque_params": {
+    "viscous_scale": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "coulomb_scale": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "timing_mode": "robot_state_locked",
+  "rt_priorities": {
+    "receive": 90,
+    "control": 85,
+    "loop": "SCHED_FIFO 80"
+  },
+  "rt_threads": {
+    "receive": {
+      "2648514": {
+        "policy": 1,
+        "priority": 90
+      }
+    },
+    "control": {
+      "2648515": {
+        "policy": 1,
+        "priority": 85
+      }
+    }
+  },
+  "joint_names": [
+    "shoulder_pan_joint",
+    "shoulder_lift_joint",
+    "elbow_joint",
+    "wrist_1_joint",
+    "wrist_2_joint",
+    "wrist_3_joint"
+  ],
+  "measured_max_joint_speed_deg_s": [
+    124.7518342467738,
+    100.82768282964594,
+    118.37870767563996,
+    151.19309478815893,
+    141.55685900142984,
+    121.51202963662662
+  ],
+  "reported_predicted_max_joint_speed_deg_s": [
+    53.1,
+    85.2,
+    102.4,
+    143.2,
+    69.6,
+    66.9
+  ],
+  "previous_full_run_max_joint_speed_deg_s": [
+    122.19011715704715,
+    100.24602391992765,
+    117.8198889185062,
+    141.50649318649016,
+    138.54434942648237,
+    117.54819765370142
+  ],
+  "peak_speed_time_s": [
+    2.662000000011176,
+    2.8419999997131526,
+    3.6820000000298023,
+    2.5619999999180436,
+    4.621999999973923,
+    2.779999999795109
+  ],
+  "samples_above_reported_191_deg_s": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "samples_above_planning_120_deg_s": [
+    35,
+    0,
+    0,
+    176,
+    272,
+    3
+  ],
+  "max_joint_excursion_rad": [
+    0.396478109061718,
+    0.26120302081108093,
+    0.24272847175598145,
+    0.39980649948120117,
+    0.3198204040527344,
+    0.2270531952381134
+  ],
+  "joint_excursion_limits_rad": [
+    0.5095,
+    0.5234,
+    0.4788,
+    1.1767,
+    0.4303,
+    0.7427
+  ],
+  "excursion_guards_respected": true,
+  "joint_motion_ranges_deg": [
+    37.0013097223229,
+    26.36072600825261,
+    27.76810674993016,
+    34.993026212456286,
+    31.629923027412048,
+    24.177056473991588
+  ],
+  "within_model_joint_position_limits": true,
+  "max_abs_commanded_torque_nm": [
+    51.030521830863705,
+    49.410726382632745,
+    55.692529777301395,
+    20.57071579669088,
+    12.646001902509248,
+    14.898129490580219
+  ],
+  "samples_at_torque_limit": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "initial_joint_positions_deg": [
+    28.75696446249168,
+    -80.73067686459368,
+    -138.3987980952694,
+    -114.79595358681634,
+    -125.82210121142379,
+    4.356511511140281
+  ],
+  "start_pose_max_error_deg": 0.0013915569507064291,
+  "previous_run_timing": {
+    "run_id": "20261003T001719268791Z",
+    "duplicate_robot_timestamp_intervals": 82,
+    "robot_intervals_above_2_4ms": 86,
+    "reads_spanning_robot_update": 15,
+    "strict_record_validation_passed": false
+  },
+  "scope": "Offline review of the completed physical recording. Original samples, timestamps, config and provenance preserved. Strict robot-state sampling validation passes; host send timing still has jitter. No dynamics fitting or measured-trajectory collision verification performed. Reported R182 peaks are summary predictions, not physical bounds."
+}

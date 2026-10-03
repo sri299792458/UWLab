@@ -1,0 +1,36 @@
+{
+  "checked_utc": "2026-10-03T12:36:15.397774+00:00",
+  "scope": "Read-only RTDE with full-test local controller computations. No control interface, torque or movement commands.",
+  "ur_rtde_version": "1.6.5",
+  "operator_uid": 1012,
+  "rtprio_limits": [
+    99,
+    99
+  ],
+  "fifo_priorities_probe_passed": [
+    90,
+    85,
+    80
+  ],
+  "receive_workers_effective": {
+    "2647224": {
+      "policy": 1,
+      "priority": 90
+    }
+  },
+  "loop_scheduler_effective": "SCHED_FIFO 80",
+  "kernel": "7.0.0-31-generic",
+  "preempt_rt_kernel": false,
+  "timing_summary": {
+    "samples": 4000,
+    "robot_span_s": 7.998000000137836,
+    "duplicate_intervals": 0,
+    "intervals_over_2p4ms": 0,
+    "max_interval_s": 0.0020000003278255463
+  },
+  "local_computation_max_s": 0.001057146117091179,
+  "local_computation_p99_s": 0.0006723380554467436,
+  "hardware_commands_sent": false,
+  "control_worker_effective": "Not constructed during this read-only check. Collector verifies FIFO 85 after connecting control and before its first torque command.",
+  "passed": true
+}
