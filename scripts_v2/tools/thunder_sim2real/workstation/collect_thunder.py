@@ -2,6 +2,11 @@
 
 The vendored UWLab OSC is unmodified. Hardware-specific parameters are installed
 in memory. Recorded joint positions follow UWLab's pre-command convention.
+
+Timing: the loop is locked to the robot's 500 Hz RTDE state stream (one fresh, consistent state per robot cycle)
+instead of a host timer, and uses ur_rtde's recommended real-time priorities (examples/py/realtime_control_example.py).
+UWLab's collector paces with initPeriod/waitPeriod at normal priority; the host and robot clocks drift, so it reads
+some robot states twice and skips others (42-82 duplicate robot timestamps per 8 s Thunder recording).
 """
 from __future__ import annotations
 
@@ -9,6 +14,7 @@ import argparse
 import hashlib
 import importlib.metadata
 import json
+import os
 from pathlib import Path
 import time
 
@@ -21,6 +27,10 @@ CALIBRATION = HERE / "thunder_calibration.json"
 DT = 1 / 500
 JOINT_NAMES = ["shoulder_pan_joint", "shoulder_lift_joint", "elbow_joint",
                "wrist_1_joint", "wrist_2_joint", "wrist_3_joint"]
+# ur_rtde realtime_control_example priorities: receive thread, control thread, this control loop.
+RT_RECEIVE_PRIORITY, RT_CONTROL_PRIORITY, RT_APP_PRIORITY = 90, 85, 80
+STATE_TIMEOUT_S = 0.02
+STATE_POLL_S = 5e-5
 
 
 def install_calibration():
@@ -97,6 +107,43 @@ def generate_offsets(config):
     return offsets
 
 
+def set_app_realtime_priority():
+    """Request SCHED_FIFO for this loop; record the outcome instead of failing when the OS does not permit it."""
+    try:
+        os.sched_setscheduler(0, os.SCHED_FIFO, os.sched_param(RT_APP_PRIORITY))
+        return f"SCHED_FIFO {RT_APP_PRIORITY}"
+    except (OSError, AttributeError) as exc:
+        return f"unavailable ({type(exc).__name__}: {exc})"
+
+
+def read_new_state(receive, last_robot_time):
+    """Wait for a robot state newer than last_robot_time and return a consistent snapshot.
+
+    The robot timestamp is read before and after Q/Qd; if the robot published in between, the newer state is read
+    again, so position and velocity always come from the same robot cycle and no robot cycle is recorded twice.
+    """
+    deadline = time.monotonic() + STATE_TIMEOUT_S
+    while True:
+        robot_before = receive.getTimestamp()
+        if last_robot_time is None or robot_before > last_robot_time:
+            host_before = time.monotonic()
+            q = np.asarray(receive.getActualQ())
+            qd = np.asarray(receive.getActualQd())
+            robot_after = receive.getTimestamp()
+            if robot_after == robot_before:
+                return host_before, robot_before, q, qd, robot_after
+        if time.monotonic() > deadline:
+            raise RuntimeError("No new robot state within 20 ms; RTDE state stream stalled")
+        time.sleep(STATE_POLL_S)
+
+
+def timing_summary(robot_times):
+    intervals = np.diff(np.asarray(robot_times, dtype=float))
+    return {"samples": len(robot_times), "robot_span_s": float(robot_times[-1] - robot_times[0]) if robot_times else 0.,
+            "duplicate_intervals": int((intervals < 1e-4).sum()), "intervals_over_2p4ms": int((intervals > 0.0024).sum()),
+            "max_interval_s": float(intervals.max()) if len(intervals) else 0.}
+
+
 def quat_multiply(a, b):
     w, x, y, z = a
     v, i, j, k = b
@@ -125,13 +172,14 @@ def collect(config, offsets, output):
         torque_max=np.asarray(config["torque_max"]),
     )
     control = receive = None
+    app_priority = "not requested"
     rows = []
     initial_q = None
     completed = False
     failure = None
     cleanup_errors = []
     try:
-        receive = RTDEReceiveInterface(config["robot_ip"], 500)
+        receive = RTDEReceiveInterface(config["robot_ip"], 500, rt_priority=RT_RECEIVE_PRIORITY)
         initial_q = np.asarray(receive.getActualQ())
         if initial_q.shape != (6,) or not np.isfinite(initial_q).all():
             raise RuntimeError("Received invalid initial joint positions")
@@ -147,18 +195,16 @@ def collect(config, offsets, output):
         control = RTDEControlInterface(
             config["robot_ip"], 500,
             RTDEControlInterface.FLAG_VERBOSE | RTDEControlInterface.FLAG_UPLOAD_SCRIPT,
+            rt_priority=RT_CONTROL_PRIORITY,
         )
         if not control.setPayload(config["payload_mass_kg"], config["payload_cog_m"]):
             raise RuntimeError("setPayload failed")
+        app_priority = set_app_realtime_priority()
+        last_robot_time = None
         for offset in offsets:
-            period = control.initPeriod()
-            # Timestamps bracket the receive calls; they expose duplicates and
-            # overruns without pretending host and robot clocks are identical.
-            host_before = time.monotonic()
-            robot_before = receive.getTimestamp()
-            q = np.asarray(receive.getActualQ())
-            qd = np.asarray(receive.getActualQd())
-            robot_after = receive.getTimestamp()
+            # One fresh, consistent robot state per cycle; the command follows immediately.
+            host_before, robot_before, q, qd, robot_after = read_new_state(receive, last_robot_time)
+            last_robot_time = robot_before
             if not np.isfinite(q).all() or not np.isfinite(qd).all():
                 raise RuntimeError("Received non-finite robot state")
             if np.any(np.abs(q - initial_q) > config["joint_excursion_limit_rad"]):
@@ -176,7 +222,6 @@ def collect(config, offsets, output):
                 raise RuntimeError("directTorque returned failure")
             rows.append((q.copy(), qd.copy(), torque.copy(), target_pos.copy(), target_quat.copy(),
                          host_before, command_time, robot_before, robot_after))
-            control.waitPeriod(period)
         completed = True
     except BaseException as exc:
         failure = f"{type(exc).__name__}: {exc}"
@@ -226,9 +271,13 @@ def collect(config, offsets, output):
                 "calibration_sha256": hashlib.sha256(CALIBRATION.read_bytes()).hexdigest(),
                 "controller_provenance": json.loads((HERE / "vendor/PROVENANCE.json").read_text()),
                 "ur_rtde_version": version,
+                "timing_mode": "robot_state_locked",
+                "rt_priorities": {"receive": RT_RECEIVE_PRIORITY, "control": RT_CONTROL_PRIORITY, "loop": app_priority},
+                "timing_summary": timing_summary([row[7] for row in rows]),
             }
             torch.save(record, output)
             print(f"Saved {len(rows)} samples to {output}; completed={completed}")
+            print("Timing:", json.dumps({**record["timing_summary"], "loop_priority": app_priority}))
         if cleanup_errors:
             print("Controller cleanup reported:", cleanup_errors)
 

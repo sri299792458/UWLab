@@ -112,24 +112,40 @@ class ContractTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             collect_thunder.make_plan(config)
 
-    def run_mock_collection(self, *, wrong_start=False, invalid_velocity=False, fail_command=False):
-        """No RTDE sockets or on-disk robot records: interfaces and save are mocked."""
+    def run_mock_collection(self, *, wrong_start=False, invalid_velocity=False, fail_command=False,
+                            robot_period_s=0.002, midread_every=0, samples=6):
+        """No RTDE sockets or on-disk robot records: interfaces, clock and save are mocked.
+
+        A fake host clock drives a mock robot that publishes a new 2 ms-stamped state every robot_period_s host
+        seconds (a value other than 0.002 models host/robot clock drift). midread_every > 0 makes every Nth
+        getActualQ call land just after a new publish, so the snapshot must be re-read.
+        """
         sys.path.insert(0, str(HERE / "workstation"))
         import collect_thunder
         config = json.loads((HERE / "workstation/collection.simulation_candidate.json").read_text())
         config.update(robot_ip="test-double-only", polyscope_version="test-double-only",
                       payload_mass_kg=1., payload_cog_m=[0., 0., 0.], joint_excursion_limit_rad=[1.]*6)
         q0 = np.array(config["start_joint_positions_rad"])
-        tick = [0]
+        clock = [0.]
+        cycle = lambda: int(np.floor(clock[0] / robot_period_s + 1e-9))
+        calls = [0]
+
+        def advance(dt):
+            clock[0] += dt
+
+        def actual_q():
+            calls[0] += 1
+            if midread_every and calls[0] % midread_every == 0:
+                clock[0] = (cycle() + 1) * robot_period_s      # a new robot state is published mid-read
+            return q0 + (0.1 if wrong_start else cycle()*0.001)
         receive = Mock()
-        receive.getActualQ.side_effect = lambda: q0 + (0.1 if wrong_start else tick[0]*0.001)
+        receive.getActualQ.side_effect = actual_q
         receive.getActualQd.side_effect = lambda: np.full(6, np.nan) if invalid_velocity else np.zeros(6)
-        receive.getTimestamp.side_effect = lambda: 100. + tick[0]*0.002
+        receive.getTimestamp.side_effect = lambda: (advance(1e-5), 100. + cycle()*0.002)[1]
         control = Mock()
         control.setPayload.return_value = True
         control.directTorque.side_effect = [True, False, True] if fail_command else None
         control.directTorque.return_value = True
-        control.waitPeriod.side_effect = lambda _: tick.__setitem__(0, tick[0]+1)
         factory = Mock(return_value=control)
         factory.FLAG_VERBOSE = 1; factory.FLAG_UPLOAD_SCRIPT = 2
         saved = []
@@ -139,9 +155,12 @@ class ContractTests(unittest.TestCase):
                 "rtde_receive": SimpleNamespace(RTDEReceiveInterface=Mock(return_value=receive)),
             }))
             stack.enter_context(patch.object(collect_thunder.importlib.metadata, "version", return_value="1.6.2"))
+            stack.enter_context(patch.object(collect_thunder.time, "monotonic", side_effect=lambda: clock[0]))
+            stack.enter_context(patch.object(collect_thunder.time, "sleep", side_effect=advance))
+            stack.enter_context(patch.object(collect_thunder.os, "sched_setscheduler", side_effect=PermissionError("test double")))
             stack.enter_context(patch.object(torch, "save", side_effect=lambda record, _: saved.append(record)))
             stack.enter_context(patch("builtins.print"))
-            offsets = collect_thunder.make_plan(config)[:6]
+            offsets = collect_thunder.make_plan(config)[:samples]
             if wrong_start or invalid_velocity or fail_command:
                 with self.assertRaises(RuntimeError):
                     collect_thunder.collect(config, offsets, Path(directory) / "mock-only.pt")
@@ -150,6 +169,27 @@ class ContractTests(unittest.TestCase):
             self.assertFalse((Path(directory) / "mock-only.pt").exists())
         receive.disconnect.assert_called_once()
         return saved, control, factory
+
+    def test_collector_locks_to_robot_cycles_under_clock_drift(self):
+        for period in (0.0019, 0.002, 0.0021):
+            with self.subTest(robot_period_s=period):
+                saved, control, factory = self.run_mock_collection(robot_period_s=period, samples=200)
+                record = saved[0]
+                self.assertEqual(validate_record(record)["samples"], 200)   # strict timestamp contract passes
+                self.assertEqual(record["timing_summary"]["duplicate_intervals"], 0)
+                self.assertEqual(record["timing_summary"]["intervals_over_2p4ms"], 0)
+                self.assertEqual(record["timing_mode"], "robot_state_locked")
+                self.assertTrue(record["rt_priorities"]["loop"].startswith("unavailable"))
+                self.assertEqual(factory.call_args.kwargs["rt_priority"], 85)
+
+    def test_collector_rereads_a_state_updated_mid_read_and_reports_the_gap(self):
+        saved, _, _ = self.run_mock_collection(midread_every=50, samples=200)
+        record = saved[0]
+        self.assertTrue(torch.equal(record["robot_sample_times_s"], record["robot_after_read_times_s"]))  # consistent Q/Qd
+        self.assertEqual(record["timing_summary"]["duplicate_intervals"], 0)
+        self.assertGreater(record["timing_summary"]["intervals_over_2p4ms"], 0)   # the late cycle is visible...
+        with self.assertRaises(ValueError):
+            validate_record(record)                                                # ...and the record is rejected
 
     def test_collector_success_produces_valid_precommand_samples_and_cleans_up(self):
         saved, control, factory = self.run_mock_collection()
