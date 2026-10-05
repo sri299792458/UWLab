@@ -1,0 +1,3 @@
+# Thunder README media: plain git objects (GitHub does not accept new LFS objects on public forks).
+*.gif -filter -diff -merge binary
+*.mp4 -filter -diff -merge binary
