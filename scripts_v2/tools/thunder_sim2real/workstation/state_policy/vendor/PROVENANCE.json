@@ -1,0 +1,8 @@
+{
+  "robotiq_gripper.py": {
+    "source": "https://github.com/sri299792458/diffusion_policy (local clone /data/kanth042/repos/diffusion_policy-omnireset), branch thunder-gripper-calibration, commit c0f3075, path diffusion_policy/real_world/robotiq_gripper.py",
+    "license": "MIT (Columbia Artificial Intelligence and Robotics Lab; repository LICENSE)",
+    "sha256": "68c2fff6b6f2cf16f2faf6d1d2ecac7424ee9d4a24c4ad702f6668434b978f26",
+    "modifications": "none (verbatim copy); used through state_policy/gripper.py"
+  }
+}
