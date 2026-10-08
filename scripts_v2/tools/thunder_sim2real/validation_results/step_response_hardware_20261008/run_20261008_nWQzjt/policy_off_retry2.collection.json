@@ -1,0 +1,868 @@
+{
+  "robot_ip": "10.33.55.89",
+  "payload_mass_kg": 1.04,
+  "payload_cog_m": [
+    -0.002,
+    0.001,
+    0.047
+  ],
+  "polyscope_version": "5.26.1.140514",
+  "gripper_configuration": "open_empty",
+  "start_joint_positions_rad": [
+    0.501928,
+    -1.409,
+    -2.415507,
+    -2.003571,
+    -2.19601,
+    0.076039
+  ],
+  "start_joint_tolerance_rad": 0.02,
+  "motion_stiffness": [
+    1000,
+    1000,
+    1000,
+    50,
+    50,
+    50
+  ],
+  "motion_damping_ratio": [
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0
+  ],
+  "torque_max": [
+    150,
+    150,
+    150,
+    28,
+    28,
+    28
+  ],
+  "robot_base_quaternion_world_wxyz": [
+    0.5,
+    0.5,
+    0.5,
+    0.5
+  ],
+  "step_axes": [
+    "x",
+    "y",
+    "z",
+    "rx",
+    "ry",
+    "rz"
+  ],
+  "translation_steps_m": [
+    0.005,
+    0.01,
+    0.02,
+    0.04
+  ],
+  "rotation_steps_rad": [
+    0.034907,
+    0.069813,
+    0.139626,
+    0.279253
+  ],
+  "initial_hold_s": 1.0,
+  "step_hold_s": 2.0,
+  "return_hold_s": 1.5,
+  "joint_excursion_limit_rad": [
+    0.21660151566359737,
+    0.2156359326891394,
+    0.2050665241557833,
+    0.5084416514182074,
+    0.42092958734906005,
+    0.379059100690342
+  ],
+  "notes": "Controller step-response test (hardware counterpart of sim R223). Same robot settings, payload, gains and S-W-E- start pose (c675) as the clean R187 sysid recording (collection.remapped_full_amplitude_swe_candidate.json). Each step holds a fixed Cartesian target offset in base_link (Thunder: y = world up) for 2 s, then returns to zero for 1.5 s. Max held offset 40 mm / 16 deg, i.e. at most 40 N / 14 N m of spring at Kp 1000 / 50. The joint guard is computed from IK (predicted max excursion + 5 deg). The operator moves the arm to the start pose; the script does not.",
+  "policy_test": {
+    "axes": [
+      "x",
+      "y",
+      "z",
+      "rx",
+      "ry",
+      "rz"
+    ],
+    "single_translation_m": [
+      0.01,
+      0.02,
+      0.04
+    ],
+    "single_rotation_rad": [
+      0.034907,
+      0.069813,
+      0.139626,
+      0.279253
+    ],
+    "constant_translation_m": [
+      [
+        0.01,
+        4
+      ],
+      [
+        0.02,
+        2
+      ]
+    ],
+    "constant_rotation_rad": [
+      [
+        0.069813,
+        4
+      ],
+      [
+        0.139626,
+        2
+      ]
+    ],
+    "policy_steps_per_trial": 10,
+    "initial_hold_s": 1.0,
+    "return_hold_s": 2.0,
+    "notes": "--mode policy: every 0.1 s the target = measured flange pose + offset (the trained policy's action semantics; sim R223 phases A/C). single = one command then zero action; constant = [size, repeats]. Cumulative command per trial is capped at 40 mm / 16 deg (the held test's envelope), then the target returns to the initial center for 2 s."
+  },
+  "step_test": {
+    "mode": "policy",
+    "friction_mode": "off",
+    "schedule": [
+      {
+        "kind": "single",
+        "axis": "x",
+        "value": 0.01,
+        "repeats": 1,
+        "start_sample": 500,
+        "policy_steps": 10,
+        "step_samples": 50,
+        "return_start_sample": 1000,
+        "return_samples": 1000
+      },
+      {
+        "kind": "single",
+        "axis": "x",
+        "value": -0.01,
+        "repeats": 1,
+        "start_sample": 2000,
+        "policy_steps": 10,
+        "step_samples": 50,
+        "return_start_sample": 2500,
+        "return_samples": 1000
+      },
+      {
+        "kind": "single",
+        "axis": "x",
+        "value": 0.02,
+        "repeats": 1,
+        "start_sample": 3500,
+        "policy_steps": 10,
+        "step_samples": 50,
+        "return_start_sample": 4000,
+        "return_samples": 1000
+      },
+      {
+        "kind": "single",
+        "axis": "x",
+        "value": -0.02,
+        "repeats": 1,
+        "start_sample": 5000,
+        "policy_steps": 10,
+        "step_samples": 50,
+        "return_start_sample": 5500,
+        "return_samples": 1000
+      },
+      {
+        "kind": "single",
+        "axis": "x",
+        "value": 0.04,
+        "repeats": 1,
+        "start_sample": 6500,
+        "policy_steps": 10,
+        "step_samples": 50,
+        "return_start_sample": 7000,
+        "return_samples": 1000
+      },
+      {
+        "kind": "single",
+        "axis": "x",
+        "value": -0.04,
+        "repeats": 1,
+        "start_sample": 8000,
+        "policy_steps": 10,
+        "step_samples": 50,
+        "return_start_sample": 8500,
+        "return_samples": 1000
+      },
+      {
+        "kind": "constant",
+        "axis": "x",
+        "value": 0.01,
+        "repeats": 4,
+        "start_sample": 9500,
+        "policy_steps": 10,
+        "step_samples": 50,
+        "return_start_sample": 10000,
+        "return_samples": 1000
+      },
+      {
+        "kind": "constant",
+        "axis": "x",
+        "value": -0.01,
+        "repeats": 4,
+        "start_sample": 11000,
+        "policy_steps": 10,
+        "step_samples": 50,
+        "return_start_sample": 11500,
+        "return_samples": 1000
+      },
+      {
+        "kind": "constant",
+        "axis": "x",
+        "value": 0.02,
+        "repeats": 2,
+        "start_sample": 12500,
+        "policy_steps": 10,
+        "step_samples": 50,
+        "return_start_sample": 13000,
+        "return_samples": 1000
+      },
+      {
+        "kind": "constant",
+        "axis": "x",
+        "value": -0.02,
+        "repeats": 2,
+        "start_sample": 14000,
+        "policy_steps": 10,
+        "step_samples": 50,
+        "return_start_sample": 14500,
+        "return_samples": 1000
+      },
+      {
+        "kind": "single",
+        "axis": "y",
+        "value": 0.01,
+        "repeats": 1,
+        "start_sample": 15500,
+        "policy_steps": 10,
+        "step_samples": 50,
+        "return_start_sample": 16000,
+        "return_samples": 1000
+      },
+      {
+        "kind": "single",
+        "axis": "y",
+        "value": -0.01,
+        "repeats": 1,
+        "start_sample": 17000,
+        "policy_steps": 10,
+        "step_samples": 50,
+        "return_start_sample": 17500,
+        "return_samples": 1000
+      },
+      {
+        "kind": "single",
+        "axis": "y",
+        "value": 0.02,
+        "repeats": 1,
+        "start_sample": 18500,
+        "policy_steps": 10,
+        "step_samples": 50,
+        "return_start_sample": 19000,
+        "return_samples": 1000
+      },
+      {
+        "kind": "single",
+        "axis": "y",
+        "value": -0.02,
+        "repeats": 1,
+        "start_sample": 20000,
+        "policy_steps": 10,
+        "step_samples": 50,
+        "return_start_sample": 20500,
+        "return_samples": 1000
+      },
+      {
+        "kind": "single",
+        "axis": "y",
+        "value": 0.04,
+        "repeats": 1,
+        "start_sample": 21500,
+        "policy_steps": 10,
+        "step_samples": 50,
+        "return_start_sample": 22000,
+        "return_samples": 1000
+      },
+      {
+        "kind": "single",
+        "axis": "y",
+        "value": -0.04,
+        "repeats": 1,
+        "start_sample": 23000,
+        "policy_steps": 10,
+        "step_samples": 50,
+        "return_start_sample": 23500,
+        "return_samples": 1000
+      },
+      {
+        "kind": "constant",
+        "axis": "y",
+        "value": 0.01,
+        "repeats": 4,
+        "start_sample": 24500,
+        "policy_steps": 10,
+        "step_samples": 50,
+        "return_start_sample": 25000,
+        "return_samples": 1000
+      },
+      {
+        "kind": "constant",
+        "axis": "y",
+        "value": -0.01,
+        "repeats": 4,
+        "start_sample": 26000,
+        "policy_steps": 10,
+        "step_samples": 50,
+        "return_start_sample": 26500,
+        "return_samples": 1000
+      },
+      {
+        "kind": "constant",
+        "axis": "y",
+        "value": 0.02,
+        "repeats": 2,
+        "start_sample": 27500,
+        "policy_steps": 10,
+        "step_samples": 50,
+        "return_start_sample": 28000,
+        "return_samples": 1000
+      },
+      {
+        "kind": "constant",
+        "axis": "y",
+        "value": -0.02,
+        "repeats": 2,
+        "start_sample": 29000,
+        "policy_steps": 10,
+        "step_samples": 50,
+        "return_start_sample": 29500,
+        "return_samples": 1000
+      },
+      {
+        "kind": "single",
+        "axis": "z",
+        "value": 0.01,
+        "repeats": 1,
+        "start_sample": 30500,
+        "policy_steps": 10,
+        "step_samples": 50,
+        "return_start_sample": 31000,
+        "return_samples": 1000
+      },
+      {
+        "kind": "single",
+        "axis": "z",
+        "value": -0.01,
+        "repeats": 1,
+        "start_sample": 32000,
+        "policy_steps": 10,
+        "step_samples": 50,
+        "return_start_sample": 32500,
+        "return_samples": 1000
+      },
+      {
+        "kind": "single",
+        "axis": "z",
+        "value": 0.02,
+        "repeats": 1,
+        "start_sample": 33500,
+        "policy_steps": 10,
+        "step_samples": 50,
+        "return_start_sample": 34000,
+        "return_samples": 1000
+      },
+      {
+        "kind": "single",
+        "axis": "z",
+        "value": -0.02,
+        "repeats": 1,
+        "start_sample": 35000,
+        "policy_steps": 10,
+        "step_samples": 50,
+        "return_start_sample": 35500,
+        "return_samples": 1000
+      },
+      {
+        "kind": "single",
+        "axis": "z",
+        "value": 0.04,
+        "repeats": 1,
+        "start_sample": 36500,
+        "policy_steps": 10,
+        "step_samples": 50,
+        "return_start_sample": 37000,
+        "return_samples": 1000
+      },
+      {
+        "kind": "single",
+        "axis": "z",
+        "value": -0.04,
+        "repeats": 1,
+        "start_sample": 38000,
+        "policy_steps": 10,
+        "step_samples": 50,
+        "return_start_sample": 38500,
+        "return_samples": 1000
+      },
+      {
+        "kind": "constant",
+        "axis": "z",
+        "value": 0.01,
+        "repeats": 4,
+        "start_sample": 39500,
+        "policy_steps": 10,
+        "step_samples": 50,
+        "return_start_sample": 40000,
+        "return_samples": 1000
+      },
+      {
+        "kind": "constant",
+        "axis": "z",
+        "value": -0.01,
+        "repeats": 4,
+        "start_sample": 41000,
+        "policy_steps": 10,
+        "step_samples": 50,
+        "return_start_sample": 41500,
+        "return_samples": 1000
+      },
+      {
+        "kind": "constant",
+        "axis": "z",
+        "value": 0.02,
+        "repeats": 2,
+        "start_sample": 42500,
+        "policy_steps": 10,
+        "step_samples": 50,
+        "return_start_sample": 43000,
+        "return_samples": 1000
+      },
+      {
+        "kind": "constant",
+        "axis": "z",
+        "value": -0.02,
+        "repeats": 2,
+        "start_sample": 44000,
+        "policy_steps": 10,
+        "step_samples": 50,
+        "return_start_sample": 44500,
+        "return_samples": 1000
+      },
+      {
+        "kind": "single",
+        "axis": "rx",
+        "value": 0.034907,
+        "repeats": 1,
+        "start_sample": 45500,
+        "policy_steps": 10,
+        "step_samples": 50,
+        "return_start_sample": 46000,
+        "return_samples": 1000
+      },
+      {
+        "kind": "single",
+        "axis": "rx",
+        "value": -0.034907,
+        "repeats": 1,
+        "start_sample": 47000,
+        "policy_steps": 10,
+        "step_samples": 50,
+        "return_start_sample": 47500,
+        "return_samples": 1000
+      },
+      {
+        "kind": "single",
+        "axis": "rx",
+        "value": 0.069813,
+        "repeats": 1,
+        "start_sample": 48500,
+        "policy_steps": 10,
+        "step_samples": 50,
+        "return_start_sample": 49000,
+        "return_samples": 1000
+      },
+      {
+        "kind": "single",
+        "axis": "rx",
+        "value": -0.069813,
+        "repeats": 1,
+        "start_sample": 50000,
+        "policy_steps": 10,
+        "step_samples": 50,
+        "return_start_sample": 50500,
+        "return_samples": 1000
+      },
+      {
+        "kind": "single",
+        "axis": "rx",
+        "value": 0.139626,
+        "repeats": 1,
+        "start_sample": 51500,
+        "policy_steps": 10,
+        "step_samples": 50,
+        "return_start_sample": 52000,
+        "return_samples": 1000
+      },
+      {
+        "kind": "single",
+        "axis": "rx",
+        "value": -0.139626,
+        "repeats": 1,
+        "start_sample": 53000,
+        "policy_steps": 10,
+        "step_samples": 50,
+        "return_start_sample": 53500,
+        "return_samples": 1000
+      },
+      {
+        "kind": "single",
+        "axis": "rx",
+        "value": 0.279253,
+        "repeats": 1,
+        "start_sample": 54500,
+        "policy_steps": 10,
+        "step_samples": 50,
+        "return_start_sample": 55000,
+        "return_samples": 1000
+      },
+      {
+        "kind": "single",
+        "axis": "rx",
+        "value": -0.279253,
+        "repeats": 1,
+        "start_sample": 56000,
+        "policy_steps": 10,
+        "step_samples": 50,
+        "return_start_sample": 56500,
+        "return_samples": 1000
+      },
+      {
+        "kind": "constant",
+        "axis": "rx",
+        "value": 0.069813,
+        "repeats": 4,
+        "start_sample": 57500,
+        "policy_steps": 10,
+        "step_samples": 50,
+        "return_start_sample": 58000,
+        "return_samples": 1000
+      },
+      {
+        "kind": "constant",
+        "axis": "rx",
+        "value": -0.069813,
+        "repeats": 4,
+        "start_sample": 59000,
+        "policy_steps": 10,
+        "step_samples": 50,
+        "return_start_sample": 59500,
+        "return_samples": 1000
+      },
+      {
+        "kind": "constant",
+        "axis": "rx",
+        "value": 0.139626,
+        "repeats": 2,
+        "start_sample": 60500,
+        "policy_steps": 10,
+        "step_samples": 50,
+        "return_start_sample": 61000,
+        "return_samples": 1000
+      },
+      {
+        "kind": "constant",
+        "axis": "rx",
+        "value": -0.139626,
+        "repeats": 2,
+        "start_sample": 62000,
+        "policy_steps": 10,
+        "step_samples": 50,
+        "return_start_sample": 62500,
+        "return_samples": 1000
+      },
+      {
+        "kind": "single",
+        "axis": "ry",
+        "value": 0.034907,
+        "repeats": 1,
+        "start_sample": 63500,
+        "policy_steps": 10,
+        "step_samples": 50,
+        "return_start_sample": 64000,
+        "return_samples": 1000
+      },
+      {
+        "kind": "single",
+        "axis": "ry",
+        "value": -0.034907,
+        "repeats": 1,
+        "start_sample": 65000,
+        "policy_steps": 10,
+        "step_samples": 50,
+        "return_start_sample": 65500,
+        "return_samples": 1000
+      },
+      {
+        "kind": "single",
+        "axis": "ry",
+        "value": 0.069813,
+        "repeats": 1,
+        "start_sample": 66500,
+        "policy_steps": 10,
+        "step_samples": 50,
+        "return_start_sample": 67000,
+        "return_samples": 1000
+      },
+      {
+        "kind": "single",
+        "axis": "ry",
+        "value": -0.069813,
+        "repeats": 1,
+        "start_sample": 68000,
+        "policy_steps": 10,
+        "step_samples": 50,
+        "return_start_sample": 68500,
+        "return_samples": 1000
+      },
+      {
+        "kind": "single",
+        "axis": "ry",
+        "value": 0.139626,
+        "repeats": 1,
+        "start_sample": 69500,
+        "policy_steps": 10,
+        "step_samples": 50,
+        "return_start_sample": 70000,
+        "return_samples": 1000
+      },
+      {
+        "kind": "single",
+        "axis": "ry",
+        "value": -0.139626,
+        "repeats": 1,
+        "start_sample": 71000,
+        "policy_steps": 10,
+        "step_samples": 50,
+        "return_start_sample": 71500,
+        "return_samples": 1000
+      },
+      {
+        "kind": "single",
+        "axis": "ry",
+        "value": 0.279253,
+        "repeats": 1,
+        "start_sample": 72500,
+        "policy_steps": 10,
+        "step_samples": 50,
+        "return_start_sample": 73000,
+        "return_samples": 1000
+      },
+      {
+        "kind": "single",
+        "axis": "ry",
+        "value": -0.279253,
+        "repeats": 1,
+        "start_sample": 74000,
+        "policy_steps": 10,
+        "step_samples": 50,
+        "return_start_sample": 74500,
+        "return_samples": 1000
+      },
+      {
+        "kind": "constant",
+        "axis": "ry",
+        "value": 0.069813,
+        "repeats": 4,
+        "start_sample": 75500,
+        "policy_steps": 10,
+        "step_samples": 50,
+        "return_start_sample": 76000,
+        "return_samples": 1000
+      },
+      {
+        "kind": "constant",
+        "axis": "ry",
+        "value": -0.069813,
+        "repeats": 4,
+        "start_sample": 77000,
+        "policy_steps": 10,
+        "step_samples": 50,
+        "return_start_sample": 77500,
+        "return_samples": 1000
+      },
+      {
+        "kind": "constant",
+        "axis": "ry",
+        "value": 0.139626,
+        "repeats": 2,
+        "start_sample": 78500,
+        "policy_steps": 10,
+        "step_samples": 50,
+        "return_start_sample": 79000,
+        "return_samples": 1000
+      },
+      {
+        "kind": "constant",
+        "axis": "ry",
+        "value": -0.139626,
+        "repeats": 2,
+        "start_sample": 80000,
+        "policy_steps": 10,
+        "step_samples": 50,
+        "return_start_sample": 80500,
+        "return_samples": 1000
+      },
+      {
+        "kind": "single",
+        "axis": "rz",
+        "value": 0.034907,
+        "repeats": 1,
+        "start_sample": 81500,
+        "policy_steps": 10,
+        "step_samples": 50,
+        "return_start_sample": 82000,
+        "return_samples": 1000
+      },
+      {
+        "kind": "single",
+        "axis": "rz",
+        "value": -0.034907,
+        "repeats": 1,
+        "start_sample": 83000,
+        "policy_steps": 10,
+        "step_samples": 50,
+        "return_start_sample": 83500,
+        "return_samples": 1000
+      },
+      {
+        "kind": "single",
+        "axis": "rz",
+        "value": 0.069813,
+        "repeats": 1,
+        "start_sample": 84500,
+        "policy_steps": 10,
+        "step_samples": 50,
+        "return_start_sample": 85000,
+        "return_samples": 1000
+      },
+      {
+        "kind": "single",
+        "axis": "rz",
+        "value": -0.069813,
+        "repeats": 1,
+        "start_sample": 86000,
+        "policy_steps": 10,
+        "step_samples": 50,
+        "return_start_sample": 86500,
+        "return_samples": 1000
+      },
+      {
+        "kind": "single",
+        "axis": "rz",
+        "value": 0.139626,
+        "repeats": 1,
+        "start_sample": 87500,
+        "policy_steps": 10,
+        "step_samples": 50,
+        "return_start_sample": 88000,
+        "return_samples": 1000
+      },
+      {
+        "kind": "single",
+        "axis": "rz",
+        "value": -0.139626,
+        "repeats": 1,
+        "start_sample": 89000,
+        "policy_steps": 10,
+        "step_samples": 50,
+        "return_start_sample": 89500,
+        "return_samples": 1000
+      },
+      {
+        "kind": "single",
+        "axis": "rz",
+        "value": 0.279253,
+        "repeats": 1,
+        "start_sample": 90500,
+        "policy_steps": 10,
+        "step_samples": 50,
+        "return_start_sample": 91000,
+        "return_samples": 1000
+      },
+      {
+        "kind": "single",
+        "axis": "rz",
+        "value": -0.279253,
+        "repeats": 1,
+        "start_sample": 92000,
+        "policy_steps": 10,
+        "step_samples": 50,
+        "return_start_sample": 92500,
+        "return_samples": 1000
+      },
+      {
+        "kind": "constant",
+        "axis": "rz",
+        "value": 0.069813,
+        "repeats": 4,
+        "start_sample": 93500,
+        "policy_steps": 10,
+        "step_samples": 50,
+        "return_start_sample": 94000,
+        "return_samples": 1000
+      },
+      {
+        "kind": "constant",
+        "axis": "rz",
+        "value": -0.069813,
+        "repeats": 4,
+        "start_sample": 95000,
+        "policy_steps": 10,
+        "step_samples": 50,
+        "return_start_sample": 95500,
+        "return_samples": 1000
+      },
+      {
+        "kind": "constant",
+        "axis": "rz",
+        "value": 0.139626,
+        "repeats": 2,
+        "start_sample": 96500,
+        "policy_steps": 10,
+        "step_samples": 50,
+        "return_start_sample": 97000,
+        "return_samples": 1000
+      },
+      {
+        "kind": "constant",
+        "axis": "rz",
+        "value": -0.139626,
+        "repeats": 2,
+        "start_sample": 98000,
+        "policy_steps": 10,
+        "step_samples": 50,
+        "return_start_sample": 98500,
+        "return_samples": 1000
+      }
+    ],
+    "predicted_max_joint_excursion_rad": [
+      0.12933505306388088,
+      0.1283694700894229,
+      0.11780006155606682,
+      0.4211751888184909,
+      0.33366312474934356,
+      0.2917926380906255
+    ],
+    "excursion_margin_rad": 0.08726646259971647
+  }
+}

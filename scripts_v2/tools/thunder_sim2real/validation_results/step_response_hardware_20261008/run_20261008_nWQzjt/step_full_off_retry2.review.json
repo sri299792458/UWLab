@@ -1,0 +1,91 @@
+{
+  "record": "run_20261008_nWQzjt/step_full_off_retry2.pt",
+  "raw_sha256": "3996c55e8868f23461fdb769ec3874b72a9d63a7bd3ac09e6bda7382d17df01b",
+  "samples": 84500,
+  "completed": true,
+  "failure": null,
+  "cleanup_errors": [],
+  "mode": "held",
+  "friction_mode": "off",
+  "scheduled_steps_or_trials": 48,
+  "all_return_phases_completed": true,
+  "timing_summary": {
+    "samples": 84500,
+    "robot_span_s": 168.99799999967217,
+    "duplicate_intervals": 0,
+    "intervals_over_2p4ms": 0,
+    "max_interval_s": 0.0020000003278255463
+  },
+  "analysis_timing": {
+    "clock": "robot_sample_times_s",
+    "continuous_500hz": true,
+    "gap_intervals": [],
+    "missing_cycles": 0,
+    "max_interval_s": 0.0020000003278255463,
+    "observed_span_s": 168.99799999967217
+  },
+  "direct_torque_params": {
+    "viscous_scale": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "coulomb_scale": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "control_script": {
+    "source": "ur_rtde compiled-in"
+  },
+  "rt_priorities": {
+    "receive": 90,
+    "control": 85,
+    "loop": "SCHED_FIFO 80"
+  },
+  "recording_storage": {
+    "kind": "earlier Python list logger"
+  },
+  "rt_receive_variables": "earlier SDK default recipe",
+  "state_gap_policy": {
+    "mode": "strict"
+  },
+  "gap_events": [],
+  "fixed_step_validation": {
+    "eligible": true,
+    "result": {
+      "samples": 84500,
+      "duration_s": 169.0,
+      "source_kind": "real_robot",
+      "sample_phase": "pre_command",
+      "robot_dt_min_s": 0.001999999862164259,
+      "robot_dt_max_s": 0.0020000003278255463,
+      "joint_excursion_rad": [
+        0.04525589942932129,
+        0.023633211851119995,
+        0.0368196964263916,
+        0.14460515975952148,
+        0.21215295791625977,
+        0.16494805017580205
+      ],
+      "max_torque_nm": [
+        19.769204972305026,
+        17.111704353662354,
+        21.93434804357718,
+        13.372436580628696,
+        14.228569306257066,
+        13.597166052063969
+      ]
+    }
+  },
+  "analyzer_sha256": "43760f1127ab73f7336a22b5166f47a1df9de32f6d9134b7817dee1c9f4c461d",
+  "max_compute_ms": 1.284094003494829,
+  "max_sdk_ms": 0.08540498674847186
+}

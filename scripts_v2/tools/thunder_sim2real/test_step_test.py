@@ -3,7 +3,7 @@
 No RTDE sockets: the robot interfaces, scheduler and clock are test doubles (same approach as test_contract.py). The fake
 robot never moves, so every step should analyze as stop_short == commanded.
 """
-from contextlib import ExitStack
+from contextlib import ExitStack, nullcontext
 import copy
 import gc
 import json
@@ -37,6 +37,33 @@ def base_config(**changes):
 
 
 class StepTestTests(unittest.TestCase):
+    def test_policy_audit_uses_current_plan_api_without_any_control_connection(self):
+        import audit_step_timing
+        factory = Mock(side_effect=RuntimeError("test only: no robot connection"))
+        with tempfile.TemporaryDirectory() as directory, ExitStack() as stack:
+            output = Path(directory) / "audit.json"
+            stack.enter_context(patch.dict(sys.modules, {"rtde_receive": SimpleNamespace(RTDEReceiveInterface=factory)}))
+            stack.enter_context(patch.object(audit_step_timing.ct, "check_realtime_permissions"))
+            stack.enter_context(patch.object(audit_step_timing.ct, "fifo_thread_creation", side_effect=lambda _: nullcontext()))
+            stack.enter_context(patch.object(audit_step_timing.os, "sched_setscheduler"))
+            stack.enter_context(patch.object(sys, "argv", ["audit_step_timing.py", "--config",
+                                str(HERE / "workstation/collection.step_test.json"), "--mode", "policy",
+                                "--verbose-receive", "--repeats", "3", "--output", str(output)]))
+            stack.enter_context(patch("builtins.print"))
+            with self.assertRaises(SystemExit):
+                audit_step_timing.main()
+            result = json.loads(output.read_text())
+        self.assertEqual(result["requested_samples"], 3 * 99500)
+        self.assertEqual(result["sequence_samples"], 99500)
+        self.assertEqual(result["repeats"], 3)
+        self.assertEqual(result["robot_control_commands_sent"], 0)
+        self.assertFalse(result["continuous_500hz"])
+        self.assertTrue(result["verbose_receive"])
+        self.assertIn("test only: no robot connection", result["failure"])
+        factory.assert_called_once()
+        self.assertTrue(factory.call_args.kwargs["verbose"])
+        self.assertEqual(factory.call_args.kwargs["variables"], ["timestamp", "actual_q", "actual_qd"])
+
     def test_plan_rejects_large_steps_and_unknown_friction(self):
         with self.assertRaises(ValueError):
             step_test_thunder.make_plan(base_config(translation_steps_m=[0.08]), "off")
@@ -44,6 +71,17 @@ class StepTestTests(unittest.TestCase):
             step_test_thunder.make_plan(base_config(), "on")
         with self.assertRaises(ValueError):
             collect_thunder.friction_scales({"direct_torque_params": {"viscous_scale": [1.2] * 6, "coulomb_scale": [0.5] * 6}})
+
+    def test_gap_tolerance_is_refused_for_sysid_before_robot_connection(self):
+        receive_factory, control_factory = Mock(), Mock()
+        with tempfile.TemporaryDirectory() as directory, patch.dict(sys.modules, {
+                "rtde_receive": SimpleNamespace(RTDEReceiveInterface=receive_factory),
+                "rtde_control": SimpleNamespace(RTDEControlInterface=control_factory)}), \
+                patch.object(collect_thunder.importlib.metadata, "version", return_value="1.6.5"):
+            with self.assertRaisesRegex(ValueError, "only for step-response comparisons"):
+                collect_thunder.collect(base_config(), np.zeros((6, 6)), Path(directory) / "never.pt", allow_small_gaps=True)
+        receive_factory.assert_not_called()
+        control_factory.assert_not_called()
 
     def test_plan_schedule_and_guard(self):
         config, offsets, _ = step_test_thunder.make_plan(base_config(), "off")
@@ -104,6 +142,10 @@ class StepTestTests(unittest.TestCase):
         self.assertTrue(record["completed"])
         self.assertEqual(record["direct_torque_params"], expected)
         self.assertEqual(record["collection_config"]["step_test"]["friction_mode"], friction)
+        self.assertEqual(record["recording_storage"]["kind"], "preallocated_numpy")
+        self.assertTrue(record["recording_storage"]["memory_locked_during_collection"])
+        self.assertEqual(record["rt_receive_variables"], ["timestamp", "actual_q", "actual_qd"])
+        self.assertTrue(torch.all(record["host_record_end_times_s"] >= record["host_command_return_times_s"]))
         if friction == "off":
             control.setCustomScriptFile.assert_not_called()
             self.assertEqual(record["control_script"], {"source": "ur_rtde compiled-in"})
@@ -192,6 +234,38 @@ class StepTestTests(unittest.TestCase):
             self.assertAlmostEqual(step["reached"], 0.0, places=6)
             self.assertAlmostEqual(step["stop_short"], step["commanded"], places=3)
             self.assertIsNone(step["onset_s"])
+
+    def test_held_analysis_uses_elapsed_robot_time_including_gap(self):
+        import analyze_step_test as analysis
+        times = np.arange(80) * 0.002
+        times[2:] += 0.004  # Two missing cycles; timestamps remain unmodified.
+        q = np.zeros((80, 6))
+        q[3:, 0] = 0.001
+        q[50:, 0] = 0.002
+        schedule = [{"axis": "x", "value": 0.01, "start_sample": 1, "hold_samples": 60,
+                     "return_start_sample": 61, "return_samples": 10}]
+        with patch.object(analysis, "pose_offsets", side_effect=lambda qs, *_: qs.copy()):
+            row = analysis.analyze_held(q, schedule, times, np.zeros(3), np.array([1, 0, 0, 0]))[0]
+        self.assertEqual(row["onset_s"], 0.008)
+        self.assertEqual(row["moved_0p1s"], 1.0)  # Index 49 is at 0.1 s; index 50 is later.
+        self.assertAlmostEqual(row["hold_elapsed_s"], 0.124)
+        self.assertEqual(row["gaps_during_hold"], 1)
+        self.assertEqual(analysis.timing_review(times)["missing_cycles"], 2)
+        self.assertFalse(analysis.timing_review(times)["continuous_500hz"])
+
+    def test_policy_analysis_flags_stretched_interval_and_partial_return(self):
+        import analyze_step_test as analysis
+        q = np.zeros((12, 6))
+        times = np.arange(12) * 0.002
+        times[3:] += 0.002
+        schedule = [{"kind": "single", "axis": "x", "value": 0.01, "start_sample": 1,
+                     "policy_steps": 2, "step_samples": 4, "repeats": 1,
+                     "return_start_sample": 9, "return_samples": 4}]
+        with patch.object(analysis.kin, "get_ee_pose", return_value=(np.zeros(3), np.array([1, 0, 0, 0]))):
+            row = analysis.analyze_policy(q, schedule, times)[0]
+        self.assertEqual(row["policy_step_durations_s"], [0.01, 0.008])
+        self.assertEqual(row["gaps_during_trial"], 1)
+        self.assertFalse(row["return_complete"])
 
 
 if __name__ == "__main__":

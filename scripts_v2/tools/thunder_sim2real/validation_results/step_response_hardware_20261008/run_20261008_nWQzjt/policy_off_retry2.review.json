@@ -1,0 +1,102 @@
+{
+  "record": "run_20261008_nWQzjt/policy_off_retry2.pt",
+  "raw_sha256": "c71b450aae8c4d18e3ef216723de8de44e722f09de9abf88866470422ad5c8eb",
+  "samples": 99500,
+  "completed": true,
+  "failure": null,
+  "cleanup_errors": [],
+  "mode": "policy",
+  "friction_mode": "off",
+  "scheduled_steps_or_trials": 66,
+  "all_return_phases_completed": true,
+  "timing_summary": {
+    "samples": 99500,
+    "robot_span_s": 198.99799999967217,
+    "duplicate_intervals": 0,
+    "intervals_over_2p4ms": 0,
+    "max_interval_s": 0.0020000003278255463
+  },
+  "analysis_timing": {
+    "clock": "robot_sample_times_s",
+    "continuous_500hz": true,
+    "gap_intervals": [],
+    "missing_cycles": 0,
+    "max_interval_s": 0.0020000003278255463,
+    "observed_span_s": 198.99799999967217
+  },
+  "direct_torque_params": {
+    "viscous_scale": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "coulomb_scale": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "control_script": {
+    "source": "ur_rtde compiled-in"
+  },
+  "rt_priorities": {
+    "receive": 90,
+    "control": 85,
+    "loop": "SCHED_FIFO 80"
+  },
+  "recording_storage": {
+    "kind": "preallocated_numpy",
+    "capacity_samples": 99500,
+    "bytes": 24676000,
+    "prefaulted": true,
+    "memory_locked_during_collection": true
+  },
+  "rt_receive_variables": [
+    "timestamp",
+    "actual_q",
+    "actual_qd"
+  ],
+  "state_gap_policy": {
+    "mode": "step_response_bounded",
+    "max_interval_s": 0.006,
+    "max_missing_cycles": 5
+  },
+  "gap_events": [],
+  "fixed_step_validation": {
+    "eligible": true,
+    "result": {
+      "samples": 99500,
+      "duration_s": 199.0,
+      "source_kind": "real_robot",
+      "sample_phase": "pre_command",
+      "robot_dt_min_s": 0.001999999862164259,
+      "robot_dt_max_s": 0.0020000003278255463,
+      "joint_excursion_rad": [
+        0.013621598482131958,
+        0.009813353419303894,
+        0.012172222137451172,
+        0.04414176940917969,
+        0.04361104965209961,
+        0.03585246950387955
+      ],
+      "max_torque_nm": [
+        13.96833600020872,
+        14.24240556186752,
+        17.018471510937495,
+        12.237815418866656,
+        12.557243692326264,
+        12.038908757539101
+      ]
+    }
+  },
+  "analyzer_sha256": "43760f1127ab73f7336a22b5166f47a1df9de32f6d9134b7817dee1c9f4c461d",
+  "max_compute_ms": 1.4296139997895807,
+  "max_sdk_ms": 0.09164700168184936,
+  "max_log_ms": 0.02674100687727332
+}

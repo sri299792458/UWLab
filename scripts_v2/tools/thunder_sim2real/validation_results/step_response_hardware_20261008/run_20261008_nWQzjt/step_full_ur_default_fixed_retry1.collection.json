@@ -1,0 +1,544 @@
+{
+  "robot_ip": "10.33.55.89",
+  "payload_mass_kg": 1.04,
+  "payload_cog_m": [
+    -0.002,
+    0.001,
+    0.047
+  ],
+  "polyscope_version": "5.26.1.140514",
+  "gripper_configuration": "open_empty",
+  "start_joint_positions_rad": [
+    0.501928,
+    -1.409,
+    -2.415507,
+    -2.003571,
+    -2.19601,
+    0.076039
+  ],
+  "start_joint_tolerance_rad": 0.02,
+  "motion_stiffness": [
+    1000,
+    1000,
+    1000,
+    50,
+    50,
+    50
+  ],
+  "motion_damping_ratio": [
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0
+  ],
+  "torque_max": [
+    150,
+    150,
+    150,
+    28,
+    28,
+    28
+  ],
+  "robot_base_quaternion_world_wxyz": [
+    0.5,
+    0.5,
+    0.5,
+    0.5
+  ],
+  "step_axes": [
+    "x",
+    "y",
+    "z",
+    "rx",
+    "ry",
+    "rz"
+  ],
+  "translation_steps_m": [
+    0.005,
+    0.01,
+    0.02,
+    0.04
+  ],
+  "rotation_steps_rad": [
+    0.034907,
+    0.069813,
+    0.139626,
+    0.279253
+  ],
+  "initial_hold_s": 1.0,
+  "step_hold_s": 2.0,
+  "return_hold_s": 1.5,
+  "joint_excursion_limit_rad": [
+    0.21660151566359737,
+    0.2156359326891394,
+    0.2050665241557833,
+    0.5084416514182074,
+    0.42092958734906005,
+    0.379059100690342
+  ],
+  "notes": "Controller step-response test (hardware counterpart of sim R223). Same robot settings, payload, gains and S-W-E- start pose (c675) as the clean R187 sysid recording (collection.remapped_full_amplitude_swe_candidate.json). Each step holds a fixed Cartesian target offset in base_link (Thunder: y = world up) for 2 s, then returns to zero for 1.5 s. Max held offset 40 mm / 16 deg, i.e. at most 40 N / 14 N m of spring at Kp 1000 / 50. The joint guard is computed from IK (predicted max excursion + 5 deg). The operator moves the arm to the start pose; the script does not.",
+  "policy_test": {
+    "axes": [
+      "x",
+      "y",
+      "z",
+      "rx",
+      "ry",
+      "rz"
+    ],
+    "single_translation_m": [
+      0.01,
+      0.02,
+      0.04
+    ],
+    "single_rotation_rad": [
+      0.034907,
+      0.069813,
+      0.139626,
+      0.279253
+    ],
+    "constant_translation_m": [
+      [
+        0.01,
+        4
+      ],
+      [
+        0.02,
+        2
+      ]
+    ],
+    "constant_rotation_rad": [
+      [
+        0.069813,
+        4
+      ],
+      [
+        0.139626,
+        2
+      ]
+    ],
+    "policy_steps_per_trial": 10,
+    "initial_hold_s": 1.0,
+    "return_hold_s": 2.0,
+    "notes": "--mode policy: every 0.1 s the target = measured flange pose + offset (the trained policy's action semantics; sim R223 phases A/C). single = one command then zero action; constant = [size, repeats]. Cumulative command per trial is capped at 40 mm / 16 deg (the held test's envelope), then the target returns to the initial center for 2 s."
+  },
+  "direct_torque_params": {
+    "viscous_scale": [
+      0.9,
+      0.9,
+      0.8,
+      0.9,
+      0.9,
+      0.9
+    ],
+    "coulomb_scale": [
+      0.8,
+      0.8,
+      0.7,
+      0.8,
+      0.8,
+      0.8
+    ]
+  },
+  "step_test": {
+    "mode": "held",
+    "friction_mode": "ur_default",
+    "schedule": [
+      {
+        "axis": "x",
+        "value": 0.005,
+        "start_sample": 500,
+        "hold_samples": 1000,
+        "return_start_sample": 1500,
+        "return_samples": 750
+      },
+      {
+        "axis": "x",
+        "value": -0.005,
+        "start_sample": 2250,
+        "hold_samples": 1000,
+        "return_start_sample": 3250,
+        "return_samples": 750
+      },
+      {
+        "axis": "x",
+        "value": 0.01,
+        "start_sample": 4000,
+        "hold_samples": 1000,
+        "return_start_sample": 5000,
+        "return_samples": 750
+      },
+      {
+        "axis": "x",
+        "value": -0.01,
+        "start_sample": 5750,
+        "hold_samples": 1000,
+        "return_start_sample": 6750,
+        "return_samples": 750
+      },
+      {
+        "axis": "x",
+        "value": 0.02,
+        "start_sample": 7500,
+        "hold_samples": 1000,
+        "return_start_sample": 8500,
+        "return_samples": 750
+      },
+      {
+        "axis": "x",
+        "value": -0.02,
+        "start_sample": 9250,
+        "hold_samples": 1000,
+        "return_start_sample": 10250,
+        "return_samples": 750
+      },
+      {
+        "axis": "x",
+        "value": 0.04,
+        "start_sample": 11000,
+        "hold_samples": 1000,
+        "return_start_sample": 12000,
+        "return_samples": 750
+      },
+      {
+        "axis": "x",
+        "value": -0.04,
+        "start_sample": 12750,
+        "hold_samples": 1000,
+        "return_start_sample": 13750,
+        "return_samples": 750
+      },
+      {
+        "axis": "y",
+        "value": 0.005,
+        "start_sample": 14500,
+        "hold_samples": 1000,
+        "return_start_sample": 15500,
+        "return_samples": 750
+      },
+      {
+        "axis": "y",
+        "value": -0.005,
+        "start_sample": 16250,
+        "hold_samples": 1000,
+        "return_start_sample": 17250,
+        "return_samples": 750
+      },
+      {
+        "axis": "y",
+        "value": 0.01,
+        "start_sample": 18000,
+        "hold_samples": 1000,
+        "return_start_sample": 19000,
+        "return_samples": 750
+      },
+      {
+        "axis": "y",
+        "value": -0.01,
+        "start_sample": 19750,
+        "hold_samples": 1000,
+        "return_start_sample": 20750,
+        "return_samples": 750
+      },
+      {
+        "axis": "y",
+        "value": 0.02,
+        "start_sample": 21500,
+        "hold_samples": 1000,
+        "return_start_sample": 22500,
+        "return_samples": 750
+      },
+      {
+        "axis": "y",
+        "value": -0.02,
+        "start_sample": 23250,
+        "hold_samples": 1000,
+        "return_start_sample": 24250,
+        "return_samples": 750
+      },
+      {
+        "axis": "y",
+        "value": 0.04,
+        "start_sample": 25000,
+        "hold_samples": 1000,
+        "return_start_sample": 26000,
+        "return_samples": 750
+      },
+      {
+        "axis": "y",
+        "value": -0.04,
+        "start_sample": 26750,
+        "hold_samples": 1000,
+        "return_start_sample": 27750,
+        "return_samples": 750
+      },
+      {
+        "axis": "z",
+        "value": 0.005,
+        "start_sample": 28500,
+        "hold_samples": 1000,
+        "return_start_sample": 29500,
+        "return_samples": 750
+      },
+      {
+        "axis": "z",
+        "value": -0.005,
+        "start_sample": 30250,
+        "hold_samples": 1000,
+        "return_start_sample": 31250,
+        "return_samples": 750
+      },
+      {
+        "axis": "z",
+        "value": 0.01,
+        "start_sample": 32000,
+        "hold_samples": 1000,
+        "return_start_sample": 33000,
+        "return_samples": 750
+      },
+      {
+        "axis": "z",
+        "value": -0.01,
+        "start_sample": 33750,
+        "hold_samples": 1000,
+        "return_start_sample": 34750,
+        "return_samples": 750
+      },
+      {
+        "axis": "z",
+        "value": 0.02,
+        "start_sample": 35500,
+        "hold_samples": 1000,
+        "return_start_sample": 36500,
+        "return_samples": 750
+      },
+      {
+        "axis": "z",
+        "value": -0.02,
+        "start_sample": 37250,
+        "hold_samples": 1000,
+        "return_start_sample": 38250,
+        "return_samples": 750
+      },
+      {
+        "axis": "z",
+        "value": 0.04,
+        "start_sample": 39000,
+        "hold_samples": 1000,
+        "return_start_sample": 40000,
+        "return_samples": 750
+      },
+      {
+        "axis": "z",
+        "value": -0.04,
+        "start_sample": 40750,
+        "hold_samples": 1000,
+        "return_start_sample": 41750,
+        "return_samples": 750
+      },
+      {
+        "axis": "rx",
+        "value": 0.034907,
+        "start_sample": 42500,
+        "hold_samples": 1000,
+        "return_start_sample": 43500,
+        "return_samples": 750
+      },
+      {
+        "axis": "rx",
+        "value": -0.034907,
+        "start_sample": 44250,
+        "hold_samples": 1000,
+        "return_start_sample": 45250,
+        "return_samples": 750
+      },
+      {
+        "axis": "rx",
+        "value": 0.069813,
+        "start_sample": 46000,
+        "hold_samples": 1000,
+        "return_start_sample": 47000,
+        "return_samples": 750
+      },
+      {
+        "axis": "rx",
+        "value": -0.069813,
+        "start_sample": 47750,
+        "hold_samples": 1000,
+        "return_start_sample": 48750,
+        "return_samples": 750
+      },
+      {
+        "axis": "rx",
+        "value": 0.139626,
+        "start_sample": 49500,
+        "hold_samples": 1000,
+        "return_start_sample": 50500,
+        "return_samples": 750
+      },
+      {
+        "axis": "rx",
+        "value": -0.139626,
+        "start_sample": 51250,
+        "hold_samples": 1000,
+        "return_start_sample": 52250,
+        "return_samples": 750
+      },
+      {
+        "axis": "rx",
+        "value": 0.279253,
+        "start_sample": 53000,
+        "hold_samples": 1000,
+        "return_start_sample": 54000,
+        "return_samples": 750
+      },
+      {
+        "axis": "rx",
+        "value": -0.279253,
+        "start_sample": 54750,
+        "hold_samples": 1000,
+        "return_start_sample": 55750,
+        "return_samples": 750
+      },
+      {
+        "axis": "ry",
+        "value": 0.034907,
+        "start_sample": 56500,
+        "hold_samples": 1000,
+        "return_start_sample": 57500,
+        "return_samples": 750
+      },
+      {
+        "axis": "ry",
+        "value": -0.034907,
+        "start_sample": 58250,
+        "hold_samples": 1000,
+        "return_start_sample": 59250,
+        "return_samples": 750
+      },
+      {
+        "axis": "ry",
+        "value": 0.069813,
+        "start_sample": 60000,
+        "hold_samples": 1000,
+        "return_start_sample": 61000,
+        "return_samples": 750
+      },
+      {
+        "axis": "ry",
+        "value": -0.069813,
+        "start_sample": 61750,
+        "hold_samples": 1000,
+        "return_start_sample": 62750,
+        "return_samples": 750
+      },
+      {
+        "axis": "ry",
+        "value": 0.139626,
+        "start_sample": 63500,
+        "hold_samples": 1000,
+        "return_start_sample": 64500,
+        "return_samples": 750
+      },
+      {
+        "axis": "ry",
+        "value": -0.139626,
+        "start_sample": 65250,
+        "hold_samples": 1000,
+        "return_start_sample": 66250,
+        "return_samples": 750
+      },
+      {
+        "axis": "ry",
+        "value": 0.279253,
+        "start_sample": 67000,
+        "hold_samples": 1000,
+        "return_start_sample": 68000,
+        "return_samples": 750
+      },
+      {
+        "axis": "ry",
+        "value": -0.279253,
+        "start_sample": 68750,
+        "hold_samples": 1000,
+        "return_start_sample": 69750,
+        "return_samples": 750
+      },
+      {
+        "axis": "rz",
+        "value": 0.034907,
+        "start_sample": 70500,
+        "hold_samples": 1000,
+        "return_start_sample": 71500,
+        "return_samples": 750
+      },
+      {
+        "axis": "rz",
+        "value": -0.034907,
+        "start_sample": 72250,
+        "hold_samples": 1000,
+        "return_start_sample": 73250,
+        "return_samples": 750
+      },
+      {
+        "axis": "rz",
+        "value": 0.069813,
+        "start_sample": 74000,
+        "hold_samples": 1000,
+        "return_start_sample": 75000,
+        "return_samples": 750
+      },
+      {
+        "axis": "rz",
+        "value": -0.069813,
+        "start_sample": 75750,
+        "hold_samples": 1000,
+        "return_start_sample": 76750,
+        "return_samples": 750
+      },
+      {
+        "axis": "rz",
+        "value": 0.139626,
+        "start_sample": 77500,
+        "hold_samples": 1000,
+        "return_start_sample": 78500,
+        "return_samples": 750
+      },
+      {
+        "axis": "rz",
+        "value": -0.139626,
+        "start_sample": 79250,
+        "hold_samples": 1000,
+        "return_start_sample": 80250,
+        "return_samples": 750
+      },
+      {
+        "axis": "rz",
+        "value": 0.279253,
+        "start_sample": 81000,
+        "hold_samples": 1000,
+        "return_start_sample": 82000,
+        "return_samples": 750
+      },
+      {
+        "axis": "rz",
+        "value": -0.279253,
+        "start_sample": 82750,
+        "hold_samples": 1000,
+        "return_start_sample": 83750,
+        "return_samples": 750
+      }
+    ],
+    "predicted_max_joint_excursion_rad": [
+      0.12933505306388088,
+      0.1283694700894229,
+      0.11780006155606682,
+      0.4211751888184909,
+      0.33366312474934356,
+      0.2917926380906255
+    ],
+    "excursion_margin_rad": 0.08726646259971647
+  }
+}

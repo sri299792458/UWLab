@@ -28,10 +28,33 @@ leaves a state more than 20 ms old before sending its torque command. Partial re
 the failure reason. These checks detect timing failures; they do not prevent host or network stalls. A completed OFF
 record must still pass `records.py validate` before fixed-step fitting. ON records are for comparison only.
 
+For response comparison, `step_test_thunder.py --allow-small-gaps` accepts isolated 4 or 6 ms state intervals,
+with the existing 0.4 ms tolerance, and at most five missing cycles (10 ms) in total. An interval larger than 6 ms,
+a nonintegral cycle interval, or exhaustion of the budget stops before the next test command. The existing 20 ms
+stream/compute guards and joint/torque limits remain. Sysid collection always uses strict continuity.
+Accepted gaps retain the original states/timestamps, `gap_events` and `state_gap_policy`; no missing state is invented.
+During a missed frame the previous input may remain active. Policy updates still occur every 50 received states,
+so a gap can stretch a nominal 0.1 s policy interval; this is reported in `policy_step_durations_s`.
+The analyzer uses actual robot times for onset/0.1 s measurements, measures hold/policy endpoints at the next
+pre-command boundary state, reports actual phase durations, and flags gaps per hold/trial/return.
+Use unaffected trials for precise cadence comparisons. `records.py validate` continues to reject any recorded
+timestamp gap for the fixed 500 Hz fitter. Existing clean OFF data remain unchanged.
+
 The collector runs a full Python garbage collection before connecting, defers automatic cyclic collection during
 torque control, and restores the caller's GC setting after robot/scheduler cleanup, before saving. This avoids the
 generation-2 GC pause reproduced around 35,400 samples in the October 8 full runs. Reference counting remains active;
 the recorder retains samples for this bounded sequence. This does not provide hard real-time kernel behavior.
+
+Recording now uses a fixed NumPy buffer allocated, touched and `mlock`ed before either robot interface connects.
+It refuses insufficient memory-lock permissions before connecting. The buffer is unlocked after control and
+scheduler cleanup; controller calculations and gains are unchanged. This removes the growing Python list and
+retained per-sample array allocations from the recording path. Captures include `recording_storage` and
+`host_record_end_times_s`, so recording time after `directTorque` can be measured as well as computation and SDK time.
+On a skipped cycle, `timing_failure` preserves the failed robot timestamp, host wait/read times and count of
+state reads crossed by updates. These help diagnose the miss; buffering does not guarantee uninterrupted RTDE output.
+The receive recipe now requests only `timestamp`, `actual_q` and `actual_qd`, which are the fields used by the
+collector and its torque-to-hold cleanup. The SDK's default recipe streams many unused state fields and registers.
+Captures preserve `rt_receive_variables` so this transport change can be distinguished from earlier runs.
 
 Before the first torque command, 16 controller calculations warm the same computation path without sending commands.
 The first sample then waits for a fresh robot frame, just like later samples. Captures include startup metadata and
@@ -41,9 +64,20 @@ To check receive delivery and controller computation under current workstation l
 `python audit_step_timing.py --config collection.step_test.json --output ~/thunder_step_test/timing_audit.json`.
 This opens only the RTDE receive interface and computes targets in memory; it sends zero robot-control commands.
 The JSON/NPZ outputs count missed cycles and are diagnostic evidence, not dynamics-fitting recordings. It does not
-exercise torque submission. Torque collection retains the strict 2 ms continuity check.
+exercise torque submission. Torque collection uses strict 2 ms continuity unless the step-response comparison
+explicitly requests `--allow-small-gaps`; sysid collection always remains strict.
+Add `--mode policy` to check the re-anchoring workload with the same preallocated recording storage.
+Add `--repeats 3` for three full sequences in one receive connection (about ten minutes for policy mode).
+This still evaluates targets only in memory; it does not execute any repeated robot motion.
+`completed` means the requested sample count was collected; check `continuous_500hz` and `timing_summary` for gaps.
+For a receive-path investigation, add `--verbose-receive` and retain stdout. ur_rtde 1.6.5's `src/rtde.cpp`,
+`RTDE::receiveData`, explicitly skips an earlier data package when another data-package header is already buffered,
+printing `skipping package(1)` in verbose mode. Its state getters also expose only the latest state. This can lose
+intermediate timestamps after a delivery delay independently of the controller's Python computation. Removing
+that skip alone would not make delayed torque commands timely; it is not a continuity fix.
 
-The two completed October 8 full runs and their timing review are preserved in
+The five completed October 8 held, policy and fine-grid runs, their timing reviews, and the excluded historical
+record affected by the friction-compensation bug are preserved in
 [`../validation_results/step_response_hardware_20261008/`](../validation_results/step_response_hardware_20261008/README.md).
 
 ## ur_rtde 1.6.5 friction-compensation bug (October 8 ON run had compensation OFF)
@@ -51,8 +85,10 @@ The two completed October 8 full runs and their timing review are preserved in
 In ur_rtde 1.6.5 (latest PyPI release), the PolyScope >= 5.26 branch of the `direct_torque` command in the compiled-in
 `rtde_control.script` reads the requested scales into `viscous_scale` / `couloumb_scale`, but then passes
 `viscous_scaling` / `coulomb_scaling`, which stay at their zero initialization. Every scale request is therefore silently
-ignored. ur_rtde 1.6.4 passed the read values correctly. **The October 8 `--friction ur_default` record therefore ran
-with zero compensation**, the same physical setting as the OFF run; both runs agree to about 0.1 mm.
+ignored. ur_rtde 1.6.4 passed the read values correctly. **The original October 8
+`step_full_ur_default_retry1.pt` record therefore ran with zero compensation**, the same physical setting as the
+OFF run; both runs agree to about 0.1 mm. The later `step_full_ur_default_fixed_retry1.pt` and
+`policy_ur_default_fixed_retry1.pt` records use the corrected script and are the valid ON comparisons.
 
 `vendor/ur_rtde_1_6_5/` holds the verbatim 1.6.5 script, its MIT license, and `rtde_control_fixed.script`, which changes
 only these two register reads (see `PROVENANCE.json`; `test_step_test.py` checks the diff and hashes). When nonzero

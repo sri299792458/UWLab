@@ -1,0 +1,39 @@
+{
+  "source_kind": "receive_only_timing_audit",
+  "robot_control_commands_sent": 0,
+  "mode": "policy",
+  "repeats": 1,
+  "sequence_samples": 99500,
+  "robot_ip": "10.33.55.89",
+  "kernel": "7.0.0-34-generic",
+  "requested_samples": 99500,
+  "completed": true,
+  "failure": null,
+  "cleanup_errors": [],
+  "continuous_500hz": true,
+  "verbose_receive": false,
+  "rt_receive_workers": {
+    "1931505": {
+      "policy": 1,
+      "priority": 90
+    }
+  },
+  "loop_priority": "SCHED_FIFO 80",
+  "rt_receive_variables": [
+    "timestamp",
+    "actual_q",
+    "actual_qd"
+  ],
+  "timing_summary": {
+    "samples": 99500,
+    "robot_span_s": 198.99799999967217,
+    "duplicate_intervals": 0,
+    "intervals_over_2p4ms": 0,
+    "max_interval_s": 0.0020000003278255463
+  },
+  "controller_compute_max_s": 0.0013534390018321574,
+  "controller_compute_over_2ms": 0,
+  "recording_write_max_s": 2.2612977772951126e-05,
+  "collector_sha256": "7a645891a5293d837ef2584ad1deb29cde2ff070648ca88e7981425ddc0ed6ed",
+  "limitation": "This audits receive delivery and math under current load. It does not exercise RTDE torque submission or establish motion safety."
+}

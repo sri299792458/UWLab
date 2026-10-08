@@ -12,5 +12,11 @@
     "workstation/thunder_calibration.json": "a19ba762879ed8c40a351613d545981ae75ef2e36645a2cdf9028a230e82edd9"
   },
   "collector_capture_hash_recorded": false,
-  "collector_hash_note": "Hashes describe the workspace code at archival time. The raw recording preserves startup, GC and pinned controller metadata, but does not embed the collector source hash."
+  "collector_hash_note": "Hashes describe the workspace code at archival time. The raw recording preserves startup, GC and pinned controller metadata, but does not embed the collector source hash.",
+  "current_derived_analysis": {
+    "analyzer_sha256": "43760f1127ab73f7336a22b5166f47a1df9de32f6d9134b7817dee1c9f4c461d",
+    "clock": "robot_sample_times_s",
+    "endpoint": "next pre-command boundary state; final return uses last available state",
+    "raw_modified": false
+  }
 }

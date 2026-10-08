@@ -1,0 +1,1 @@
+{"source_kind":"native_host_timer_probe","robot_connections":0,"period_s":0.002,"priority":80,"samples":150000,"requested_samples":150000,"failure_errno":0,"scheduler_restored":true,"wake_lateness_max_ms":0.024297,"wake_lateness_p99_ms":0.009165,"wake_lateness_over_0p5ms":0,"wake_lateness_over_1ms":0,"wake_lateness_over_2ms":0}

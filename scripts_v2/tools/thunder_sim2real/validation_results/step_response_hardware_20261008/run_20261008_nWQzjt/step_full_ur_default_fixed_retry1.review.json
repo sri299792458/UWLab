@@ -1,0 +1,70 @@
+{
+  "record": "run_20261008_nWQzjt/step_full_ur_default_fixed_retry1.pt",
+  "raw_sha256": "17ca5c82710f3873964a504d6ab61bcde83ee28370d3403527833a893bed90bf",
+  "samples": 84500,
+  "completed": true,
+  "failure": null,
+  "cleanup_errors": [],
+  "mode": "held",
+  "friction_mode": "ur_default",
+  "scheduled_steps_or_trials": 48,
+  "all_return_phases_completed": true,
+  "timing_summary": {
+    "samples": 84500,
+    "robot_span_s": 168.99799999967217,
+    "duplicate_intervals": 0,
+    "intervals_over_2p4ms": 0,
+    "max_interval_s": 0.0020000003278255463
+  },
+  "analysis_timing": {
+    "clock": "robot_sample_times_s",
+    "continuous_500hz": true,
+    "gap_intervals": [],
+    "missing_cycles": 0,
+    "max_interval_s": 0.0020000003278255463,
+    "observed_span_s": 168.99799999967217
+  },
+  "direct_torque_params": {
+    "viscous_scale": [
+      0.9,
+      0.9,
+      0.8,
+      0.9,
+      0.9,
+      0.9
+    ],
+    "coulomb_scale": [
+      0.8,
+      0.8,
+      0.7,
+      0.8,
+      0.8,
+      0.8
+    ]
+  },
+  "control_script": {
+    "source": "vendor fixed script",
+    "path": "/home/srinivas/Documents/ChatGPT/omnireset/UWLab/scripts_v2/tools/thunder_sim2real/workstation/vendor/ur_rtde_1_6_5/rtde_control_fixed.script",
+    "sha256": "bad20358db9ca01fb10ae0a20740c2b9e12064e27e7e77b2a9229384e4d20b71"
+  },
+  "rt_priorities": {
+    "receive": 90,
+    "control": 85,
+    "loop": "SCHED_FIFO 80"
+  },
+  "recording_storage": {
+    "kind": "earlier Python list logger"
+  },
+  "rt_receive_variables": "earlier SDK default recipe",
+  "state_gap_policy": {
+    "mode": "strict"
+  },
+  "gap_events": [],
+  "fixed_step_validation": {
+    "eligible": false,
+    "reason": "viscous_scale must be zero for the fitted Thunder controller"
+  },
+  "analyzer_sha256": "43760f1127ab73f7336a22b5166f47a1df9de32f6d9134b7817dee1c9f4c461d",
+  "max_compute_ms": 1.3454520085360855,
+  "max_sdk_ms": 0.2937150129582733
+}

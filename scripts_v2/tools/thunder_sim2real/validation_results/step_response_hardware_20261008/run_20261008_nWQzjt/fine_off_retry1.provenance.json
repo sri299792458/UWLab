@@ -1,0 +1,27 @@
+{
+  "original_path": "/home/srinivas/thunder_step_test/run_20261008_nWQzjt/fine_off_retry1.pt",
+  "original_file_mtime": "2026-10-08T14:38:12.218547-05:00",
+  "raw_sha256": "215b72d0c6dcc31172efd4d10ce0aa5a95eb85166c4c8dcf6a080ddb949cc079",
+  "archive_parent_git_revision": "414b6dcf96324680f1b2d4517f763debf6e942fa",
+  "archive_code_sha256": {
+    "analyze_step_test.py": "43760f1127ab73f7336a22b5166f47a1df9de32f6d9134b7817dee1c9f4c461d",
+    "records.py": "eb2ff4e7e69e628ce3c6be44599d0111aa9f3446eeb4db0a345e387e2fc7935a",
+    "workstation/collect_thunder.py": "7a645891a5293d837ef2584ad1deb29cde2ff070648ca88e7981425ddc0ed6ed",
+    "workstation/step_test_thunder.py": "b7bba0c3f2f3713ba1096e45ecb9e45c1b6f5edc1eeeb1895407add636f1c5e4",
+    "workstation/audit_step_timing.py": "c09da91ec27d6ff1a249e2e4d105a00c8fecf9ffc8c1ead609dc667d32d1757e",
+    "workstation/move_to_start.py": "754241d94330b3e46be7c2c85a08a9a825a45aa3858c2ba77eec2f6c91571d55",
+    "workstation/collection.step_test.json": "4530074bcc6b1f893b844e9f6517496824d4d3e3311fe1d1ea7395f8380b4573",
+    "workstation/collection.step_test_fine.json": "2377e32c40267524c7b145ebcb222b847121152f256945d734e73af23feb45f6",
+    "workstation/thunder_calibration.json": "a19ba762879ed8c40a351613d545981ae75ef2e36645a2cdf9028a230e82edd9",
+    "workstation/vendor/ur5e_kinematics.py": "cba2822b9ae05c0a761735f8da7e02b79ee04214ee3e09d03561ef2c267d6813",
+    "workstation/vendor/ur_rtde_1_6_5/rtde_control_fixed.script": "bad20358db9ca01fb10ae0a20740c2b9e12064e27e7e77b2a9229384e4d20b71"
+  },
+  "collector_capture_hash_recorded": false,
+  "collector_hash_note": "Source hashes describe code at archival time, not proof of the exact collector version at capture. Raw metadata preserves the controller, calibration, compensation script, timing recipe and storage used during capture.",
+  "current_derived_analysis": {
+    "analyzer_sha256": "43760f1127ab73f7336a22b5166f47a1df9de32f6d9134b7817dee1c9f4c461d",
+    "clock": "robot_sample_times_s",
+    "endpoint": "next pre-command boundary state; final return uses last available state",
+    "raw_modified": false
+  }
+}

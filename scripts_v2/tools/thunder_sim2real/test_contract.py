@@ -56,6 +56,46 @@ def synthetic_profile():
 
 
 class ContractTests(unittest.TestCase):
+    def test_preallocated_log_keeps_earlier_samples_when_source_arrays_change(self):
+        sys.path.insert(0, str(HERE / "workstation"))
+        import collect_thunder
+        buffer = collect_thunder.RecordingBuffer(2)
+        q, qd, torque, pos, quat = np.arange(6.), np.zeros(6), np.ones(6), np.ones(3), np.array([1., 0., 0., 0.])
+        buffer.lock()
+        try:
+            with patch.object(collect_thunder.time, "monotonic", return_value=2.):
+                buffer.append(q, qd, torque, pos, quat, 1., 1.1, 100., 100., 1.2)
+            q[:] = 99
+            torque[:] = -99
+            with patch.object(collect_thunder.time, "monotonic", return_value=3.):
+                buffer.append(q, qd, torque, pos, quat, 2., 2.1, 100.002, 100.002, 2.2)
+            np.testing.assert_array_equal(buffer.column(0)[0], np.arange(6.))
+            np.testing.assert_array_equal(buffer.column(2)[0], np.ones(6))
+            np.testing.assert_array_equal(buffer.column(7), [100., 100.002])
+            np.testing.assert_array_equal(buffer.column(10), [2., 3.])
+            self.assertEqual(len(buffer), 2)
+        finally:
+            buffer.unlock()
+        self.assertFalse(buffer.locked)
+
+    def test_memlock_failure_prevents_all_robot_connections(self):
+        import collect_thunder
+        receive_factory, control_factory = Mock(), Mock()
+        config = json.loads((HERE / "workstation/collection.example.json").read_text())
+        with tempfile.TemporaryDirectory() as directory, ExitStack() as stack:
+            output = Path(directory) / "test-only.pt"
+            stack.enter_context(patch.dict(sys.modules, {
+                "rtde_control": SimpleNamespace(RTDEControlInterface=control_factory),
+                "rtde_receive": SimpleNamespace(RTDEReceiveInterface=receive_factory)}))
+            stack.enter_context(patch.object(collect_thunder, "check_realtime_permissions"))
+            stack.enter_context(patch.object(collect_thunder.os, "sched_setscheduler"))
+            stack.enter_context(patch.object(collect_thunder.RecordingBuffer, "lock", side_effect=RuntimeError("test memlock failure")))
+            with self.assertRaisesRegex(RuntimeError, "test memlock failure"):
+                collect_thunder.collect(config, np.zeros((6, 6)), output)
+            self.assertFalse(output.exists())
+        receive_factory.assert_not_called()
+        control_factory.assert_not_called()
+
     def test_synthetic_cannot_be_used_as_robot_data(self):
         with self.assertRaises(ValueError):
             validate_record(synthetic_record())
@@ -124,7 +164,8 @@ class ContractTests(unittest.TestCase):
     def run_mock_collection(self, *, wrong_start=False, invalid_velocity=False, fail_command=False,
                             robot_period_s=0.002, midread_every=0, samples=6, fail_rt_interface=None,
                             pause_after_command_s=0., compute_pause_s=0., initial_host_time_s=0.,
-                            first_command_pause_s=0.):
+                            first_command_pause_s=0., allow_small_gaps=False,
+                            repeated_command_pause_s=0., expected_failure=None):
         """No RTDE sockets or on-disk robot records: interfaces, clock and save are mocked.
 
         A fake host clock drives a mock robot that publishes a new 2 ms-stamped state every robot_period_s host
@@ -136,6 +177,8 @@ class ContractTests(unittest.TestCase):
         config = json.loads((HERE / "workstation/collection.simulation_candidate.json").read_text())
         config.update(robot_ip="test-double-only", polyscope_version="test-double-only",
                       payload_mass_kg=1., payload_cog_m=[0., 0., 0.], joint_excursion_limit_rad=[1.]*6)
+        if allow_small_gaps:
+            config["step_test"] = {"mode": "held"}
         q0 = np.array(config["start_joint_positions_rad"])
         clock = [initial_host_time_s]
         cycle = lambda: int(np.floor(clock[0] / robot_period_s + 1e-9))
@@ -181,6 +224,8 @@ class ContractTests(unittest.TestCase):
                 advance(first_command_pause_s)
             if torque_calls[0] == 2:
                 advance(pause_after_command_s)
+            if torque_calls[0] >= 2:
+                advance(repeated_command_pause_s)
             return not (fail_command and torque_calls[0] == 2)
 
         control.directTorque.side_effect = direct_torque
@@ -189,6 +234,7 @@ class ContractTests(unittest.TestCase):
             return control
         def construct_receive(*args, **kwargs):
             self.assertEqual(scheduler, {"policy": collect_thunder.os.SCHED_FIFO, "priority": 90})
+            self.assertEqual(kwargs["variables"], ["timestamp", "actual_q", "actual_qd"])
             return receive
         def verify_worker(before, priority, interface):
             if interface == fail_rt_interface:
@@ -221,12 +267,15 @@ class ContractTests(unittest.TestCase):
             stack.enter_context(patch.object(torch, "save", side_effect=save_record))
             stack.enter_context(patch("builtins.print"))
             offsets = collect_thunder.make_plan(config)[:samples]
-            if (wrong_start or invalid_velocity or fail_command or fail_rt_interface
-                    or pause_after_command_s or compute_pause_s or midread_every):
+            should_fail = (wrong_start or invalid_velocity or fail_command or fail_rt_interface
+                           or pause_after_command_s or compute_pause_s or midread_every)
+            if expected_failure is not None:
+                should_fail = expected_failure
+            if should_fail:
                 with self.assertRaises(RuntimeError):
-                    collect_thunder.collect(config, offsets, Path(directory) / "mock-only.pt")
+                    collect_thunder.collect(config, offsets, Path(directory) / "mock-only.pt", allow_small_gaps=allow_small_gaps)
             else:
-                collect_thunder.collect(config, offsets, Path(directory) / "mock-only.pt")
+                collect_thunder.collect(config, offsets, Path(directory) / "mock-only.pt", allow_small_gaps=allow_small_gaps)
             self.assertFalse((Path(directory) / "mock-only.pt").exists())
         receive.disconnect.assert_called_once()
         self.assertEqual(scheduler, {"policy": 0, "priority": 0})
@@ -273,6 +322,7 @@ class ContractTests(unittest.TestCase):
                 self.assertEqual(validate_record(record)["samples"], 200)   # strict timestamp contract passes
                 self.assertEqual(record["timing_summary"]["duplicate_intervals"], 0)
                 self.assertEqual(record["timing_summary"]["intervals_over_2p4ms"], 0)
+                self.assertIsNone(record["timing_failure"])
                 self.assertEqual(record["timing_mode"], "robot_state_locked")
                 self.assertEqual(record["rt_priorities"]["loop"], "SCHED_FIFO 80")
                 self.assertEqual(factory.call_args.kwargs["rt_priority"], 85)
@@ -283,6 +333,8 @@ class ContractTests(unittest.TestCase):
                 saved, control, _ = self.run_mock_collection(pause_after_command_s=pause)
                 record = saved[0]
                 self.assertFalse(record["completed"])
+                self.assertGreater(record["timing_failure"]["interval_s"], 0.0024)
+                self.assertIn("last_record_end_s", record["timing_failure"])
                 self.assertIn("Fixed-step collection cannot skip robot cycles", record["failure"])
                 self.assertEqual(record["num_waypoints"], 2)
                 self.assertEqual(record["timing_summary"]["intervals_over_2p4ms"], 0)
@@ -307,6 +359,50 @@ class ContractTests(unittest.TestCase):
         control.servoStop.assert_called_once()
         control.stopScript.assert_called_once()
         control.disconnect.assert_called_once()
+
+    def test_step_comparison_keeps_isolated_gaps_but_fitter_rejects_them(self):
+        for pause, missing in ((0.004, 1), (0.006, 2)):
+            with self.subTest(pause_s=pause):
+                saved, control, _ = self.run_mock_collection(pause_after_command_s=pause,
+                                                             allow_small_gaps=True, expected_failure=False)
+                record = saved[0]
+                self.assertTrue(record["completed"])
+                self.assertEqual(record["num_waypoints"], 6)
+                self.assertEqual(record["gap_events"][0]["sample_index"], 2)
+                self.assertEqual(record["gap_events"][0]["missing_cycles"], missing)
+                self.assertEqual(record["timing_summary"]["intervals_over_2p4ms"], 1)
+                self.assertEqual(record["state_gap_policy"]["mode"], "step_response_bounded")
+                with self.assertRaisesRegex(ValueError, "duplicate/missing samples"):
+                    validate_record(record)
+                self.assertEqual(control.directTorque.call_count, 7)
+
+    def test_step_comparison_stops_before_command_after_large_gap_or_exhausted_budget(self):
+        cases = ({"pause_after_command_s": 0.008},
+                 {"repeated_command_pause_s": 0.004, "samples": 12})
+        for case in cases:
+            with self.subTest(case=case):
+                saved, control, _ = self.run_mock_collection(allow_small_gaps=True, expected_failure=True, **case)
+                record = saved[0]
+                self.assertFalse(record["completed"])
+                self.assertTrue("at most 6 ms" in record["failure"] or "budget exceeded" in record["failure"])
+                self.assertEqual(control.directTorque.call_count, record["num_waypoints"] + 1)
+                self.assertEqual(control.directTorque.call_args.args[0], [0.0] * 6)
+                self.assertLessEqual(sum(g["missing_cycles"] for g in record["gap_events"]), 5)
+
+    def test_step_gap_tolerance_keeps_stale_command_guard(self):
+        saved, control, _ = self.run_mock_collection(allow_small_gaps=True, compute_pause_s=0.038)
+        self.assertFalse(saved[0]["completed"])
+        self.assertIn("more than 20 ms old", saved[0]["failure"])
+        self.assertEqual(control.directTorque.call_count, 2)
+
+    def test_step_gap_tolerance_rejects_nonintegral_robot_cycles(self):
+        import collect_thunder
+        receive = Mock()
+        receive.getTimestamp.return_value = 100.003
+        receive.getActualQ.return_value = np.zeros(6)
+        receive.getActualQd.return_value = np.zeros(6)
+        with self.assertRaisesRegex(RuntimeError, "whole robot cycles"):
+            collect_thunder.read_new_state(receive, 100.0, max_interval_s=0.006)
 
     def test_rt_permission_failure_prevents_robot_connections(self):
         sys.path.insert(0, str(HERE / "workstation"))
@@ -380,6 +476,7 @@ class ContractTests(unittest.TestCase):
         self.assertTrue(torch.equal(record["robot_sample_times_s"], record["robot_after_read_times_s"]))  # consistent Q/Qd
         self.assertFalse(record["completed"])
         self.assertIn("Robot state interval 4.000 ms", record["failure"])
+        self.assertGreater(record["timing_failure"]["crossed_reads_during_wait"], 0)
         self.assertEqual(record["timing_summary"]["duplicate_intervals"], 0)
         self.assertEqual(record["timing_summary"]["intervals_over_2p4ms"], 0)   # no command after the skipped cycle
         with self.assertRaises(ValueError):

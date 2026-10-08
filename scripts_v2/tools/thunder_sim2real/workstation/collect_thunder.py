@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import argparse
 from contextlib import contextmanager
+import ctypes
 import gc
 import hashlib
 import importlib.metadata
@@ -35,11 +36,59 @@ JOINT_NAMES = ["shoulder_pan_joint", "shoulder_lift_joint", "elbow_joint",
                "wrist_1_joint", "wrist_2_joint", "wrist_3_joint"]
 # ur_rtde realtime_control_example priorities: receive thread, control thread, this control loop.
 RT_RECEIVE_PRIORITY, RT_CONTROL_PRIORITY, RT_APP_PRIORITY = 90, 85, 80
+# Only these outputs are consumed here, including the torque-to-hold handoff.
+# The SDK's empty/default recipe also streams many unused fields and registers.
+RT_RECEIVE_VARIABLES = ("timestamp", "actual_q", "actual_qd")
 STATE_TIMEOUT_S = 0.02
 STATE_POLL_S = 5e-5
 # Match records.validate_record: fixed-step replay cannot use skipped robot cycles.
 STATE_INTERVAL_TOLERANCE_S = 0.0004
 CONTROLLER_WARMUP_ITERATIONS = 16
+STEP_MAX_STATE_INTERVAL_S = 0.006
+STEP_MAX_MISSING_CYCLES = 5  # At most 10 ms missing across a comparison run.
+
+
+class RecordingBuffer:
+    """Fixed storage touched and locked before connecting; no growing per-sample array/list log."""
+    COLUMNS = (slice(0, 6), slice(6, 12), slice(12, 18), slice(18, 21), slice(21, 25),
+               25, 26, 27, 28, 29, 30)
+
+    def __init__(self, capacity):
+        self.data = np.empty((capacity, 31), dtype=np.float64)
+        self.data.fill(0)  # Fault in the writable pages before the control loop.
+        self.count = 0
+        self.locked = self.was_locked = False
+        self.libc = ctypes.CDLL(None, use_errno=True)
+        for name in ("mlock", "munlock"):
+            function = getattr(self.libc, name)
+            function.argtypes = (ctypes.c_void_p, ctypes.c_size_t)
+            function.restype = ctypes.c_int
+
+    def lock(self):
+        if self.libc.mlock(self.data.ctypes.data, self.data.nbytes):
+            raise RuntimeError(f"Cannot lock {self.data.nbytes} bytes of recording storage: "
+                               f"{os.strerror(ctypes.get_errno())}. Check the memlock limit before running")
+        self.locked = self.was_locked = True
+
+    def unlock(self):
+        if self.locked:
+            if self.libc.munlock(self.data.ctypes.data, self.data.nbytes):
+                raise RuntimeError(f"Cannot unlock recording storage: {os.strerror(ctypes.get_errno())}")
+            self.locked = False
+
+    def append(self, q, qd, torque, target_pos, target_quat, host, command, robot, after, returned):
+        row = self.data[self.count]
+        row[:6], row[6:12], row[12:18] = q, qd, torque
+        row[18:21], row[21:25] = target_pos, target_quat
+        row[25], row[26], row[27], row[28], row[29] = host, command, robot, after, returned
+        row[30] = time.monotonic()
+        self.count += 1
+
+    def __len__(self):
+        return self.count
+
+    def column(self, index):
+        return self.data[:self.count, self.COLUMNS[index]]
 
 
 def install_calibration():
@@ -173,15 +222,18 @@ def require_new_fifo_thread(before, priority, interface):
     return workers
 
 
-def read_new_state(receive, last_robot_time, *, require_continuity=True):
+def read_new_state(receive, last_robot_time, *, require_continuity=True, max_interval_s=DT):
     """Wait for a robot state newer than last_robot_time and return a consistent snapshot.
 
     The robot timestamp is read before and after Q/Qd; if the robot published in between, the newer state is read
     again, so position and velocity always come from the same robot cycle and no robot cycle is recorded twice.
-    Skipped cycles abort collection before another target is sent; a fresh state alone is not enough for replay.
-    Receive-only timing audits may count gaps with require_continuity=False; torque collection always uses the default.
+    By default, skipped cycles abort before another target is sent; a fresh state alone is not enough for replay.
+    Step-response comparisons may explicitly allow bounded, whole-cycle intervals; fixed-step fitting remains strict.
+    Receive-only timing audits may count all gaps with require_continuity=False.
     """
-    deadline = time.monotonic() + STATE_TIMEOUT_S
+    wait_started = time.monotonic()
+    deadline = wait_started + STATE_TIMEOUT_S
+    crossed_reads = 0
     while True:
         robot_before = receive.getTimestamp()
         if last_robot_time is None or robot_before > last_robot_time:
@@ -192,10 +244,23 @@ def read_new_state(receive, last_robot_time, *, require_continuity=True):
             if robot_after == robot_before:
                 if require_continuity and last_robot_time is not None:
                     interval = robot_before - last_robot_time
-                    if abs(interval - DT) > STATE_INTERVAL_TOLERANCE_S:
-                        raise RuntimeError(f"Robot state interval {interval * 1000:.3f} ms; expected 2 ms "
-                                           "(+/- 0.4 ms). Fixed-step collection cannot skip robot cycles")
+                    cycles = round(interval / DT)
+                    if (cycles < 1 or abs(interval - cycles * DT) > STATE_INTERVAL_TOLERANCE_S
+                            or interval > max_interval_s + STATE_INTERVAL_TOLERANCE_S):
+                        expectation = ("expected 2 ms (+/- 0.4 ms). Fixed-step collection cannot skip robot cycles"
+                                       if max_interval_s == DT else
+                                       f"comparison allows at most {max_interval_s * 1000:g} ms "
+                                       "(+/- 0.4 ms) in whole robot cycles")
+                        error = RuntimeError(f"Robot state interval {interval * 1000:.3f} ms; {expectation}")
+                        error.timing_details = {"previous_robot_time_s": float(last_robot_time),
+                                                "observed_robot_time_s": float(robot_before),
+                                                "interval_s": float(interval),
+                                                "host_wait_started_s": wait_started,
+                                                "host_state_observed_s": host_before,
+                                                "crossed_reads_during_wait": crossed_reads}
+                        raise error
                 return host_before, robot_before, q, qd, robot_after
+            crossed_reads += 1
         if time.monotonic() > deadline:
             raise RuntimeError("No new robot state within 20 ms; RTDE state stream stalled")
         time.sleep(STATE_POLL_S)
@@ -253,7 +318,7 @@ def warmup_controller(osc, q, qd, center_pos, center_quat):
     osc.set_target(center_pos, center_quat)
 
 
-def collect(config, offsets, output, anchors=None):
+def collect(config, offsets, output, anchors=None, *, allow_small_gaps=False):
     """anchors (optional, one int per sample): 0 keep the current target anchor, 1 re-anchor to the measured flange pose of
     this sample (policy-style relative targets), 2 re-anchor to the initial center pose. Without anchors every target is
     center + offset, as in the sysid recordings."""
@@ -265,6 +330,8 @@ def collect(config, offsets, output, anchors=None):
     version = importlib.metadata.version("ur-rtde")
     if version != REQUIRED_RTDE_VERSION:
         raise RuntimeError(f"Expected Thunder collector ur-rtde {REQUIRED_RTDE_VERSION}, found {version}")
+    if allow_small_gaps and config.get("step_test", {}).get("mode") not in ("held", "policy"):
+        raise ValueError("Small gaps are allowed only for step-response comparisons, not sysid collection")
     check_realtime_permissions()
     initial_scheduler = os.sched_getscheduler(0), os.sched_getparam(0)
     output = Path(output)
@@ -292,11 +359,14 @@ def collect(config, offsets, output, anchors=None):
     control = receive = None
     app_priority = "not requested"
     rt_threads = {}
-    rows = []
+    rows = None
     initial_q = None
     completed = False
     torque_started = False
     failure = None
+    timing_failure = None
+    gap_events = []
+    missed_cycles = 0
     cleanup_errors = []
     gc_enabled_on_entry = gc.isenabled()
     gc_suspended = False
@@ -306,9 +376,12 @@ def collect(config, offsets, output, anchors=None):
         # then defer automatic cyclic GC only while torque control is active.
         if gc_enabled_on_entry:
             gc.collect()
+        rows = RecordingBuffer(len(offsets))
+        rows.lock()
         before_receive = thread_schedule_snapshot()
         with fifo_thread_creation(RT_RECEIVE_PRIORITY):
-            receive = RTDEReceiveInterface(config["robot_ip"], 500, rt_priority=RT_RECEIVE_PRIORITY)
+            receive = RTDEReceiveInterface(config["robot_ip"], 500, variables=list(RT_RECEIVE_VARIABLES),
+                                           rt_priority=RT_RECEIVE_PRIORITY)
         rt_threads["receive"] = require_new_fifo_thread(before_receive, RT_RECEIVE_PRIORITY, "RTDEReceiveInterface")
         initial_q = np.asarray(receive.getActualQ())
         if initial_q.shape != (6,) or not np.isfinite(initial_q).all():
@@ -356,7 +429,21 @@ def collect(config, offsets, output, anchors=None):
         anchor_pos, anchor_quat = center_pos, center_quat
         for index, offset in enumerate(offsets):
             # One fresh, consistent robot state per cycle; the command follows immediately.
-            host_before, robot_before, q, qd, robot_after = read_new_state(receive, last_robot_time)
+            host_before, robot_before, q, qd, robot_after = read_new_state(
+                receive, last_robot_time,
+                max_interval_s=STEP_MAX_STATE_INTERVAL_S if allow_small_gaps else DT)
+            missing = max(0, round((robot_before - last_robot_time) / DT) - 1)
+            if missing:
+                missed_cycles += missing
+                event = {"sample_index": len(rows), "missing_cycles": missing,
+                         "previous_robot_time_s": last_robot_time, "observed_robot_time_s": robot_before,
+                         "interval_s": robot_before - last_robot_time}
+                if missed_cycles > STEP_MAX_MISSING_CYCLES:
+                    error = RuntimeError(f"Step-response missed-cycle budget exceeded: {missed_cycles * DT * 1000:g} ms "
+                                         f"> {STEP_MAX_MISSING_CYCLES * DT * 1000:g} ms; no further test command sent")
+                    error.timing_details = {**event, "missed_cycles": missed_cycles}
+                    raise error
+                gap_events.append(event)
             last_robot_time = robot_before
             if not np.isfinite(q).all() or not np.isfinite(qd).all():
                 raise RuntimeError("Received non-finite robot state")
@@ -376,11 +463,15 @@ def collect(config, offsets, output, anchors=None):
             if not control.directTorque(torque.tolist(), **direct_torque_params):
                 raise RuntimeError("directTorque returned failure")
             command_return_time = time.monotonic()
-            rows.append((q.copy(), qd.copy(), torque.copy(), target_pos.copy(), target_quat.copy(),
-                         host_before, command_time, robot_before, robot_after, command_return_time))
+            rows.append(q, qd, torque, target_pos, target_quat,
+                        host_before, command_time, robot_before, robot_after, command_return_time)
         completed = True
     except BaseException as exc:
         failure = f"{type(exc).__name__}: {exc}"
+        timing_failure = getattr(exc, "timing_details", None)
+        if timing_failure is not None and rows:
+            timing_failure["recorded_samples"] = len(rows)
+            timing_failure["last_record_end_s"] = float(rows.column(10)[-1])
         raise
     finally:
         if control is not None:
@@ -416,15 +507,24 @@ def collect(config, offsets, output, anchors=None):
             gc.enable()
         else:
             gc.disable()
+        if rows is not None:
+            try:
+                rows.unlock()
+            except RuntimeError as exc:
+                cleanup_errors.append(str(exc))
         if rows:
-            columns = list(zip(*rows))
-            tensor = lambda index: torch.tensor(np.asarray(columns[index]), dtype=torch.float64)
+            tensor = lambda index: torch.tensor(rows.column(index), dtype=torch.float64)
             record = {
                 "schema_version": 1, "robot": "thunder", "source_kind": "real_robot",
                 "joint_names": JOINT_NAMES, "sample_phase": "pre_command",
                 "pose_frame": "base_link", "quaternion_order": "wxyz",
                 "dt": DT, "control_freq": 500, "completed": completed,
                 "failure": failure, "cleanup_errors": cleanup_errors,
+                "timing_failure": timing_failure,
+                "state_gap_policy": {"mode": "step_response_bounded" if allow_small_gaps else "strict",
+                                     "max_interval_s": STEP_MAX_STATE_INTERVAL_S if allow_small_gaps else DT,
+                                     "max_missing_cycles": STEP_MAX_MISSING_CYCLES if allow_small_gaps else 0},
+                "gap_events": gap_events,
                 "joint_positions": tensor(0), "joint_velocities": tensor(1),
                 "joint_torques": tensor(2), "initial_joint_pos": tensor(0)[0].clone(),
                 "initial_joint_vel": tensor(1)[0].clone(),
@@ -432,6 +532,7 @@ def collect(config, offsets, output, anchors=None):
                 "waypoint_step_indices": torch.arange(len(rows)), "num_waypoints": len(rows),
                 "host_sample_times_s": tensor(5), "host_command_times_s": tensor(6),
                 "host_command_return_times_s": tensor(9),
+                "host_record_end_times_s": tensor(10),
                 "robot_sample_times_s": tensor(7), "robot_after_read_times_s": tensor(8),
                 "osc_params": {k: config[k] for k in
                                ("motion_stiffness", "motion_damping_ratio", "torque_max")},
@@ -446,11 +547,15 @@ def collect(config, offsets, output, anchors=None):
                 "timing_mode": "robot_state_locked",
                 "rt_priorities": {"receive": RT_RECEIVE_PRIORITY, "control": RT_CONTROL_PRIORITY, "loop": app_priority},
                 "rt_threads": rt_threads,
+                "rt_receive_variables": list(RT_RECEIVE_VARIABLES),
                 "gc_control": {"automatic_gc_suspended": gc_suspended,
                                "enabled_on_entry": gc_enabled_on_entry},
+                "recording_storage": {"kind": "preallocated_numpy", "capacity_samples": len(offsets),
+                                      "bytes": rows.data.nbytes, "prefaulted": True,
+                                      "memory_locked_during_collection": rows.was_locked},
                 "startup": {"controller_warmup_iterations": CONTROLLER_WARMUP_ITERATIONS,
                             "first_sample_waited_for_new_frame": True},
-                "timing_summary": timing_summary([row[7] for row in rows]),
+                "timing_summary": timing_summary(rows.column(7).tolist()),
             }
             torch.save(record, output)
             print(f"Saved {len(rows)} samples to {output}; completed={completed}")

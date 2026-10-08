@@ -1,0 +1,209 @@
+{
+  "planned_hardware_collection_complete": true,
+  "next_step": "Offline comparison with the corresponding simulation step-response tests.",
+  "records": [
+    {
+      "file": "run_20261008_nWQzjt/step_full_off_retry2.pt",
+      "sha256": "3996c55e8868f23461fdb769ec3874b72a9d63a7bd3ac09e6bda7382d17df01b",
+      "samples": 84500,
+      "mode": "held",
+      "scheduled_steps_or_trials": 48,
+      "completed": true,
+      "timing_summary": {
+        "samples": 84500,
+        "robot_span_s": 168.99799999967217,
+        "duplicate_intervals": 0,
+        "intervals_over_2p4ms": 0,
+        "max_interval_s": 0.0020000003278255463
+      },
+      "direct_torque_params": {
+        "viscous_scale": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "coulomb_scale": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "control_script": null,
+      "analysis": "run_20261008_nWQzjt/step_full_off_retry2.steps.json",
+      "review": "run_20261008_nWQzjt/step_full_off_retry2.review.json",
+      "fixed_step_fitting_eligible": true
+    },
+    {
+      "file": "run_20261008_nWQzjt/step_full_ur_default_fixed_retry1.pt",
+      "sha256": "17ca5c82710f3873964a504d6ab61bcde83ee28370d3403527833a893bed90bf",
+      "samples": 84500,
+      "mode": "held",
+      "scheduled_steps_or_trials": 48,
+      "completed": true,
+      "timing_summary": {
+        "samples": 84500,
+        "robot_span_s": 168.99799999967217,
+        "duplicate_intervals": 0,
+        "intervals_over_2p4ms": 0,
+        "max_interval_s": 0.0020000003278255463
+      },
+      "direct_torque_params": {
+        "viscous_scale": [
+          0.9,
+          0.9,
+          0.8,
+          0.9,
+          0.9,
+          0.9
+        ],
+        "coulomb_scale": [
+          0.8,
+          0.8,
+          0.7,
+          0.8,
+          0.8,
+          0.8
+        ]
+      },
+      "control_script": {
+        "source": "vendor fixed script",
+        "path": "/home/srinivas/Documents/ChatGPT/omnireset/UWLab/scripts_v2/tools/thunder_sim2real/workstation/vendor/ur_rtde_1_6_5/rtde_control_fixed.script",
+        "sha256": "bad20358db9ca01fb10ae0a20740c2b9e12064e27e7e77b2a9229384e4d20b71"
+      },
+      "analysis": "run_20261008_nWQzjt/step_full_ur_default_fixed_retry1.steps.json",
+      "review": "run_20261008_nWQzjt/step_full_ur_default_fixed_retry1.review.json",
+      "fixed_step_fitting_eligible": false
+    },
+    {
+      "file": "run_20261008_nWQzjt/policy_off_retry2.pt",
+      "sha256": "c71b450aae8c4d18e3ef216723de8de44e722f09de9abf88866470422ad5c8eb",
+      "samples": 99500,
+      "mode": "policy",
+      "scheduled_steps_or_trials": 66,
+      "completed": true,
+      "timing_summary": {
+        "samples": 99500,
+        "robot_span_s": 198.99799999967217,
+        "duplicate_intervals": 0,
+        "intervals_over_2p4ms": 0,
+        "max_interval_s": 0.0020000003278255463
+      },
+      "direct_torque_params": {
+        "viscous_scale": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "coulomb_scale": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "control_script": {
+        "source": "ur_rtde compiled-in"
+      },
+      "analysis": "run_20261008_nWQzjt/policy_off_retry2.steps.json",
+      "review": "run_20261008_nWQzjt/policy_off_retry2.review.json",
+      "fixed_step_fitting_eligible": true
+    },
+    {
+      "file": "run_20261008_nWQzjt/policy_ur_default_fixed_retry1.pt",
+      "sha256": "610288f7678886ae0d5fc422bf755166e620ef687bd5077b2c71db3e5439764b",
+      "samples": 99500,
+      "mode": "policy",
+      "scheduled_steps_or_trials": 66,
+      "completed": true,
+      "timing_summary": {
+        "samples": 99500,
+        "robot_span_s": 198.99799999967217,
+        "duplicate_intervals": 0,
+        "intervals_over_2p4ms": 0,
+        "max_interval_s": 0.0020000003278255463
+      },
+      "direct_torque_params": {
+        "viscous_scale": [
+          0.9,
+          0.9,
+          0.8,
+          0.9,
+          0.9,
+          0.9
+        ],
+        "coulomb_scale": [
+          0.8,
+          0.8,
+          0.7,
+          0.8,
+          0.8,
+          0.8
+        ]
+      },
+      "control_script": {
+        "source": "vendor fixed script",
+        "path": "/home/srinivas/Documents/ChatGPT/omnireset/UWLab/scripts_v2/tools/thunder_sim2real/workstation/vendor/ur_rtde_1_6_5/rtde_control_fixed.script",
+        "sha256": "bad20358db9ca01fb10ae0a20740c2b9e12064e27e7e77b2a9229384e4d20b71"
+      },
+      "analysis": "run_20261008_nWQzjt/policy_ur_default_fixed_retry1.steps.json",
+      "review": "run_20261008_nWQzjt/policy_ur_default_fixed_retry1.review.json",
+      "fixed_step_fitting_eligible": false
+    },
+    {
+      "file": "run_20261008_nWQzjt/fine_off_retry1.pt",
+      "sha256": "215b72d0c6dcc31172efd4d10ce0aa5a95eb85166c4c8dcf6a080ddb949cc079",
+      "samples": 63500,
+      "mode": "held",
+      "scheduled_steps_or_trials": 36,
+      "completed": true,
+      "timing_summary": {
+        "samples": 63500,
+        "robot_span_s": 126.99800000013784,
+        "duplicate_intervals": 0,
+        "intervals_over_2p4ms": 0,
+        "max_interval_s": 0.0020000003278255463
+      },
+      "direct_torque_params": {
+        "viscous_scale": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "coulomb_scale": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "control_script": {
+        "source": "ur_rtde compiled-in"
+      },
+      "analysis": "run_20261008_nWQzjt/fine_off_retry1.steps.json",
+      "review": "run_20261008_nWQzjt/fine_off_retry1.review.json",
+      "fixed_step_fitting_eligible": true
+    }
+  ],
+  "excluded_record": {
+    "file": "run_20261008_nWQzjt/step_full_ur_default_retry1.pt",
+    "reason": "Obsolete compensation-ON label: the stock ur_rtde script silently applied zero compensation. Use the fixed-script ON record instead."
+  },
+  "interpretation": "Completed return phases confirm the scheduled commands ran; they do not imply the robot returned exactly to center. Compensation-ON records are for comparison only.",
+  "analysis_note": "All five valid .steps.json files use the current timestamp-aware analyzer. The earlier full-OFF derived table is preserved as .steps.previous.json. Historical .summary.json files remain from the initial archive."
+}

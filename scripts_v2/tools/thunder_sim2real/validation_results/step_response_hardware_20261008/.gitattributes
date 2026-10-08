@@ -1,3 +1,8 @@
-# Store the two reviewed raw recordings directly; repository LFS capacity is exhausted.
+# Store reviewed raw recordings directly; repository LFS capacity is exhausted.
 run_20261008_nWQzjt/step_full_off_retry2.pt -filter -diff -merge -text
+# Historical requested-ON run actually used zero compensation; retained for provenance.
 run_20261008_nWQzjt/step_full_ur_default_retry1.pt -filter -diff -merge -text
+run_20261008_nWQzjt/step_full_ur_default_fixed_retry1.pt -filter -diff -merge -text
+run_20261008_nWQzjt/policy_off_retry2.pt -filter -diff -merge -text
+run_20261008_nWQzjt/policy_ur_default_fixed_retry1.pt -filter -diff -merge -text
+run_20261008_nWQzjt/fine_off_retry1.pt -filter -diff -merge -text

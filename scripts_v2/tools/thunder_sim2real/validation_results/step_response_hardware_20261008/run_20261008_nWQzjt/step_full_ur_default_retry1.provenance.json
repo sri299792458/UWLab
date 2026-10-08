@@ -12,5 +12,13 @@
     "workstation/thunder_calibration.json": "a19ba762879ed8c40a351613d545981ae75ef2e36645a2cdf9028a230e82edd9"
   },
   "collector_capture_hash_recorded": false,
-  "collector_hash_note": "Hashes describe the workspace code at archival time. The raw recording preserves startup, GC and pinned controller metadata, but does not embed the collector source hash."
+  "collector_hash_note": "Hashes describe the workspace code at archival time. The raw recording preserves startup, GC and pinned controller metadata, but does not embed the collector source hash.",
+  "friction_compensation_correction": {
+    "requested_mode": "ur_default",
+    "effective_compensation": "zero",
+    "reason": "ur_rtde 1.6.5 compiled-in PolyScope 5.26 script reads different variable names from those passed to direct_torque.",
+    "exclude_from_on_comparisons": true,
+    "replacement": "step_full_ur_default_fixed_retry1.pt",
+    "raw_modified": false
+  }
 }

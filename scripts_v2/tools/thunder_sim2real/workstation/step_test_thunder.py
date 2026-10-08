@@ -181,6 +181,9 @@ def main():
     parser.add_argument("--mode", choices=["held", "policy"], default="held",
                         help="held = fixed targets from the center (sim R223 phase B); policy = 10 Hz re-anchored targets (phases A/C)")
     parser.add_argument("--output", type=Path)
+    parser.add_argument("--allow-small-gaps", action="store_true",
+                        help="Comparison only: allow 4/6 ms state intervals, at most 10 ms missing in total; "
+                             "gapped data cannot be used by the fixed-step fitter")
     parser.add_argument("--execute", action="store_true", help="Connect and execute the displayed step sequence")
     args = parser.parse_args()
     config, offsets, anchors = make_plan(json.loads(args.config.read_text()), args.friction, args.mode)
@@ -193,10 +196,13 @@ def main():
                       "joint_excursion_limit_deg": np.rad2deg(config["joint_excursion_limit_rad"]).round(2).tolist(),
                       "start_joint_positions_rad": config["start_joint_positions_rad"],
                       "kp": config["motion_stiffness"], "execute": args.execute}, indent=2))
+    if args.allow_small_gaps:
+        print("Step-response comparison: gaps up to 6 ms, at most 10 ms missing in total. "
+              "Keep actual timestamps; gapped recordings are ineligible for fixed-step fitting.", flush=True)
     if args.execute:
         if args.output is None:
             parser.error("--execute requires --output")
-        ct.collect(config, offsets, args.output, anchors=anchors)
+        ct.collect(config, offsets, args.output, anchors=anchors, allow_small_gaps=args.allow_small_gaps)
 
 
 if __name__ == "__main__":

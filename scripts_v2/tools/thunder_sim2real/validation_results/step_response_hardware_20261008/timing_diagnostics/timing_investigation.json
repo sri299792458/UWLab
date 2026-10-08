@@ -1,0 +1,181 @@
+{
+  "purpose": "Investigate timing gaps without robot-control commands",
+  "robot_control_commands_sent": 0,
+  "native_host_timer": {
+    "source_kind": "native_host_timer_probe",
+    "robot_connections": 0,
+    "period_s": 0.002,
+    "priority": 80,
+    "samples": 150000,
+    "requested_samples": 150000,
+    "failure_errno": 0,
+    "scheduler_restored": true,
+    "wake_lateness_max_ms": 0.024297,
+    "wake_lateness_p99_ms": 0.009165,
+    "wake_lateness_over_0p5ms": 0,
+    "wake_lateness_over_1ms": 0,
+    "wake_lateness_over_2ms": 0
+  },
+  "python_receive_compute_audit": {
+    "source_kind": "receive_only_timing_audit",
+    "robot_control_commands_sent": 0,
+    "mode": "policy",
+    "robot_ip": "10.33.55.89",
+    "kernel": "7.0.0-34-generic",
+    "requested_samples": 99500,
+    "completed": true,
+    "failure": null,
+    "cleanup_errors": [],
+    "rt_receive_workers": {
+      "1921820": {
+        "policy": 1,
+        "priority": 90
+      }
+    },
+    "loop_priority": "SCHED_FIFO 80",
+    "timing_summary": {
+      "samples": 99500,
+      "robot_span_s": 199.00200000032783,
+      "duplicate_intervals": 0,
+      "intervals_over_2p4ms": 1,
+      "max_interval_s": 0.005999999586492777
+    },
+    "controller_compute_max_s": 0.0016905670054256916,
+    "controller_compute_over_2ms": 0,
+    "collector_sha256": "7231c2f495848a6b9e9f69f60724370ffa8e45d3f5a4c98693312a97301448c6",
+    "limitation": "This audits receive delivery and math under current load. It does not exercise RTDE torque submission or establish motion safety."
+  },
+  "gap_detail": [
+    {
+      "after_sample": 1980,
+      "elapsed_robot_s": 3.9600000004284084,
+      "robot_interval_s": 0.005999999586492777,
+      "host_interval_s": 0.006882582005346194,
+      "preceding_compute_s": 0.0008155409886967391,
+      "preceding_recording_s": 3.7780264392495155e-06,
+      "recording_end_to_next_observation_s": 0.006063262990210205
+    }
+  ],
+  "sdk_source_finding": {
+    "version": "1.6.5",
+    "file": "src/rtde.cpp",
+    "function": "RTDE::receiveData",
+    "source_file_sha256": "a14e79d6df3be81418b4e8cf1176e31e2e3511f065a3221a4b1fe82b729ae354",
+    "behavior": "If another data-package header is buffered, skip the earlier package before updating robot_state. Getters expose only the latest state.",
+    "excerpt": "if (buffer_.size() >= HEADER_SIZE && packet_header.msg_cmd == RTDE_DATA_PACKAGE)\n      {\n        uint32_t next_message_offset = 0;\n        RTDEControlHeader next_packet_header = RTDEUtility::readRTDEHeader(buffer_, next_message_offset);\n        if (next_packet_header.msg_cmd == RTDE_DATA_PACKAGE)\n        {\n          if (verbose_)\n            std::cout << \"skipping package(1)\" << std::endl;\n          continue;\n        }\n      }",
+    "official_pypi_source": "https://pypi.org/project/ur-rtde/1.6.5/#files",
+    "archive_sha256": "3d5b6c6bf73346b806d146f128537abd2afb1d769f4a9c8b3ef5a884fab0bcfa",
+    "upstream_master_source_sha256": "a14e79d6df3be81418b4e8cf1176e31e2e3511f065a3221a4b1fe82b729ae354",
+    "upstream_master_has_same_skip_branch": true
+  },
+  "interpretation": "Both receive-only audits reproduced state timestamp gaps with sub-2 ms controller compute and short preallocated logging. The separate native host timer probe was clean. A deliberate queued-packet discard exists in the SDK, but the verbose audit reproduced a 4 ms gap with zero skip messages, so this branch is NOT established as the cause. Latest-state overwrite, read snapshot retry, application scheduling, per-client delivery, network delay and robot output remain candidates. Native language alone is not yet a demonstrated fix.",
+  "not_proven": [
+    "Python excluded as a contributor to polling delay",
+    "Original failed motion-run cause",
+    "Guaranteed continuous 500 Hz torque control"
+  ],
+  "verification": "46 offline tests passed; no motion verification of the new recording buffer yet",
+  "upstream_reporting": {
+    "related_issue": "https://gitlab.com/sdurobotics/ur_rtde/-/issues/342",
+    "related_issue_state": "closed",
+    "related_issue_closed_at": "2026-03-03T20:15:23.200Z",
+    "distinction": "Issue 342 fixes the header offset so deliberate expiry/discard works; 1.6.5 already contains this fix. Strict every-frame logging is a separate acquisition API requirement. No upstream report has been posted.",
+    "suggestion": "Request per-packet snapshots/callbacks or recording mode plus drop counters and documented timing guarantees. Do not claim that removing the skip can restore command deadlines already missed."
+  },
+  "verbose_sdk_trace": {
+    "source_kind": "receive_only_timing_audit",
+    "robot_control_commands_sent": 0,
+    "mode": "policy",
+    "robot_ip": "10.33.55.89",
+    "kernel": "7.0.0-34-generic",
+    "requested_samples": 99500,
+    "completed": true,
+    "failure": null,
+    "cleanup_errors": [],
+    "continuous_500hz": false,
+    "verbose_receive": true,
+    "rt_receive_workers": {
+      "1924454": {
+        "policy": 1,
+        "priority": 90
+      }
+    },
+    "loop_priority": "SCHED_FIFO 80",
+    "timing_summary": {
+      "samples": 99500,
+      "robot_span_s": 199.0,
+      "duplicate_intervals": 0,
+      "intervals_over_2p4ms": 1,
+      "max_interval_s": 0.004000000189989805
+    },
+    "controller_compute_max_s": 0.0013363150064833462,
+    "controller_compute_over_2ms": 0,
+    "recording_write_max_s": 3.432700759731233e-05,
+    "collector_sha256": "7231c2f495848a6b9e9f69f60724370ffa8e45d3f5a4c98693312a97301448c6",
+    "limitation": "This audits receive delivery and math under current load. It does not exercise RTDE torque submission or establish motion safety.",
+    "queued_package_skip_messages": 0,
+    "gap_detail": [
+      {
+        "after_sample": 50387,
+        "elapsed_robot_s": 100.77399999974295,
+        "robot_interval_s": 0.004000000189989805,
+        "host_interval_s": 0.0038742750184610486,
+        "preceding_compute_s": 0.0004836120060645044,
+        "preceding_recording_s": 2.7449859771877527e-06,
+        "recording_end_to_next_observation_s": 0.0033879180264193565
+      }
+    ]
+  },
+  "minimal_receive_recipe_audit": {
+    "source_kind": "receive_only_timing_audit",
+    "robot_control_commands_sent": 0,
+    "mode": "policy",
+    "repeats": 1,
+    "sequence_samples": 99500,
+    "robot_ip": "10.33.55.89",
+    "kernel": "7.0.0-34-generic",
+    "requested_samples": 99500,
+    "completed": true,
+    "failure": null,
+    "cleanup_errors": [],
+    "continuous_500hz": true,
+    "verbose_receive": false,
+    "rt_receive_workers": {
+      "1931505": {
+        "policy": 1,
+        "priority": 90
+      }
+    },
+    "loop_priority": "SCHED_FIFO 80",
+    "rt_receive_variables": [
+      "timestamp",
+      "actual_q",
+      "actual_qd"
+    ],
+    "timing_summary": {
+      "samples": 99500,
+      "robot_span_s": 198.99799999967217,
+      "duplicate_intervals": 0,
+      "intervals_over_2p4ms": 0,
+      "max_interval_s": 0.0020000003278255463
+    },
+    "controller_compute_max_s": 0.0013534390018321574,
+    "controller_compute_over_2ms": 0,
+    "recording_write_max_s": 2.2612977772951126e-05,
+    "collector_sha256": "7a645891a5293d837ef2584ad1deb29cde2ff070648ca88e7981425ddc0ed6ed",
+    "limitation": "This audits receive delivery and math under current load. It does not exercise RTDE torque submission or establish motion safety."
+  },
+  "run_decision": {
+    "purpose": "Full step-response comparison; preserve the clean OFF capture for strict fitting",
+    "mode": "Explicit --allow-small-gaps on step_test_thunder.py only",
+    "max_interval_s": 0.006,
+    "interval_tolerance_s": 0.0004,
+    "max_missing_cycles": 5,
+    "max_missing_time_s": 0.01,
+    "fixed_step_fitter": "Unchanged; rejects recorded timestamp gaps",
+    "analysis": "Uses observed robot times, flags affected trials/returns, reports actual policy step durations. Missing frames are not reconstructed.",
+    "controller_timing": "Targets advance with received states; a missed frame may extend the preceding torque/policy interval. That deviation is reported rather than treated as nominal 2 ms timing.",
+    "tests": "52 full-suite tests passed, plus the added sysid-scope guard test and all 12 step tests passed (53 tests total).",
+    "motion_validation": "Pending user-run policy OFF retry2. No control commands sent by diagnostics."
+  }
+}

@@ -1,74 +1,88 @@
-# Thunder full step-response recordings — October 8, 2026
+# Thunder step-response hardware collection — October 8, 2026
 
-The latest full OFF and UR-default ON runs both completed all **84,500 samples / 48 steps** of the
-169-second sequence. Both report no failure or cleanup errors, and every recorded robot-state interval is 2 ms
-to floating-point precision. The OFF record passes strict `records.validate_record` validation. The ON record
-is comparison-only: the fitting validator correctly rejects its nonzero friction compensation scales.
+All five planned recordings completed with no failure, no cleanup errors, and no duplicate or missed
+robot-state intervals. The three compensation-OFF records pass strict `records.validate_record` validation.
+The two corrected compensation-ON records are for response comparison; the fitter rejects their nonzero scales.
+No simulation comparison or new dynamics fit has been performed.
 
-| Recording | Mode | File saved, America/Chicago | Strict fitting validation |
-| --- | --- | --- | --- |
-| `run_20261008_nWQzjt/step_full_off_retry2.pt` | OFF | 12:28:23 | Passed |
-| `run_20261008_nWQzjt/step_full_ur_default_retry1.pt` | UR default ON | 12:31:48 | Expected rejection: nonzero friction scales |
+## Records to use
 
-Save times come from the original files' modification timestamps. The raw records are copied byte for byte;
-no samples, targets, flags, or metadata were changed. Earlier failed attempts are outside this package.
+All paths below are under `run_20261008_nWQzjt/`. `collection_review.json` lists the valid files,
+SHA-256 hashes, analysis paths and fitting eligibility.
 
-## Timing and software changes
+| Recording | Test | Compensation | Samples | Steps/trials | Planned duration |
+| --- | --- | --- | ---: | ---: | ---: |
+| `step_full_off_retry2.pt` | Full held grid | OFF | 84,500 | 48 | 169 s |
+| `step_full_ur_default_fixed_retry1.pt` | Full held grid | Corrected UR default ON | 84,500 | 48 | 169 s |
+| `policy_off_retry2.pt` | 10 Hz re-anchored policy targets | OFF | 99,500 | 66 | 199 s |
+| `policy_ur_default_fixed_retry1.pt` | 10 Hz re-anchored policy targets | Corrected UR default ON | 99,500 | 66 | 199 s |
+| `fine_off_retry1.pt` | Fine held grid | OFF | 63,500 | 36 | 127 s |
 
-Both captures record the receive worker at FIFO 90, control worker at FIFO 85, and application loop at FIFO 80.
-They include the updated collector's 16 computation-only warmup iterations, fresh first-frame wait,
-suspended automatic cyclic GC during torque collection, and host timestamps after `directTorque` returns.
-The update also rejects skipped robot cycles before sending the next command, rejects computation stalls
-above 20 ms, and restores GC after controller, connection, and scheduler cleanup.
+Each valid record has a `.collection.json`, `.steps.json`, `.review.json` and `.provenance.json`.
+Raw files were copied byte for byte; samples, targets, flags and metadata were not changed.
+Each analysis confirms all scheduled return phases ran. This does not imply exact return to the center pose.
+The policy records have observed policy-step durations of 0.100000 s throughout.
 
-| Timing metric | OFF | ON |
-| --- | ---: | ---: |
-| Duplicate or missed robot-state intervals | 0 | 0 |
-| Maximum host sample-to-command latency | 1.284 ms | 1.427 ms |
-| Maximum `directTorque` call duration | 0.085 ms | 0.089 ms |
-| Host command interval range | 1.234–2.862 ms | 1.144–2.882 ms |
-| Host command intervals above 2.4 ms | 746 | 1,002 |
+## Historical record excluded from ON comparisons
 
-Clean robot-state timing does not mean identical command arrival times at the robot. Host send intervals still
-vary, and the workstation uses a generic kernel. Full per-run metrics are in the `.summary.json` files.
-The separate receive-only audit with GPU training active completed 84,500 samples without a missed cycle;
-its JSON and NPZ are included. It sent no robot-control commands and did not test torque submission.
+**`step_full_ur_default_retry1.pt` requested ON but actually used zero compensation.**
+The ur_rtde 1.6.5 compiled-in PolyScope 5.26 script reads the requested scales into different variable names
+from those passed to `direct_torque`. Its captured nonzero settings describe the request, not effective behavior.
+The earlier archive description incorrectly called this an ON comparison. The original raw file and its
+historical summaries are retained, and its provenance now records the correction. Use
+`step_full_ur_default_fixed_retry1.pt` for the held ON comparison instead.
 
-The updated code is committed alongside these recordings, including the nearby start-pose helper and its
-PolyScope 5.25+ 3PE status-bit handling. The software suite
-`python -m unittest test_contract test_step_test test_move_to_start` passed all 39 tests.
+Both valid ON records capture the corrected script hash
+`bad20358db9ca01fb10ae0a20740c2b9e12064e27e7e77b2a9229384e4d20b71`, checked against the vendored script.
+For example, the +x 40 mm held target ends at 5.628 mm with OFF and 40.228 mm with corrected ON, measured
+from each run's initial center. Policy responses remain dependent on axis, direction and preceding motion;
+ON does not improve every trial uniformly.
 
-## Data and interpretation
+## Timing and software
 
-Each raw record has an extracted `.collection.json`, derived `.summary.json`, `.steps.json`, and archive
-`.provenance.json`. The collector uses the unchanged pinned controller, gains, payload, calibration and
-step amplitudes. The raw records do not embed the collector source hash; provenance explicitly distinguishes
-the code hashes calculated at archival time from the pinned controller metadata captured in the raw file.
+The three newest recordings (policy OFF/ON and fine OFF) use a preallocated, touched and memory-locked
+NumPy recording buffer and request only `timestamp`, `actual_q` and `actual_qd` in the receive recipe.
+All records capture receive/control/application FIFO priorities 90/85/80. The earlier held records use
+the preceding logger; controller gains, payload, calibration and step targets were not changed by the
+recording update. The workstation still runs a generic kernel.
 
-Step summaries use millimeters for translations and degrees for rotations. `reached`, `stop_short`, and
-`return_left` are relative to the initial center pose; `moved_0p1s` and onset detection are relative to each
-step's preceding pose. The arm can retain displacement after a return, so a later small step's center-relative
-value must not be treated as its incremental motion. No new dynamics fit was performed.
+The new `--allow-small-gaps` option is explicit and restricted to response comparisons: at most 6 ms
+between states and five missing cycles across a run. It preserves actual timestamps and gap events.
+The three newest runs selected this option but recorded zero gaps, so they did not use the tolerance.
+Fixed-step sysid validation still rejects gaps; the 20 ms stream/computation guards and joint/torque limits remain.
 
-The original config's 40 N / 14 N m wording describes the initial ideal spring component from an exactly
-centered pose. It is not a cap on dynamic wrench or grip force. The current instructions clarify this.
+`timing_diagnostics/` preserves receive-only evidence, including the preallocated/default-recipe audits
+that still missed cycles, the clean minimal-recipe audit, and a native host-timer probe with training active.
+These audits sent zero robot-control commands. The initial held receive-only audit is also retained.
+This evidence does not establish the cause of every earlier miss or guarantee future deadline behavior.
 
-## Integrity and reproduction
+`python -m unittest test_contract test_step_test test_move_to_start` passed all **53 tests**.
+`verification.json` records current checks and source hashes; `verification.initial.json` retains the
+initial archive verification. Source hashes identify code at archival time, not proof of the exact collector
+source at capture. Raw metadata supplies the captured controller, calibration, compensation-script and timing details.
 
-The two roughly 21 MB raw files are stored directly in Git with narrow attribute overrides, following the
-existing hardware archive convention because the repository's LFS capacity is exhausted.
-From this package directory, verify all included files with:
+## Interpretation and integrity
+
+All five valid `.steps.json` files use the current timestamp-aware analyzer. It measures endpoints at the
+next pre-command boundary state and uses actual robot times for onset and the 0.1 s observation.
+The earlier full-OFF table is preserved as `.steps.previous.json`; historical `.summary.json` files remain unchanged.
+Translation values use millimeters and rotation values use degrees. Held `reached`, `stop_short` and
+`return_left` are relative to the initial center, while `moved_0p1s` and onset use the pre-step pose.
+Residual displacement can make a small center-relative endpoint look like motion that did not occur during that step.
+
+The raw recordings are stored directly in Git with file-specific attribute overrides, following the
+existing hardware archive convention because repository LFS capacity is exhausted.
+From this package directory, check integrity with:
 
 ```bash
 sha256sum -c SHA256SUMS
 ```
 
-From `scripts_v2/tools/thunder_sim2real`, validate the OFF recording and regenerate either step summary with:
+From `scripts_v2/tools/thunder_sim2real`, validate an OFF record or regenerate a step summary with:
 
 ```bash
-python records.py validate validation_results/step_response_hardware_20261008/run_20261008_nWQzjt/step_full_off_retry2.pt
-python analyze_step_test.py validation_results/step_response_hardware_20261008/run_20261008_nWQzjt/step_full_off_retry2.pt
-python analyze_step_test.py validation_results/step_response_hardware_20261008/run_20261008_nWQzjt/step_full_ur_default_retry1.pt
+python records.py validate validation_results/step_response_hardware_20261008/run_20261008_nWQzjt/policy_off_retry2.pt
+python analyze_step_test.py validation_results/step_response_hardware_20261008/run_20261008_nWQzjt/policy_off_retry2.pt
 ```
 
-Absolute paths in historical provenance and step summaries refer to the original workstation files.
+Absolute paths in source provenance and derived summaries refer to the original workstation files.

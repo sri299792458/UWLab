@@ -1,17 +1,156 @@
 {
   "software_tests": {
     "command": "python -m unittest test_contract test_step_test test_move_to_start",
-    "tests_run": 39,
-    "result": "passed"
+    "tests_run": 53,
+    "result": "passed",
+    "duration_s": 23.206
   },
   "archive_code_sha256": {
-    "workstation/collect_thunder.py": "6cd5bd8d19279f1aae2ad94107389188d87a0cf012511c8bcb346d12d22dd3ab",
-    "workstation/step_test_thunder.py": "7d6720beb5359868726ce87e3142633b88be1938ab7f33f2ef38368a6da327d8",
+    "analyze_step_test.py": "43760f1127ab73f7336a22b5166f47a1df9de32f6d9134b7817dee1c9f4c461d",
+    "records.py": "eb2ff4e7e69e628ce3c6be44599d0111aa9f3446eeb4db0a345e387e2fc7935a",
+    "workstation/collect_thunder.py": "7a645891a5293d837ef2584ad1deb29cde2ff070648ca88e7981425ddc0ed6ed",
+    "workstation/step_test_thunder.py": "b7bba0c3f2f3713ba1096e45ecb9e45c1b6f5edc1eeeb1895407add636f1c5e4",
+    "workstation/audit_step_timing.py": "c09da91ec27d6ff1a249e2e4d105a00c8fecf9ffc8c1ead609dc667d32d1757e",
     "workstation/move_to_start.py": "754241d94330b3e46be7c2c85a08a9a825a45aa3858c2ba77eec2f6c91571d55",
-    "workstation/audit_step_timing.py": "dd8ef4eb5d077d3e69960a3b85d9f43eaeacb98ae24129d15351dc2d120e632e",
+    "workstation/collection.step_test.json": "4530074bcc6b1f893b844e9f6517496824d4d3e3311fe1d1ea7395f8380b4573",
+    "workstation/collection.step_test_fine.json": "2377e32c40267524c7b145ebcb222b847121152f256945d734e73af23feb45f6",
+    "workstation/thunder_calibration.json": "a19ba762879ed8c40a351613d545981ae75ef2e36645a2cdf9028a230e82edd9",
     "workstation/vendor/ur5e_kinematics.py": "cba2822b9ae05c0a761735f8da7e02b79ee04214ee3e09d03561ef2c267d6813",
-    "workstation/thunder_calibration.json": "a19ba762879ed8c40a351613d545981ae75ef2e36645a2cdf9028a230e82edd9"
+    "workstation/vendor/ur_rtde_1_6_5/rtde_control_fixed.script": "bad20358db9ca01fb10ae0a20740c2b9e12064e27e7e77b2a9229384e4d20b71"
   },
   "raw_files_preserved_byte_for_byte": true,
-  "read_only_audit_control_commands_sent": 0
+  "valid_records": [
+    {
+      "file": "run_20261008_nWQzjt/step_full_off_retry2.pt",
+      "raw_sha256": "3996c55e8868f23461fdb769ec3874b72a9d63a7bd3ac09e6bda7382d17df01b",
+      "samples": 84500,
+      "rows": 48,
+      "friction_mode": "off",
+      "fixed_step_validation": {
+        "eligible": true,
+        "result": {
+          "samples": 84500,
+          "duration_s": 169.0,
+          "source_kind": "real_robot",
+          "sample_phase": "pre_command",
+          "robot_dt_min_s": 0.001999999862164259,
+          "robot_dt_max_s": 0.0020000003278255463,
+          "joint_excursion_rad": [
+            0.04525589942932129,
+            0.023633211851119995,
+            0.0368196964263916,
+            0.14460515975952148,
+            0.21215295791625977,
+            0.16494805017580205
+          ],
+          "max_torque_nm": [
+            19.769204972305026,
+            17.111704353662354,
+            21.93434804357718,
+            13.372436580628696,
+            14.228569306257066,
+            13.597166052063969
+          ]
+        }
+      },
+      "zero_gaps": true
+    },
+    {
+      "file": "run_20261008_nWQzjt/step_full_ur_default_fixed_retry1.pt",
+      "raw_sha256": "17ca5c82710f3873964a504d6ab61bcde83ee28370d3403527833a893bed90bf",
+      "samples": 84500,
+      "rows": 48,
+      "friction_mode": "ur_default",
+      "fixed_step_validation": {
+        "eligible": false,
+        "reason": "viscous_scale must be zero for the fitted Thunder controller"
+      },
+      "zero_gaps": true
+    },
+    {
+      "file": "run_20261008_nWQzjt/policy_off_retry2.pt",
+      "raw_sha256": "c71b450aae8c4d18e3ef216723de8de44e722f09de9abf88866470422ad5c8eb",
+      "samples": 99500,
+      "rows": 66,
+      "friction_mode": "off",
+      "fixed_step_validation": {
+        "eligible": true,
+        "result": {
+          "samples": 99500,
+          "duration_s": 199.0,
+          "source_kind": "real_robot",
+          "sample_phase": "pre_command",
+          "robot_dt_min_s": 0.001999999862164259,
+          "robot_dt_max_s": 0.0020000003278255463,
+          "joint_excursion_rad": [
+            0.013621598482131958,
+            0.009813353419303894,
+            0.012172222137451172,
+            0.04414176940917969,
+            0.04361104965209961,
+            0.03585246950387955
+          ],
+          "max_torque_nm": [
+            13.96833600020872,
+            14.24240556186752,
+            17.018471510937495,
+            12.237815418866656,
+            12.557243692326264,
+            12.038908757539101
+          ]
+        }
+      },
+      "zero_gaps": true
+    },
+    {
+      "file": "run_20261008_nWQzjt/policy_ur_default_fixed_retry1.pt",
+      "raw_sha256": "610288f7678886ae0d5fc422bf755166e620ef687bd5077b2c71db3e5439764b",
+      "samples": 99500,
+      "rows": 66,
+      "friction_mode": "ur_default",
+      "fixed_step_validation": {
+        "eligible": false,
+        "reason": "viscous_scale must be zero for the fitted Thunder controller"
+      },
+      "zero_gaps": true
+    },
+    {
+      "file": "run_20261008_nWQzjt/fine_off_retry1.pt",
+      "raw_sha256": "215b72d0c6dcc31172efd4d10ce0aa5a95eb85166c4c8dcf6a080ddb949cc079",
+      "samples": 63500,
+      "rows": 36,
+      "friction_mode": "off",
+      "fixed_step_validation": {
+        "eligible": true,
+        "result": {
+          "samples": 63500,
+          "duration_s": 127.0,
+          "source_kind": "real_robot",
+          "sample_phase": "pre_command",
+          "robot_dt_min_s": 0.001999999862164259,
+          "robot_dt_max_s": 0.0020000003278255463,
+          "joint_excursion_rad": [
+            0.025929749011993408,
+            0.013054504990577698,
+            0.02299046516418457,
+            0.045653343200683594,
+            0.023253917694091797,
+            0.0044289231300354
+          ],
+          "max_torque_nm": [
+            14.769227548892653,
+            12.674553730369983,
+            16.778652585951708,
+            4.9390263320142225,
+            3.2664920523389895,
+            2.006540939938607
+          ]
+        }
+      },
+      "zero_gaps": true
+    }
+  ],
+  "legacy_run_excluded_from_on_comparisons": true,
+  "read_only_audit_control_commands_sent": 0,
+  "no_simulation_fit_performed": true
 }
