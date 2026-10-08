@@ -194,6 +194,23 @@ def timing_summary(robot_times):
             "max_interval_s": float(intervals.max()) if len(intervals) else 0.}
 
 
+def friction_scales(config):
+    """UR direct_torque friction-compensation scales: zeros (disabled, the fitted setting) unless the config gives
+    explicit per-joint viscous_scale and coulomb_scale lists in [0, 1] under "direct_torque_params"."""
+    params = config.get("direct_torque_params")
+    if params is None:
+        return {"viscous_scale": [0.0] * 6, "coulomb_scale": [0.0] * 6}
+    if set(params) != {"viscous_scale", "coulomb_scale"}:
+        raise ValueError("direct_torque_params needs exactly viscous_scale and coulomb_scale")
+    out = {}
+    for key in ("viscous_scale", "coulomb_scale"):
+        value = np.asarray(params[key], dtype=float)
+        if value.shape != (6,) or not np.isfinite(value).all() or np.any(value < 0) or np.any(value > 1):
+            raise ValueError(f"direct_torque_params.{key} must be 6 numbers in [0, 1]")
+        out[key] = value.tolist()
+    return out
+
+
 def quat_multiply(a, b):
     w, x, y, z = a
     v, i, j, k = b
@@ -225,7 +242,9 @@ def collect(config, offsets, output):
     )
     # In 1.6.5 these explicit scales replace friction_comp=False. Never use
     # the SDK's nonzero defaults: the fitted controller disables friction compensation.
-    direct_torque_params = {"viscous_scale": [0.0] * 6, "coulomb_scale": [0.0] * 6}
+    # A config may request explicit robot-side compensation scales (step-response comparison only;
+    # records.validate_record still rejects such records for fitting).
+    direct_torque_params = friction_scales(config)
     control = receive = None
     app_priority = "not requested"
     rt_threads = {}
