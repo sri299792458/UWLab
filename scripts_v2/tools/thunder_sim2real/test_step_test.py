@@ -5,6 +5,7 @@ robot never moves, so every step should analyze as stop_short == commanded.
 """
 from contextlib import ExitStack
 import copy
+import gc
 import json
 from pathlib import Path
 import sys
@@ -68,6 +69,7 @@ class StepTestTests(unittest.TestCase):
         seen = []
 
         def direct_torque(torque, *, viscous_scale, coulomb_scale):
+            self.assertFalse(gc.isenabled())
             seen.append((list(viscous_scale), list(coulomb_scale)))
             return True
         control.directTorque.side_effect = direct_torque

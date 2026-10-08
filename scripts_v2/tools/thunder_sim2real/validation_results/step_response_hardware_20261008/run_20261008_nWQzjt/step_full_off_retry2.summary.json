@@ -1,0 +1,112 @@
+{
+  "record": "step_full_off_retry2.pt",
+  "friction_mode": "off",
+  "samples": 84500,
+  "steps": 48,
+  "completed": true,
+  "failure": null,
+  "cleanup_errors": [],
+  "strict_fitting_validation": {
+    "status": "passed",
+    "summary": {
+      "samples": 84500,
+      "duration_s": 169.0,
+      "source_kind": "real_robot",
+      "sample_phase": "pre_command",
+      "robot_dt_min_s": 0.001999999862164259,
+      "robot_dt_max_s": 0.0020000003278255463,
+      "joint_excursion_rad": [
+        0.04525589942932129,
+        0.023633211851119995,
+        0.0368196964263916,
+        0.14460515975952148,
+        0.21215295791625977,
+        0.16494805017580205
+      ],
+      "max_torque_nm": [
+        19.769204972305026,
+        17.111704353662354,
+        21.93434804357718,
+        13.372436580628696,
+        14.228569306257066,
+        13.597166052063969
+      ]
+    }
+  },
+  "timing_summary": {
+    "samples": 84500,
+    "robot_span_s": 168.99799999967217,
+    "duplicate_intervals": 0,
+    "intervals_over_2p4ms": 0,
+    "max_interval_s": 0.0020000003278255463
+  },
+  "host_sample_to_command_ms": {
+    "min": 0.43472700053825974,
+    "p99": 1.0809833981329573,
+    "max": 1.284094003494829,
+    "over_2p4ms": 0
+  },
+  "host_command_intervals_ms": {
+    "min": 1.2338680098764598,
+    "p99": 2.380547197535634,
+    "max": 2.861674001906067,
+    "over_2p4ms": 746
+  },
+  "direct_torque_call_ms": {
+    "min": 0.010921008652076125,
+    "p99": 0.026991998311132193,
+    "max": 0.08540498674847186,
+    "over_2p4ms": 0
+  },
+  "recorded_joint_speed_peak_deg_s": [
+    15.7778633412291,
+    6.380759307531327,
+    14.915167760374176,
+    35.951236866211964,
+    42.197216050851424,
+    33.27370025872941
+  ],
+  "joint_excursion_deg": [
+    2.5929720353686205,
+    1.3540832954077353,
+    2.1096132081851584,
+    8.285265350035587,
+    12.155469099818253,
+    9.450827113985595
+  ],
+  "commanded_torque_peak_nm": [
+    19.769204972305026,
+    17.111704353662354,
+    21.93434804357718,
+    13.372436580628696,
+    14.228569306257066,
+    13.597166052063969
+  ],
+  "rt_priorities": {
+    "receive": 90,
+    "control": 85,
+    "loop": "SCHED_FIFO 80"
+  },
+  "rt_threads": {
+    "receive": {
+      "1896763": {
+        "policy": 1,
+        "priority": 90
+      }
+    },
+    "control": {
+      "1896764": {
+        "policy": 1,
+        "priority": 85
+      }
+    }
+  },
+  "startup": {
+    "controller_warmup_iterations": 16,
+    "first_sample_waited_for_new_frame": true
+  },
+  "gc_control": {
+    "automatic_gc_suspended": true,
+    "enabled_on_entry": true
+  }
+}

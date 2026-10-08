@@ -1,0 +1,507 @@
+{
+  "record": "/home/srinivas/thunder_step_test/run_20261008_nWQzjt/step_full_ur_default_retry1.pt",
+  "friction_mode": "ur_default",
+  "direct_torque_params": {
+    "viscous_scale": [
+      0.9,
+      0.9,
+      0.8,
+      0.9,
+      0.9,
+      0.9
+    ],
+    "coulomb_scale": [
+      0.8,
+      0.8,
+      0.7,
+      0.8,
+      0.8,
+      0.8
+    ]
+  },
+  "completed": true,
+  "failure": null,
+  "steps": [
+    {
+      "axis": "x",
+      "commanded": 5.0,
+      "sign": 1,
+      "reached": 0.034,
+      "stop_short": 4.966,
+      "moved_0p1s": 0.013,
+      "onset_s": null,
+      "return_left": 0.031
+    },
+    {
+      "axis": "x",
+      "commanded": 5.0,
+      "sign": -1,
+      "reached": 0.02,
+      "stop_short": 4.98,
+      "moved_0p1s": 0.024,
+      "onset_s": null,
+      "return_left": 0.01
+    },
+    {
+      "axis": "x",
+      "commanded": 10.0,
+      "sign": 1,
+      "reached": 0.036,
+      "stop_short": 9.964,
+      "moved_0p1s": 0.032,
+      "onset_s": null,
+      "return_left": 0.026
+    },
+    {
+      "axis": "x",
+      "commanded": 10.0,
+      "sign": -1,
+      "reached": 0.076,
+      "stop_short": 9.924,
+      "moved_0p1s": 0.064,
+      "onset_s": null,
+      "return_left": 0.063
+    },
+    {
+      "axis": "x",
+      "commanded": 20.0,
+      "sign": 1,
+      "reached": 0.767,
+      "stop_short": 19.233,
+      "moved_0p1s": 0.427,
+      "onset_s": 0.142,
+      "return_left": 0.693
+    },
+    {
+      "axis": "x",
+      "commanded": 20.0,
+      "sign": -1,
+      "reached": 0.646,
+      "stop_short": 19.354,
+      "moved_0p1s": 0.674,
+      "onset_s": 0.074,
+      "return_left": 0.567
+    },
+    {
+      "axis": "x",
+      "commanded": 40.0,
+      "sign": 1,
+      "reached": 5.776,
+      "stop_short": 34.224,
+      "moved_0p1s": 2.413,
+      "onset_s": 0.034,
+      "return_left": 4.758
+    },
+    {
+      "axis": "x",
+      "commanded": 40.0,
+      "sign": -1,
+      "reached": 6.924,
+      "stop_short": 33.076,
+      "moved_0p1s": 3.495,
+      "onset_s": 0.03,
+      "return_left": 6.485
+    },
+    {
+      "axis": "y",
+      "commanded": 5.0,
+      "sign": 1,
+      "reached": -1.666,
+      "stop_short": 6.666,
+      "moved_0p1s": 0.002,
+      "onset_s": null,
+      "return_left": -1.693
+    },
+    {
+      "axis": "y",
+      "commanded": 5.0,
+      "sign": -1,
+      "reached": 1.8,
+      "stop_short": 3.2,
+      "moved_0p1s": 0.038,
+      "onset_s": null,
+      "return_left": 1.805
+    },
+    {
+      "axis": "y",
+      "commanded": 10.0,
+      "sign": 1,
+      "reached": -1.758,
+      "stop_short": 11.758,
+      "moved_0p1s": 0.037,
+      "onset_s": null,
+      "return_left": -1.777
+    },
+    {
+      "axis": "y",
+      "commanded": 10.0,
+      "sign": -1,
+      "reached": 2.147,
+      "stop_short": 7.853,
+      "moved_0p1s": 0.105,
+      "onset_s": null,
+      "return_left": 2.113
+    },
+    {
+      "axis": "y",
+      "commanded": 20.0,
+      "sign": 1,
+      "reached": 0.152,
+      "stop_short": 19.848,
+      "moved_0p1s": 0.601,
+      "onset_s": 0.08,
+      "return_left": 0.056
+    },
+    {
+      "axis": "y",
+      "commanded": 20.0,
+      "sign": -1,
+      "reached": 2.751,
+      "stop_short": 17.249,
+      "moved_0p1s": 1.083,
+      "onset_s": 0.054,
+      "return_left": 2.679
+    },
+    {
+      "axis": "y",
+      "commanded": 40.0,
+      "sign": 1,
+      "reached": 15.85,
+      "stop_short": 24.15,
+      "moved_0p1s": 4.2,
+      "onset_s": 0.032,
+      "return_left": 12.199
+    },
+    {
+      "axis": "y",
+      "commanded": 40.0,
+      "sign": -1,
+      "reached": 13.535,
+      "stop_short": 26.465,
+      "moved_0p1s": 5.58,
+      "onset_s": 0.032,
+      "return_left": 10.572
+    },
+    {
+      "axis": "z",
+      "commanded": 5.0,
+      "sign": 1,
+      "reached": -1.817,
+      "stop_short": 6.817,
+      "moved_0p1s": 0.023,
+      "onset_s": null,
+      "return_left": -1.85
+    },
+    {
+      "axis": "z",
+      "commanded": 5.0,
+      "sign": -1,
+      "reached": 2.124,
+      "stop_short": 2.876,
+      "moved_0p1s": 0.175,
+      "onset_s": null,
+      "return_left": 2.112
+    },
+    {
+      "axis": "z",
+      "commanded": 10.0,
+      "sign": 1,
+      "reached": -1.64,
+      "stop_short": 11.64,
+      "moved_0p1s": 0.334,
+      "onset_s": null,
+      "return_left": -1.743
+    },
+    {
+      "axis": "z",
+      "commanded": 10.0,
+      "sign": -1,
+      "reached": 2.955,
+      "stop_short": 7.045,
+      "moved_0p1s": 0.692,
+      "onset_s": 0.076,
+      "return_left": 2.881
+    },
+    {
+      "axis": "z",
+      "commanded": 20.0,
+      "sign": 1,
+      "reached": 1.31,
+      "stop_short": 18.69,
+      "moved_0p1s": 1.908,
+      "onset_s": 0.036,
+      "return_left": 0.809
+    },
+    {
+      "axis": "z",
+      "commanded": 20.0,
+      "sign": -1,
+      "reached": 6.534,
+      "stop_short": 13.466,
+      "moved_0p1s": 3.375,
+      "onset_s": 0.034,
+      "return_left": 6.064
+    },
+    {
+      "axis": "z",
+      "commanded": 40.0,
+      "sign": 1,
+      "reached": 19.003,
+      "stop_short": 20.997,
+      "moved_0p1s": 7.647,
+      "onset_s": 0.024,
+      "return_left": 8.982
+    },
+    {
+      "axis": "z",
+      "commanded": 40.0,
+      "sign": -1,
+      "reached": 16.166,
+      "stop_short": 23.834,
+      "moved_0p1s": 9.359,
+      "onset_s": 0.022,
+      "return_left": 7.101
+    },
+    {
+      "axis": "rx",
+      "commanded": 2.0,
+      "sign": 1,
+      "reached": 0.449,
+      "stop_short": 1.551,
+      "moved_0p1s": -0.001,
+      "onset_s": null,
+      "return_left": 0.343
+    },
+    {
+      "axis": "rx",
+      "commanded": 2.0,
+      "sign": -1,
+      "reached": 0.064,
+      "stop_short": 1.936,
+      "moved_0p1s": 0.143,
+      "onset_s": 0.216,
+      "return_left": 0.062
+    },
+    {
+      "axis": "rx",
+      "commanded": 4.0,
+      "sign": 1,
+      "reached": 0.018,
+      "stop_short": 3.982,
+      "moved_0p1s": 0.057,
+      "onset_s": null,
+      "return_left": -0.003
+    },
+    {
+      "axis": "rx",
+      "commanded": 4.0,
+      "sign": -1,
+      "reached": 0.516,
+      "stop_short": 3.484,
+      "moved_0p1s": 0.207,
+      "onset_s": 0.134,
+      "return_left": 0.508
+    },
+    {
+      "axis": "rx",
+      "commanded": 8.0,
+      "sign": 1,
+      "reached": 1.808,
+      "stop_short": 6.192,
+      "moved_0p1s": 0.528,
+      "onset_s": 0.054,
+      "return_left": 1.394
+    },
+    {
+      "axis": "rx",
+      "commanded": 8.0,
+      "sign": -1,
+      "reached": 3.717,
+      "stop_short": 4.283,
+      "moved_0p1s": 1.046,
+      "onset_s": 0.04,
+      "return_left": 3.281
+    },
+    {
+      "axis": "rx",
+      "commanded": 16.0,
+      "sign": 1,
+      "reached": 7.359,
+      "stop_short": 8.641,
+      "moved_0p1s": 2.494,
+      "onset_s": 0.026,
+      "return_left": 2.639
+    },
+    {
+      "axis": "rx",
+      "commanded": 16.0,
+      "sign": -1,
+      "reached": 9.18,
+      "stop_short": 6.82,
+      "moved_0p1s": 2.593,
+      "onset_s": 0.03,
+      "return_left": 3.822
+    },
+    {
+      "axis": "ry",
+      "commanded": 2.0,
+      "sign": 1,
+      "reached": 0.872,
+      "stop_short": 1.128,
+      "moved_0p1s": 0.361,
+      "onset_s": 0.074,
+      "return_left": 0.217
+    },
+    {
+      "axis": "ry",
+      "commanded": 2.0,
+      "sign": -1,
+      "reached": 0.833,
+      "stop_short": 1.167,
+      "moved_0p1s": 0.326,
+      "onset_s": 0.08,
+      "return_left": 0.809
+    },
+    {
+      "axis": "ry",
+      "commanded": 4.0,
+      "sign": 1,
+      "reached": 1.837,
+      "stop_short": 2.163,
+      "moved_0p1s": 0.632,
+      "onset_s": 0.04,
+      "return_left": 1.406
+    },
+    {
+      "axis": "ry",
+      "commanded": 4.0,
+      "sign": -1,
+      "reached": 1.769,
+      "stop_short": 2.231,
+      "moved_0p1s": 0.795,
+      "onset_s": 0.036,
+      "return_left": 1.33
+    },
+    {
+      "axis": "ry",
+      "commanded": 8.0,
+      "sign": 1,
+      "reached": 5.014,
+      "stop_short": 2.986,
+      "moved_0p1s": 1.685,
+      "onset_s": 0.024,
+      "return_left": 1.909
+    },
+    {
+      "axis": "ry",
+      "commanded": 8.0,
+      "sign": -1,
+      "reached": 5.226,
+      "stop_short": 2.774,
+      "moved_0p1s": 1.811,
+      "onset_s": 0.026,
+      "return_left": 1.599
+    },
+    {
+      "axis": "ry",
+      "commanded": 16.0,
+      "sign": 1,
+      "reached": 12.923,
+      "stop_short": 3.077,
+      "moved_0p1s": 3.836,
+      "onset_s": 0.02,
+      "return_left": 2.318
+    },
+    {
+      "axis": "ry",
+      "commanded": 16.0,
+      "sign": -1,
+      "reached": 12.767,
+      "stop_short": 3.233,
+      "moved_0p1s": 3.871,
+      "onset_s": 0.02,
+      "return_left": 1.891
+    },
+    {
+      "axis": "rz",
+      "commanded": 2.0,
+      "sign": 1,
+      "reached": 0.009,
+      "stop_short": 1.991,
+      "moved_0p1s": 0.216,
+      "onset_s": 0.114,
+      "return_left": -0.037
+    },
+    {
+      "axis": "rz",
+      "commanded": 2.0,
+      "sign": -1,
+      "reached": 0.42,
+      "stop_short": 1.58,
+      "moved_0p1s": 0.146,
+      "onset_s": 0.298,
+      "return_left": 0.402
+    },
+    {
+      "axis": "rz",
+      "commanded": 4.0,
+      "sign": 1,
+      "reached": 0.657,
+      "stop_short": 3.343,
+      "moved_0p1s": 0.406,
+      "onset_s": 0.06,
+      "return_left": 0.554
+    },
+    {
+      "axis": "rz",
+      "commanded": 4.0,
+      "sign": -1,
+      "reached": 1.803,
+      "stop_short": 2.197,
+      "moved_0p1s": 0.639,
+      "onset_s": 0.046,
+      "return_left": 1.66
+    },
+    {
+      "axis": "rz",
+      "commanded": 8.0,
+      "sign": 1,
+      "reached": 3.502,
+      "stop_short": 4.498,
+      "moved_0p1s": 1.429,
+      "onset_s": 0.03,
+      "return_left": 1.059
+    },
+    {
+      "axis": "rz",
+      "commanded": 8.0,
+      "sign": -1,
+      "reached": 5.102,
+      "stop_short": 2.898,
+      "moved_0p1s": 1.635,
+      "onset_s": 0.028,
+      "return_left": 2.502
+    },
+    {
+      "axis": "rz",
+      "commanded": 16.0,
+      "sign": 1,
+      "reached": 10.71,
+      "stop_short": 5.29,
+      "moved_0p1s": 3.33,
+      "onset_s": 0.022,
+      "return_left": 2.251
+    },
+    {
+      "axis": "rz",
+      "commanded": 16.0,
+      "sign": -1,
+      "reached": 11.906,
+      "stop_short": 4.094,
+      "moved_0p1s": 3.539,
+      "onset_s": 0.022,
+      "return_left": 2.866
+    }
+  ],
+  "doc": "Summarize a Thunder step-response record (workstation/step_test_thunder.py; sim counterpart R223, phase B).\n\nFor every held step: pose of the calibrated flange frame from the recorded joint positions (vendored UWLab kinematics,\nThunder calibration), measured along the commanded axis relative to the start (center) pose:\n  reached     = displacement at the end of the hold (mm or deg); stop_short = commanded - reached\n  moved_0p1s  = displacement 0.1 s after the step began, relative to the pose just before the step\n  onset_s     = first time the displacement from the pre-step pose exceeds 0.5 mm / 0.25 deg (None if never)\n  return_left = displacement still remaining 1.5 s after the target returned to zero\nPrints a table and writes <record>.steps.json next to the record.\n"
+}

@@ -1,0 +1,89 @@
+{
+  "record": "step_full_ur_default_retry1.pt",
+  "friction_mode": "ur_default",
+  "samples": 84500,
+  "steps": 48,
+  "completed": true,
+  "failure": null,
+  "cleanup_errors": [],
+  "strict_fitting_validation": {
+    "status": "expected_rejection_comparison_only",
+    "reason": "viscous_scale must be zero for the fitted Thunder controller"
+  },
+  "timing_summary": {
+    "samples": 84500,
+    "robot_span_s": 168.99800000013784,
+    "duplicate_intervals": 0,
+    "intervals_over_2p4ms": 0,
+    "max_interval_s": 0.0020000003278255463
+  },
+  "host_sample_to_command_ms": {
+    "min": 0.43811299838125706,
+    "p99": 1.1087958869757126,
+    "max": 1.4267459919210523,
+    "over_2p4ms": 0
+  },
+  "host_command_intervals_ms": {
+    "min": 1.1444129922892898,
+    "p99": 2.426941607263871,
+    "max": 2.8816619887948036,
+    "over_2p4ms": 1002
+  },
+  "direct_torque_call_ms": {
+    "min": 0.0150789855979383,
+    "p99": 0.027442991558928043,
+    "max": 0.08894200436770916,
+    "over_2p4ms": 0
+  },
+  "recorded_joint_speed_peak_deg_s": [
+    15.735490555165633,
+    6.194440711596664,
+    14.44136266029227,
+    35.489594625494554,
+    42.464501843641536,
+    33.098430774437716
+  ],
+  "joint_excursion_deg": [
+    2.801215965425847,
+    1.353426743473768,
+    2.0876883009494174,
+    8.269419311161158,
+    12.263741258541295,
+    9.287135654110715
+  ],
+  "commanded_torque_peak_nm": [
+    19.70433775464643,
+    17.147651498901624,
+    22.073834488669025,
+    13.421350279347024,
+    14.281012456740179,
+    13.637536817268165
+  ],
+  "rt_priorities": {
+    "receive": 90,
+    "control": 85,
+    "loop": "SCHED_FIFO 80"
+  },
+  "rt_threads": {
+    "receive": {
+      "1898070": {
+        "policy": 1,
+        "priority": 90
+      }
+    },
+    "control": {
+      "1898071": {
+        "policy": 1,
+        "priority": 85
+      }
+    }
+  },
+  "startup": {
+    "controller_warmup_iterations": 16,
+    "first_sample_waited_for_new_frame": true
+  },
+  "gc_control": {
+    "automatic_gc_suspended": true,
+    "enabled_on_entry": true
+  }
+}

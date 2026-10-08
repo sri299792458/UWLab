@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import argparse
 from contextlib import contextmanager
+import gc
 import hashlib
 import importlib.metadata
 import json
@@ -33,6 +34,9 @@ JOINT_NAMES = ["shoulder_pan_joint", "shoulder_lift_joint", "elbow_joint",
 RT_RECEIVE_PRIORITY, RT_CONTROL_PRIORITY, RT_APP_PRIORITY = 90, 85, 80
 STATE_TIMEOUT_S = 0.02
 STATE_POLL_S = 5e-5
+# Match records.validate_record: fixed-step replay cannot use skipped robot cycles.
+STATE_INTERVAL_TOLERANCE_S = 0.0004
+CONTROLLER_WARMUP_ITERATIONS = 16
 
 
 def install_calibration():
@@ -166,11 +170,13 @@ def require_new_fifo_thread(before, priority, interface):
     return workers
 
 
-def read_new_state(receive, last_robot_time):
+def read_new_state(receive, last_robot_time, *, require_continuity=True):
     """Wait for a robot state newer than last_robot_time and return a consistent snapshot.
 
     The robot timestamp is read before and after Q/Qd; if the robot published in between, the newer state is read
     again, so position and velocity always come from the same robot cycle and no robot cycle is recorded twice.
+    Skipped cycles abort collection before another target is sent; a fresh state alone is not enough for replay.
+    Receive-only timing audits may count gaps with require_continuity=False; torque collection always uses the default.
     """
     deadline = time.monotonic() + STATE_TIMEOUT_S
     while True:
@@ -181,6 +187,11 @@ def read_new_state(receive, last_robot_time):
             qd = np.asarray(receive.getActualQd())
             robot_after = receive.getTimestamp()
             if robot_after == robot_before:
+                if require_continuity and last_robot_time is not None:
+                    interval = robot_before - last_robot_time
+                    if abs(interval - DT) > STATE_INTERVAL_TOLERANCE_S:
+                        raise RuntimeError(f"Robot state interval {interval * 1000:.3f} ms; expected 2 ms "
+                                           "(+/- 0.4 ms). Fixed-step collection cannot skip robot cycles")
                 return host_before, robot_before, q, qd, robot_after
         if time.monotonic() > deadline:
             raise RuntimeError("No new robot state within 20 ms; RTDE state stream stalled")
@@ -216,6 +227,27 @@ def quat_multiply(a, b):
     v, i, j, k = b
     return np.array([w*v-x*i-y*j-z*k, w*i+x*v+y*k-z*j,
                      w*j-x*k+y*v+z*i, w*k+x*j-y*i+z*v])
+
+
+def torque_for_offset(osc, q, qd, center_pos, center_quat, offset):
+    """Shared computation for controller warmup, collection and read-only timing audits."""
+    pos, quat = kin.get_ee_pose(q)
+    jacobian = kin.compute_jacobian_calibrated(q)
+    target_pos = center_pos + offset[:3]
+    target_quat = quat_multiply(kin.axis_angle_to_quat(offset[3:]), center_quat)
+    osc.set_target(target_pos, target_quat)
+    torque = osc.compute(pos, quat, jacobian @ qd, jacobian)
+    return torque, target_pos, target_quat
+
+
+def warmup_controller(osc, q, qd, center_pos, center_quat):
+    """Warm computation only; no robot command is issued."""
+    offset = np.full(6, 0.001)
+    for _ in range(CONTROLLER_WARMUP_ITERATIONS):
+        torque, _, _ = torque_for_offset(osc, q, qd, center_pos, center_quat, offset)
+        if not np.isfinite(torque).all():
+            raise RuntimeError("Non-finite torque during offline controller warmup")
+    osc.set_target(center_pos, center_quat)
 
 
 def collect(config, offsets, output):
@@ -254,7 +286,14 @@ def collect(config, offsets, output):
     torque_started = False
     failure = None
     cleanup_errors = []
+    gc_enabled_on_entry = gc.isenabled()
+    gc_suspended = False
     try:
+        # Torch imports and the growing recording can trigger a generation-2
+        # collection taking tens of milliseconds. Collect before connecting,
+        # then defer automatic cyclic GC only while torque control is active.
+        if gc_enabled_on_entry:
+            gc.collect()
         before_receive = thread_schedule_snapshot()
         with fifo_thread_creation(RT_RECEIVE_PRIORITY):
             receive = RTDEReceiveInterface(config["robot_ip"], 500, rt_priority=RT_RECEIVE_PRIORITY)
@@ -281,9 +320,16 @@ def collect(config, offsets, output):
         rt_threads["control"] = require_new_fifo_thread(before_control, RT_CONTROL_PRIORITY, "RTDEControlInterface")
         if not control.setPayload(config["payload_mass_kg"], config["payload_cog_m"]):
             raise RuntimeError("setPayload failed")
+        gc.disable()
+        gc_suspended = True
         app_priority = set_app_realtime_priority()
+        warmup_controller(osc, initial_q, initial_qd, center_pos, center_quat)
         print(f"Timing mode: robot_state_locked; loop priority: {app_priority}", flush=True)
-        last_robot_time = None
+        # Anchor after all setup/warmup/output. The first recorded state must
+        # also be fresh, rather than a cached frame already near its 2 ms deadline.
+        last_robot_time = float(receive.getTimestamp())
+        if not np.isfinite(last_robot_time):
+            raise RuntimeError("Invalid robot timestamp before collection")
         for offset in offsets:
             # One fresh, consistent robot state per cycle; the command follows immediately.
             host_before, robot_before, q, qd, robot_after = read_new_state(receive, last_robot_time)
@@ -292,20 +338,18 @@ def collect(config, offsets, output):
                 raise RuntimeError("Received non-finite robot state")
             if np.any(np.abs(q - initial_q) > config["joint_excursion_limit_rad"]):
                 raise RuntimeError("Configured joint excursion exceeded")
-            pos, quat = kin.get_ee_pose(q)
-            jacobian = kin.compute_jacobian_calibrated(q)
-            target_pos = center_pos + offset[:3]
-            target_quat = quat_multiply(kin.axis_angle_to_quat(offset[3:]), center_quat)
-            osc.set_target(target_pos, target_quat)
-            torque = osc.compute(pos, quat, jacobian @ qd, jacobian)
+            torque, target_pos, target_quat = torque_for_offset(osc, q, qd, center_pos, center_quat, offset)
             if not np.isfinite(torque).all():
                 raise RuntimeError("Non-finite torque command")
             command_time = time.monotonic()
+            if command_time - host_before > STATE_TIMEOUT_S:
+                raise RuntimeError("Robot state is more than 20 ms old before torque command; host loop stalled")
             torque_started = True
             if not control.directTorque(torque.tolist(), **direct_torque_params):
                 raise RuntimeError("directTorque returned failure")
+            command_return_time = time.monotonic()
             rows.append((q.copy(), qd.copy(), torque.copy(), target_pos.copy(), target_quat.copy(),
-                         host_before, command_time, robot_before, robot_after))
+                         host_before, command_time, robot_before, robot_after, command_return_time))
         completed = True
     except BaseException as exc:
         failure = f"{type(exc).__name__}: {exc}"
@@ -338,6 +382,12 @@ def collect(config, offsets, output):
             os.sched_setscheduler(0, *initial_scheduler)
         except OSError as exc:
             cleanup_errors.append(f"Restore application scheduler: {exc}")
+        # Restore GC after torque-to-hold, disconnect and scheduler cleanup,
+        # before allocating tensors or serializing the saved record.
+        if gc_enabled_on_entry:
+            gc.enable()
+        else:
+            gc.disable()
         if rows:
             columns = list(zip(*rows))
             tensor = lambda index: torch.tensor(np.asarray(columns[index]), dtype=torch.float64)
@@ -353,6 +403,7 @@ def collect(config, offsets, output):
                 "waypoint_target_pos": tensor(3), "waypoint_target_quat": tensor(4),
                 "waypoint_step_indices": torch.arange(len(rows)), "num_waypoints": len(rows),
                 "host_sample_times_s": tensor(5), "host_command_times_s": tensor(6),
+                "host_command_return_times_s": tensor(9),
                 "robot_sample_times_s": tensor(7), "robot_after_read_times_s": tensor(8),
                 "osc_params": {k: config[k] for k in
                                ("motion_stiffness", "motion_damping_ratio", "torque_max")},
@@ -364,6 +415,10 @@ def collect(config, offsets, output):
                 "timing_mode": "robot_state_locked",
                 "rt_priorities": {"receive": RT_RECEIVE_PRIORITY, "control": RT_CONTROL_PRIORITY, "loop": app_priority},
                 "rt_threads": rt_threads,
+                "gc_control": {"automatic_gc_suspended": gc_suspended,
+                               "enabled_on_entry": gc_enabled_on_entry},
+                "startup": {"controller_warmup_iterations": CONTROLLER_WARMUP_ITERATIONS,
+                            "first_sample_waited_for_new_frame": True},
                 "timing_summary": timing_summary([row[7] for row in rows]),
             }
             torch.save(record, output)

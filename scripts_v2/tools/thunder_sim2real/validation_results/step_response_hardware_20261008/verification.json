@@ -1,0 +1,17 @@
+{
+  "software_tests": {
+    "command": "python -m unittest test_contract test_step_test test_move_to_start",
+    "tests_run": 39,
+    "result": "passed"
+  },
+  "archive_code_sha256": {
+    "workstation/collect_thunder.py": "6cd5bd8d19279f1aae2ad94107389188d87a0cf012511c8bcb346d12d22dd3ab",
+    "workstation/step_test_thunder.py": "7d6720beb5359868726ce87e3142633b88be1938ab7f33f2ef38368a6da327d8",
+    "workstation/move_to_start.py": "754241d94330b3e46be7c2c85a08a9a825a45aa3858c2ba77eec2f6c91571d55",
+    "workstation/audit_step_timing.py": "dd8ef4eb5d077d3e69960a3b85d9f43eaeacb98ae24129d15351dc2d120e632e",
+    "workstation/vendor/ur5e_kinematics.py": "cba2822b9ae05c0a761735f8da7e02b79ee04214ee3e09d03561ef2c267d6813",
+    "workstation/thunder_calibration.json": "a19ba762879ed8c40a351613d545981ae75ef2e36645a2cdf9028a230e82edd9"
+  },
+  "raw_files_preserved_byte_for_byte": true,
+  "read_only_audit_control_commands_sent": 0
+}

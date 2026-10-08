@@ -1,0 +1,16 @@
+{
+  "original_path": "/home/srinivas/thunder_step_test/run_20261008_nWQzjt/step_full_off_retry2.pt",
+  "original_file_mtime": "2026-10-08T12:28:23.544037-05:00",
+  "raw_sha256": "3996c55e8868f23461fdb769ec3874b72a9d63a7bd3ac09e6bda7382d17df01b",
+  "archive_parent_git_revision": "7a9ceec6b048e208cc0d5b5dc7117946b564fbdc",
+  "archive_code_sha256": {
+    "workstation/collect_thunder.py": "6cd5bd8d19279f1aae2ad94107389188d87a0cf012511c8bcb346d12d22dd3ab",
+    "workstation/step_test_thunder.py": "7d6720beb5359868726ce87e3142633b88be1938ab7f33f2ef38368a6da327d8",
+    "workstation/move_to_start.py": "754241d94330b3e46be7c2c85a08a9a825a45aa3858c2ba77eec2f6c91571d55",
+    "workstation/audit_step_timing.py": "dd8ef4eb5d077d3e69960a3b85d9f43eaeacb98ae24129d15351dc2d120e632e",
+    "workstation/vendor/ur5e_kinematics.py": "cba2822b9ae05c0a761735f8da7e02b79ee04214ee3e09d03561ef2c267d6813",
+    "workstation/thunder_calibration.json": "a19ba762879ed8c40a351613d545981ae75ef2e36645a2cdf9028a230e82edd9"
+  },
+  "collector_capture_hash_recorded": false,
+  "collector_hash_note": "Hashes describe the workspace code at archival time. The raw recording preserves startup, GC and pinned controller metadata, but does not embed the collector source hash."
+}
