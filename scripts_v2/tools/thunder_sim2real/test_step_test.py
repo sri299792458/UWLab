@@ -29,6 +29,9 @@ def base_config(**changes):
     # Short schedule for the mocked run: one translation and one rotation axis, one size each, 0.5 s holds.
     config.update(step_axes=["y", "rz"], translation_steps_m=[0.01], rotation_steps_rad=[0.0698132],
                   initial_hold_s=0.5, step_hold_s=0.5, return_hold_s=0.5)
+    config["policy_test"].update(axes=["y", "rz"], single_translation_m=[0.01], single_rotation_rad=[0.0698132],
+                                 constant_translation_m=[[0.01, 2]], constant_rotation_rad=[[0.0698132, 2]],
+                                 policy_steps_per_trial=3, initial_hold_s=0.5, return_hold_s=0.5)
     config.update(changes)
     return config
 
@@ -43,7 +46,7 @@ class StepTestTests(unittest.TestCase):
             collect_thunder.friction_scales({"direct_torque_params": {"viscous_scale": [1.2] * 6, "coulomb_scale": [0.5] * 6}})
 
     def test_plan_schedule_and_guard(self):
-        config, offsets = step_test_thunder.make_plan(base_config(), "off")
+        config, offsets, _ = step_test_thunder.make_plan(base_config(), "off")
         schedule = config["step_test"]["schedule"]
         self.assertEqual([(s["axis"], round(s["value"], 6)) for s in schedule],
                          [("y", 0.01), ("y", -0.01), ("rz", 0.069813), ("rz", -0.069813)])
@@ -55,8 +58,8 @@ class StepTestTests(unittest.TestCase):
         self.assertTrue(np.all(guard >= np.deg2rad(5.0)))
         self.assertNotIn("direct_torque_params", config)          # off = fitted zeros
 
-    def run_mock(self, friction):
-        config, offsets = step_test_thunder.make_plan(base_config(), friction)
+    def run_mock(self, friction, mode="held"):
+        config, offsets, anchors = step_test_thunder.make_plan(base_config(), friction, mode)
         expected = collect_thunder.friction_scales(config)
         q0 = np.array(config["start_joint_positions_rad"])
         clock = [0.0]
@@ -66,6 +69,7 @@ class StepTestTests(unittest.TestCase):
         receive.getActualQd.side_effect = lambda: np.zeros(6)
         receive.getTimestamp.side_effect = lambda: (clock.__setitem__(0, clock[0] + 1e-5), 100.0 + cycle() * 0.002)[1]
         control = Mock(); control.setPayload.return_value = True
+        control.isProgramRunning.side_effect = [False, False, True] + [True] * 10   # re-uploaded script starts after 2 polls
         seen = []
 
         def direct_torque(torque, *, viscous_scale, coulomb_scale):
@@ -92,7 +96,7 @@ class StepTestTests(unittest.TestCase):
             stack.enter_context(patch.object(collect_thunder, "require_new_fifo_thread", return_value={}))
             stack.enter_context(patch.object(torch, "save", side_effect=lambda record, _: saved.append(copy.deepcopy(record))))
             stack.enter_context(patch("builtins.print"))
-            collect_thunder.collect(config, offsets, Path(directory) / "mock-only.pt")
+            collect_thunder.collect(config, offsets, Path(directory) / "mock-only.pt", anchors=anchors)
         self.assertEqual(len(saved), 1)
         self.assertEqual(len(seen), len(offsets) + 1)                 # every cycle, then zero torque
         self.assertTrue(all(s == (expected["viscous_scale"], expected["coulomb_scale"]) for s in seen))
@@ -100,6 +104,15 @@ class StepTestTests(unittest.TestCase):
         self.assertTrue(record["completed"])
         self.assertEqual(record["direct_torque_params"], expected)
         self.assertEqual(record["collection_config"]["step_test"]["friction_mode"], friction)
+        if friction == "off":
+            control.setCustomScriptFile.assert_not_called()
+            self.assertEqual(record["control_script"], {"source": "ur_rtde compiled-in"})
+        else:
+            control.setCustomScriptFile.assert_called_once_with(str(collect_thunder.FIXED_CONTROL_SCRIPT))
+            self.assertEqual(record["control_script"]["source"], "vendor fixed script")
+            names = [c[0] for c in control.method_calls]
+            self.assertLess(names.index("setCustomScriptFile"), names.index("setPayload"))   # payload set on the new script
+        self.record_offsets, self.record_anchors = offsets, anchors
         return record
 
     def test_mocked_execution_off_and_ur_default(self):
@@ -111,6 +124,59 @@ class StepTestTests(unittest.TestCase):
         from records import validate_record
         with self.assertRaises(ValueError):
             validate_record(on)
+
+    def test_fixed_control_script_differs_only_in_the_two_scale_lines(self):
+        import difflib, hashlib
+        vendor = HERE / "workstation/vendor/ur_rtde_1_6_5"
+        orig = (vendor / "rtde_control.script").read_text().splitlines()
+        fixed = (vendor / "rtde_control_fixed.script").read_text().splitlines()
+        self.assertEqual((fixed[0], fixed[-1]), ("def rtde_control():", "end"))      # ur_rtde's wrapping of its built-in script
+        changed = [l for l in difflib.unified_diff(orig, fixed[1:-1], lineterm="", n=0) if l[:1] in "+-" and l[:3] not in ("+++", "---")]
+        self.assertEqual(changed, ["-$5.26         viscous_scale = q_from_input_float_registers(6)",
+                                   "-$5.26         couloumb_scale = q_from_input_float_registers(12)",
+                                   "+$5.26         viscous_scaling = q_from_input_float_registers(6)",
+                                   "+$5.26         coulomb_scaling = q_from_input_float_registers(12)"])
+        prov = json.loads((vendor / "PROVENANCE.json").read_text())
+        for key in ("original_script", "fixed_script"):
+            self.assertEqual(hashlib.sha256((vendor / prov[key]["path"]).read_bytes()).hexdigest(), prov[key]["sha256"])
+
+    def test_policy_plan_anchor_codes_and_cap(self):
+        config, offsets, anchors = step_test_thunder.make_plan(base_config(), "off", "policy")
+        self.assertEqual(anchors[0], 2)
+        for st in config["step_test"]["schedule"]:
+            starts = [st["start_sample"] + k * 50 for k in range(st["policy_steps"])]
+            self.assertTrue(all(anchors[i] == 1 for i in starts))                      # re-anchor every 0.1 s
+            for k, i in enumerate(starts):
+                ax = step_test_thunder.AXES.index(st["axis"])
+                self.assertAlmostEqual(offsets[i, ax], st["value"] if k < st["repeats"] else 0.0)
+            self.assertEqual(anchors[st["return_start_sample"]], 2)                    # back to the initial center
+        with self.assertRaises(ValueError):
+            bad = base_config(); bad["policy_test"]["constant_translation_m"] = [[0.02, 3]]   # 60 mm > 40 mm cap
+            step_test_thunder.make_plan(bad, "off", "policy")
+
+    def test_mocked_policy_execution_targets_follow_measured_pose(self):
+        from vendor import ur5e_kinematics as kin
+        for friction in ("off", "ur_default"):
+            record = self.run_mock(friction, "policy")
+            self.assertEqual(record["target_mode"], "anchored")
+            self.assertTrue(torch.equal(record["target_anchors"], torch.tensor(self.record_anchors)))
+            pos0, _ = kin.get_ee_pose(record["joint_positions"][0].numpy())               # the fake robot never moves
+            for i in np.nonzero(self.record_anchors == 1)[0][:6]:
+                expected = pos0 + self.record_offsets[i, :3]
+                self.assertTrue(np.allclose(record["waypoint_target_pos"][i].numpy(), expected, atol=1e-12))
+
+    def test_analysis_of_mocked_policy_record(self):
+        record = self.run_mock("off", "policy")
+        import analyze_step_test
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "mock.pt"
+            torch.save(record, path)
+            with patch.object(sys, "argv", ["analyze_step_test.py", str(path)]), patch("builtins.print"):
+                analyze_step_test.main()
+            summary = json.loads(path.with_suffix(".steps.json").read_text())
+        self.assertEqual(summary["mode"], "policy")
+        self.assertEqual(len(summary["trials"]), 8)
+        self.assertTrue(all(t["after_trial"] == 0.0 and len(t["step_ends"]) == 3 for t in summary["trials"]))
 
     def test_analysis_of_mocked_record(self):
         record = self.run_mock("off")

@@ -29,6 +29,8 @@ FRICTION_MODES = {
                    "coulomb_scale": [0.8, 0.8, 0.7, 0.8, 0.8, 0.8]},
 }
 MARGIN_RAD = np.deg2rad(5.0)
+POLICY_STEP_SAMPLES = 50                       # one 10 Hz policy step at the 500 Hz collector rate
+MAX_TRANSLATION_M, MAX_ROTATION_RAD = 0.04, np.deg2rad(16.0)   # held-test envelope, also the policy-mode cumulative cap
 
 
 def step_schedule(config):
@@ -59,6 +61,47 @@ def step_schedule(config):
     return steps, np.concatenate(blocks), schedule
 
 
+def policy_schedule(config):
+    """Policy-semantics trials (--mode policy). Every 0.1 s the target is re-anchored to the measured flange pose plus an
+    offset, exactly how the trained policy's relative Cartesian action is applied (target = current pose + scale x action).
+    single:   one 0.1 s command of size d, then zero action (target = current pose) for the rest of the trial;
+    constant: the same command for `repeats` consecutive 0.1 s steps, then zero action.
+    After each trial the target returns to the initial center pose and holds there. Returns (trials, offsets, anchors,
+    schedule); anchors follow collect_thunder.collect (1 = re-anchor to the measured pose, 2 = initial center)."""
+    p = config["policy_test"]
+    steps_per_trial, n = int(p["policy_steps_per_trial"]), lambda seconds: int(round(seconds / ct.DT))
+    initial, rest = float(p["initial_hold_s"]), float(p["return_hold_s"])
+    if steps_per_trial < 2 or min(initial, rest) < 0.5:
+        raise ValueError("Use at least 2 policy steps per trial and holds of at least 0.5 s")
+    trials = []
+    for ax in [AXES.index(a) for a in p["axes"]]:
+        single = p["single_translation_m"] if ax < 3 else p["single_rotation_rad"]
+        constant = p["constant_translation_m"] if ax < 3 else p["constant_rotation_rad"]
+        cap = MAX_TRANSLATION_M if ax < 3 else MAX_ROTATION_RAD
+        for size, repeats, kind in [(v, 1, "single") for v in single] + [(v, int(r), "constant") for v, r in constant]:
+            if size <= 0 or repeats < 1 or repeats >= steps_per_trial or size * repeats > cap + 1e-6:
+                raise ValueError(f"{kind} {AXES[ax]} {size} x {repeats} exceeds the 40 mm / 16 deg cumulative cap")
+            for sign in (1.0, -1.0):
+                trials.append((ax, sign * size, repeats, kind))
+    offsets = [np.zeros((n(initial), 6))]; anchors = [np.zeros(n(initial), dtype=int)]; anchors[0][0] = 2
+    schedule, cursor = [], n(initial)
+    for ax, value, repeats, kind in trials:
+        start = cursor
+        for k in range(steps_per_trial):
+            block = np.zeros((POLICY_STEP_SAMPLES, 6))
+            if k < repeats:
+                block[:, ax] = value
+            code = np.zeros(POLICY_STEP_SAMPLES, dtype=int); code[0] = 1
+            offsets.append(block); anchors.append(code); cursor += POLICY_STEP_SAMPLES
+        code = np.zeros(n(rest), dtype=int); code[0] = 2
+        offsets.append(np.zeros((n(rest), 6))); anchors.append(code)
+        schedule.append({"kind": kind, "axis": AXES[ax], "value": value, "repeats": repeats, "start_sample": start,
+                         "policy_steps": steps_per_trial, "step_samples": POLICY_STEP_SAMPLES,
+                         "return_start_sample": cursor, "return_samples": n(rest)})
+        cursor += n(rest)
+    return trials, np.concatenate(offsets), np.concatenate(anchors), schedule
+
+
 def quat_conjugate(q):
     return np.array([q[0], -q[1], -q[2], -q[3]])
 
@@ -87,8 +130,10 @@ def predicted_excursions(config, steps):
     return worst, residual
 
 
-def make_plan(config, friction):
+def make_plan(config, friction, mode="held"):
     config = copy.deepcopy(config)
+    if mode not in ("held", "policy"):
+        raise ValueError("mode must be held or policy")
     if friction not in FRICTION_MODES:
         raise ValueError(f"friction must be one of {sorted(FRICTION_MODES)}")
     if FRICTION_MODES[friction] is None:
@@ -96,7 +141,12 @@ def make_plan(config, friction):
     else:
         config["direct_torque_params"] = FRICTION_MODES[friction]
     ct.install_calibration()
-    steps, offsets, schedule = step_schedule(config)
+    if mode == "held":
+        steps, offsets, schedule = step_schedule(config)
+        anchors = None
+    else:
+        trials, offsets, anchors, schedule = policy_schedule(config)
+        steps = [(ax, value * repeats) for ax, value, repeats, _ in trials]   # worst case: every command fully tracked
     worst, residual = predicted_excursions(config, steps)
     if residual > 1e-6:
         raise ValueError(f"Planning IK did not converge (residual {residual:.2e})")
@@ -118,9 +168,9 @@ def make_plan(config, friction):
     if np.any(ct.vector(config, "torque_max", 6) > [150, 150, 150, 28, 28, 28]):
         raise ValueError("torque_max exceeds the UWLab UR5e limits")
     ct.friction_scales(config)
-    config["step_test"] = {"friction_mode": friction, "schedule": schedule, "predicted_max_joint_excursion_rad": worst.tolist(),
-                           "excursion_margin_rad": float(MARGIN_RAD)}
-    return config, offsets
+    config["step_test"] = {"mode": mode, "friction_mode": friction, "schedule": schedule,
+                           "predicted_max_joint_excursion_rad": worst.tolist(), "excursion_margin_rad": float(MARGIN_RAD)}
+    return config, offsets, anchors
 
 
 def main():
@@ -128,13 +178,16 @@ def main():
     parser.add_argument("--config", type=Path, required=True)
     parser.add_argument("--friction", choices=sorted(FRICTION_MODES), default="off",
                         help="off = fitted setting (zero UR compensation); ur_default = URScript default scales")
+    parser.add_argument("--mode", choices=["held", "policy"], default="held",
+                        help="held = fixed targets from the center (sim R223 phase B); policy = 10 Hz re-anchored targets (phases A/C)")
     parser.add_argument("--output", type=Path)
     parser.add_argument("--execute", action="store_true", help="Connect and execute the displayed step sequence")
     args = parser.parse_args()
-    config, offsets = make_plan(json.loads(args.config.read_text()), args.friction)
+    config, offsets, anchors = make_plan(json.loads(args.config.read_text()), args.friction, args.mode)
     info = config["step_test"]
     print(json.dumps({"steps": len(info["schedule"]), "duration_s": round(len(offsets) * ct.DT, 1), "samples": len(offsets),
-                      "friction_mode": args.friction, "direct_torque_params": ct.friction_scales(config),
+                      "mode": args.mode, "friction_mode": args.friction, "direct_torque_params": ct.friction_scales(config),
+                      "control_script": "vendor fixed (ur_rtde 1.6.5 bug)" if args.friction != "off" else "ur_rtde compiled-in",
                       "max_offset_m_rad": np.abs(offsets).max(axis=0).round(4).tolist(),
                       "predicted_max_joint_excursion_deg": np.rad2deg(info["predicted_max_joint_excursion_rad"]).round(2).tolist(),
                       "joint_excursion_limit_deg": np.rad2deg(config["joint_excursion_limit_rad"]).round(2).tolist(),
@@ -143,7 +196,7 @@ def main():
     if args.execute:
         if args.output is None:
             parser.error("--execute requires --output")
-        ct.collect(config, offsets, args.output)
+        ct.collect(config, offsets, args.output, anchors=anchors)
 
 
 if __name__ == "__main__":

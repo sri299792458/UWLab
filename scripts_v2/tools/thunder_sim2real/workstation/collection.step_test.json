@@ -71,5 +71,50 @@
   "step_hold_s": 2.0,
   "return_hold_s": 1.5,
   "joint_excursion_limit_rad": null,
-  "notes": "Controller step-response test (hardware counterpart of sim R223). Same robot settings, payload, gains and S-W-E- start pose (c675) as the clean R187 sysid recording (collection.remapped_full_amplitude_swe_candidate.json). Each step holds a fixed Cartesian target offset in base_link (Thunder: y = world up) for 2 s, then returns to zero for 1.5 s. Max held offset 40 mm / 16 deg, i.e. at most 40 N / 14 N m of spring at Kp 1000 / 50. The joint guard is computed from IK (predicted max excursion + 5 deg). The operator moves the arm to the start pose; the script does not."
+  "notes": "Controller step-response test (hardware counterpart of sim R223). Same robot settings, payload, gains and S-W-E- start pose (c675) as the clean R187 sysid recording (collection.remapped_full_amplitude_swe_candidate.json). Each step holds a fixed Cartesian target offset in base_link (Thunder: y = world up) for 2 s, then returns to zero for 1.5 s. Max held offset 40 mm / 16 deg, i.e. at most 40 N / 14 N m of spring at Kp 1000 / 50. The joint guard is computed from IK (predicted max excursion + 5 deg). The operator moves the arm to the start pose; the script does not.",
+  "policy_test": {
+    "axes": [
+      "x",
+      "y",
+      "z",
+      "rx",
+      "ry",
+      "rz"
+    ],
+    "single_translation_m": [
+      0.01,
+      0.02,
+      0.04
+    ],
+    "single_rotation_rad": [
+      0.034907,
+      0.069813,
+      0.139626,
+      0.279253
+    ],
+    "constant_translation_m": [
+      [
+        0.01,
+        4
+      ],
+      [
+        0.02,
+        2
+      ]
+    ],
+    "constant_rotation_rad": [
+      [
+        0.069813,
+        4
+      ],
+      [
+        0.139626,
+        2
+      ]
+    ],
+    "policy_steps_per_trial": 10,
+    "initial_hold_s": 1.0,
+    "return_hold_s": 2.0,
+    "notes": "--mode policy: every 0.1 s the target = measured flange pose + offset (the trained policy's action semantics; sim R223 phases A/C). single = one command then zero action; constant = [size, repeats]. Cumulative command per trial is capped at 40 mm / 16 deg (the held test's envelope), then the target returns to the initial center for 2 s."
+  }
 }

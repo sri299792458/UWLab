@@ -1,0 +1,73 @@
+{
+  "robot_ip": "10.33.55.89",
+  "payload_mass_kg": 1.04,
+  "payload_cog_m": [
+    -0.002,
+    0.001,
+    0.047
+  ],
+  "polyscope_version": "5.26.1.140514",
+  "gripper_configuration": "open_empty",
+  "start_joint_positions_rad": [
+    0.501928,
+    -1.409,
+    -2.415507,
+    -2.003571,
+    -2.19601,
+    0.076039
+  ],
+  "start_joint_tolerance_rad": 0.02,
+  "motion_stiffness": [
+    1000,
+    1000,
+    1000,
+    50,
+    50,
+    50
+  ],
+  "motion_damping_ratio": [
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0
+  ],
+  "torque_max": [
+    150,
+    150,
+    150,
+    28,
+    28,
+    28
+  ],
+  "robot_base_quaternion_world_wxyz": [
+    0.5,
+    0.5,
+    0.5,
+    0.5
+  ],
+  "step_axes": [
+    "x",
+    "y",
+    "z",
+    "rx",
+    "ry",
+    "rz"
+  ],
+  "translation_steps_m": [
+    0.015,
+    0.025,
+    0.03
+  ],
+  "rotation_steps_rad": [
+    0.008727,
+    0.017453,
+    0.02618
+  ],
+  "initial_hold_s": 1.0,
+  "step_hold_s": 2.0,
+  "return_hold_s": 1.5,
+  "joint_excursion_limit_rad": null,
+  "notes": "Fine held-step grid around the dead band measured on October 8 (translation 10-40 mm, rotation 0-4 deg); otherwise identical to collection.step_test.json (same robot settings, start pose, holds, joint guard rule)."
+}

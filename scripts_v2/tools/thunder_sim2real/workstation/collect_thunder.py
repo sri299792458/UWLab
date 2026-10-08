@@ -26,6 +26,9 @@ from vendor import ur5e_kinematics as kin
 
 HERE = Path(__file__).resolve().parent
 CALIBRATION = HERE / "thunder_calibration.json"
+# ur_rtde 1.6.5 control script with its direct_torque friction-scale bug fixed (vendor/ur_rtde_1_6_5/PROVENANCE.json).
+FIXED_CONTROL_SCRIPT = HERE / "vendor/ur_rtde_1_6_5/rtde_control_fixed.script"
+SCRIPT_START_TIMEOUT_S = 5.0
 DT = 1 / 500
 REQUIRED_RTDE_VERSION = "1.6.5"
 JOINT_NAMES = ["shoulder_pan_joint", "shoulder_lift_joint", "elbow_joint",
@@ -250,7 +253,10 @@ def warmup_controller(osc, q, qd, center_pos, center_quat):
     osc.set_target(center_pos, center_quat)
 
 
-def collect(config, offsets, output):
+def collect(config, offsets, output, anchors=None):
+    """anchors (optional, one int per sample): 0 keep the current target anchor, 1 re-anchor to the measured flange pose of
+    this sample (policy-style relative targets), 2 re-anchor to the initial center pose. Without anchors every target is
+    center + offset, as in the sysid recordings."""
     # Importing this module and planning never open a robot connection.
     import torch
     from rtde_control import RTDEControlInterface
@@ -277,6 +283,12 @@ def collect(config, offsets, output):
     # A config may request explicit robot-side compensation scales (step-response comparison only;
     # records.validate_record still rejects such records for fitting).
     direct_torque_params = friction_scales(config)
+    compensation_requested = any(any(v) for v in direct_torque_params.values())
+    if anchors is not None:
+        anchors = np.asarray(anchors, dtype=int)
+        if anchors.shape != (len(offsets),) or not np.isin(anchors, (0, 1, 2)).all():
+            raise ValueError("anchors must hold one code in {0, 1, 2} per sample")
+    control_script = {"source": "ur_rtde compiled-in"}
     control = receive = None
     app_priority = "not requested"
     rt_threads = {}
@@ -318,6 +330,17 @@ def collect(config, offsets, output):
                 rt_priority=RT_CONTROL_PRIORITY,
             )
         rt_threads["control"] = require_new_fifo_thread(before_control, RT_CONTROL_PRIORITY, "RTDEControlInterface")
+        if compensation_requested:
+            # The stock 1.6.5 script silently drops nonzero friction scales; upload the two-line fix and wait for it.
+            control.setCustomScriptFile(str(FIXED_CONTROL_SCRIPT))
+            deadline = time.monotonic() + SCRIPT_START_TIMEOUT_S
+            while not control.isProgramRunning():
+                if time.monotonic() > deadline:
+                    raise RuntimeError("Fixed control script did not start")
+                time.sleep(0.01)
+            control_script = {"source": "vendor fixed script", "path": str(FIXED_CONTROL_SCRIPT),
+                              "sha256": hashlib.sha256(FIXED_CONTROL_SCRIPT.read_bytes()).hexdigest()}
+        # setPayload goes through the running control script, so it also confirms a re-uploaded script responds.
         if not control.setPayload(config["payload_mass_kg"], config["payload_cog_m"]):
             raise RuntimeError("setPayload failed")
         gc.disable()
@@ -330,7 +353,8 @@ def collect(config, offsets, output):
         last_robot_time = float(receive.getTimestamp())
         if not np.isfinite(last_robot_time):
             raise RuntimeError("Invalid robot timestamp before collection")
-        for offset in offsets:
+        anchor_pos, anchor_quat = center_pos, center_quat
+        for index, offset in enumerate(offsets):
             # One fresh, consistent robot state per cycle; the command follows immediately.
             host_before, robot_before, q, qd, robot_after = read_new_state(receive, last_robot_time)
             last_robot_time = robot_before
@@ -338,7 +362,11 @@ def collect(config, offsets, output):
                 raise RuntimeError("Received non-finite robot state")
             if np.any(np.abs(q - initial_q) > config["joint_excursion_limit_rad"]):
                 raise RuntimeError("Configured joint excursion exceeded")
-            torque, target_pos, target_quat = torque_for_offset(osc, q, qd, center_pos, center_quat, offset)
+            if anchors is not None and anchors[index] == 1:
+                anchor_pos, anchor_quat = kin.get_ee_pose(q)
+            elif anchors is not None and anchors[index] == 2:
+                anchor_pos, anchor_quat = center_pos, center_quat
+            torque, target_pos, target_quat = torque_for_offset(osc, q, qd, anchor_pos, anchor_quat, offset)
             if not np.isfinite(torque).all():
                 raise RuntimeError("Non-finite torque command")
             command_time = time.monotonic()
@@ -412,6 +440,9 @@ def collect(config, offsets, output):
                 "controller_provenance": json.loads((HERE / "vendor/PROVENANCE.json").read_text()),
                 "ur_rtde_version": version,
                 "direct_torque_params": direct_torque_params,
+                "control_script": control_script,
+                "target_mode": "center" if anchors is None else "anchored",
+                **({} if anchors is None else {"target_anchors": torch.tensor(anchors[:len(rows)])}),
                 "timing_mode": "robot_state_locked",
                 "rt_priorities": {"receive": RT_RECEIVE_PRIORITY, "control": RT_CONTROL_PRIORITY, "loop": app_priority},
                 "rt_threads": rt_threads,

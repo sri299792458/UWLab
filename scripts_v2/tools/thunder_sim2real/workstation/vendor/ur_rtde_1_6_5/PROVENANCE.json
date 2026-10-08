@@ -1,0 +1,15 @@
+{
+  "package": "ur_rtde 1.6.5 (PyPI sdist ur_rtde-1.6.5.tar.gz, sha256 3d5b6c6bf73346b806d146f128537abd2afb1d769f4a9c8b3ef5a884fab0bcfa)",
+  "license": "MIT (LICENSE, Anders Prier Lindvig - SDU Robotics)",
+  "original_script": {
+    "path": "rtde_control.script",
+    "sha256": "e0e4404aa134831a1caea69ac72c70753cabcf57298209bc748a321c81f641dc"
+  },
+  "fixed_script": {
+    "path": "rtde_control_fixed.script",
+    "sha256": "bad20358db9ca01fb10ae0a20740c2b9e12064e27e7e77b2a9229384e4d20b71"
+  },
+  "bug": "cmd 66 (direct_torque, PolyScope >= 5.26 branch) reads the requested scales into viscous_scale / couloumb_scale but calls direct_torque(torque, viscous_scale=viscous_scaling, coulomb_scale=coulomb_scaling), whose variables stay at the zero initialization. Requested friction compensation is silently disabled. ur_rtde 1.6.4 passed the read scales positionally (correct).",
+  "fix": "Read the registers into viscous_scaling / coulomb_scaling (two lines). Wrapped in def rtde_control(): ... end, as ScriptClient::sendScript does for the compiled-in script; version-marker filtering and register-offset injection are applied by ur_rtde to custom files the same way.",
+  "use": "collect_thunder.collect() uploads it with RTDEControlInterface.setCustomScriptFile only when nonzero direct_torque_params are requested; zero-compensation runs keep the stock compiled-in script."
+}

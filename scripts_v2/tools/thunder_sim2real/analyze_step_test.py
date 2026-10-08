@@ -34,6 +34,25 @@ def pose_offsets(q, center_pos, center_quat):
     return out
 
 
+def analyze_policy(q, schedule):
+    """--mode policy trials: displacement along the commanded axis from the pose just before the trial, at the end of every
+    0.1 s policy step (mm or deg). after_first = end of step 1; after_commands = end of the last commanded step;
+    after_trial = end of the zero-action tail; per_step_commanded = mean motion per commanded step."""
+    rows = []
+    for st in schedule:
+        ax = AXES.index(st["axis"]); unit = 1000.0 if ax < 3 else 180.0 / np.pi
+        s0, k, m, reps = st["start_sample"], st["policy_steps"], st["step_samples"], st["repeats"]
+        if s0 + k * m > len(q):
+            break
+        pre_pos, pre_quat = kin.get_ee_pose(q[s0 - 1])
+        ends = pose_offsets(q[[s0 - 1 + (i + 1) * m for i in range(k)]], pre_pos, pre_quat)[:, ax] * np.sign(st["value"]) * unit
+        rows.append({"kind": st["kind"], "axis": st["axis"], "command_per_step": round(abs(st["value"]) * unit, 3),
+                     "repeats": reps, "after_first": round(ends[0], 3), "after_commands": round(ends[reps - 1], 3),
+                     "after_trial": round(ends[-1], 3), "per_step_commanded": round(ends[reps - 1] / reps, 3),
+                     "step_ends": [round(v, 3) for v in ends]})
+    return rows
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("record", type=Path)
@@ -43,6 +62,19 @@ def main():
     schedule = cfg["step_test"]["schedule"]
     ct.install_calibration()
     q = rec["joint_positions"].numpy()
+    if cfg["step_test"].get("mode", "held") == "policy":
+        rows = analyze_policy(q, schedule)
+        print(f"{'kind':>8} {'axis':>4} {'cmd/step':>9} {'reps':>4} {'1st step':>9} {'after cmds':>10} {'after 1 s':>9}")
+        for r in rows:
+            print(f"{r['kind']:>8} {r['axis']:>4} {r['command_per_step']:>9} {r['repeats']:>4} {r['after_first']:>9} "
+                  f"{r['after_commands']:>10} {r['after_trial']:>9}")
+        summary = {"record": str(args.record), "mode": "policy", "friction_mode": cfg["step_test"]["friction_mode"],
+                   "direct_torque_params": rec.get("direct_torque_params"), "control_script": rec.get("control_script"),
+                   "completed": rec.get("completed"), "failure": rec.get("failure"), "trials": rows, "doc": analyze_policy.__doc__}
+        out = args.record.with_suffix(".steps.json")
+        out.write_text(json.dumps(summary, indent=2) + "\n")
+        print("wrote", out)
+        return
     center_pos, center_quat = kin.get_ee_pose(rec["initial_joint_pos"].numpy())
     n = len(q)
     rows = []
