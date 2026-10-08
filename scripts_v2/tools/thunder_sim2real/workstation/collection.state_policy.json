@@ -8,12 +8,12 @@
     0.047
   ],
   "start_joint_positions_rad": [
-    0.4924,
-    -2.3011,
-    -2.08,
-    -1.9349,
-    -2.4031,
-    1.6286
+    0.778399,
+    -2.568071,
+    -1.872467,
+    -1.927923,
+    -2.296463,
+    2.327399
   ],
   "motion_stiffness": [
     1000,
@@ -60,7 +60,6 @@
     "target_extra_margin_m": 0.3,
     "min_wrist_height_above_table_m": 0.11,
     "joint_range_margin_rad": 0.2,
-    "start_joint_nn_max_rad": 0.45,
     "attached_cube_max_wrist_distance_m": 0.25,
     "cube_max_age_s": {
       "receptive": 2.0,
@@ -70,5 +69,6 @@
     "gripper_max_age_s": 0.2,
     "max_state_interval_s": 0.006
   },
-  "notes": "R214 deployment (run_state_policy.py). Gains, scale and payload match training / the R187 sysid setup. Limits are our safety stops, not training settings: wrist box = R214 sim rollout wrist range + margin; min wrist height 0.11 m above the table (training minimum 0.133 m); start pose must be within 0.45 rad (joint-space L2) of a training start (R217 banks, leave-one-out p99). Speed stops: R214 moves up to ~1 m/s in sim (R220 p99 per-step motion 64-102 mm); lower them for cautious first runs. Cube ages: the bottom cube is static (2 s), a free carried cube must be re-detected within 0.5 s, a held cube is propagated with the wrist (latency_compensation) for up to 3 s. start_joint_positions_rad (for move_to_start.py only) = medoid of the R217 Reaching-bank starts, (28.2, -131.8, -119.2, -110.9, -137.7, 93.3) deg, wrist 0.45 m above the table; check clearance on the real cell before moving there."
+  "notes": "R214 deployment (run_state_policy.py). Gains, scale and payload match training / the R187 sysid setup. Limits are our safety stops, not training settings: wrist box = R214 sim rollout wrist range + margin; min wrist height 0.11 m above the table (training minimum 0.133 m); Speed stops: R214 moves up to ~1 m/s in sim (R220 p99 per-step motion 64-102 mm); lower them for cautious first runs. Cube ages: the bottom cube is static (2 s), a free carried cube must be re-detected within 0.5 s, a held cube is propagated with the wrist (latency_compensation) for up to 3 s. Start pose: a Reaching-family training start from the R217 banks (row 5692), S-W-E-, gripper 5 deg from straight down, hand centered over the trained cube region 0.30 m above the table; (44.6, -147.1, -107.3, -110.5, -131.6, 133.4) deg. The runner requires every joint within start_joint_tolerance_rad of it; move_to_start.py takes the arm there. Check clearance and the camera's view of the cubes on the real cell.",
+  "start_joint_tolerance_rad": 0.02
 }

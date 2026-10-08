@@ -26,7 +26,7 @@ from state_policy import gripper as G  # noqa: E402
 from vendor import ur5e_kinematics as kin  # noqa: E402
 
 FIX = np.load(HERE / "test_data/r214_contract_fixture.npz")
-START = np.array([0.4924, -2.3011, -2.08, -1.9349, -2.4031, 1.6286])   # recommended (training-bank medoid) start
+START = np.array([0.778399, -2.568071, -1.872467, -1.927923, -2.296463, 2.327399])   # configured start (R217 row 5692)
 UP_Z_TO_BASE_Y = np.array([[1.0, 0, 0], [0, 0, 1.0], [0, -1.0, 0]])     # cube +Z -> base_link +y (world up)
 
 
@@ -200,7 +200,7 @@ class MockedRunTests(unittest.TestCase):
             stack.enter_context(patch("builtins.print"))
             out = Path(d) / "run"
             rsp.run(SimpleNamespace(mode=mode, config=cfg_path, camera_transform=cam, camera_transform_frame="base_link",
-                                    output=out, seconds=1.0, allow_start_outside_training=False))
+                                    output=out, seconds=1.0))
             summary = json.loads((out / "summary.json").read_text())
             log = dict(np.load(out / "log.npz"))
         return summary, log, control
@@ -208,7 +208,7 @@ class MockedRunTests(unittest.TestCase):
     def test_dry_run_sends_nothing_and_steps_policy_at_10_hz(self):
         summary, log, control = self.run_mode("dry-run")
         self.assertEqual(summary["stop_reason"], "max_episode_s")
-        self.assertTrue(summary["start_pose"]["in_distribution"])
+        self.assertTrue(summary["start_pose"]["at_start"])
         self.assertEqual(summary["policy_steps"], 10)
         self.assertTrue(np.array_equal(log["tick_cycle"], np.arange(10) * 50))
         control.directTorque.assert_not_called()
@@ -247,9 +247,9 @@ class MockedRunTests(unittest.TestCase):
         self.assertIn("SafetyStop", summary["stop_reason"])
         self.assertIn("old", summary["stop_reason"])
         control.servoJ.assert_called_once()                                        # handoff after torque started
-        far = START + np.array([0.0, 1.5, 0.0, 0.0, 0.0, 0.0])
-        summary, _, control = self.run_mode("execute", q0=far)
-        self.assertIn("outside the training starts", summary["stop_reason"])
+        off = START + np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.03])                  # 1.7 deg off on wrist 3
+        summary, _, control = self.run_mode("execute", q0=off)
+        self.assertIn("not at the start pose", summary["stop_reason"])
         control.directTorque.assert_not_called()
 
 

@@ -91,17 +91,13 @@ def action_to_target(pos, quat, action, scale):
     return pos + scaled[:3], ct.quat_multiply(kin.axis_angle_to_quat(scaled[3:6]), quat)
 
 
-def start_pose_report(q, m, limits):
-    ref = np.load(PKG / "train_start_arm_joints.npz")
-    d = np.linalg.norm(ref["q"].astype(float) - q, axis=1)
-    i = int(d.argmin())
-    rng = m["arm_joint_range_in_rollouts_rad"]
-    margin = limits["joint_range_margin_rad"]
-    outside = [j for j in range(6) if not rng["min"][j] - margin <= q[j] <= rng["max"][j] + margin]
-    return {"nearest_training_start_distance_rad": float(d[i]), "nearest_family": str(ref["families"][ref["family"][i]]),
-            "nearest_start_rad": ref["q"][i].astype(float).round(4).tolist(),
-            "bank_leave_one_out_p99_rad": float(ref["loo_nn_p99"]), "joints_outside_rollout_range": outside,
-            "in_distribution": bool(d[i] <= limits["start_joint_nn_max_rad"] and not outside)}
+def start_pose_report(q, cfg):
+    """The run starts from one fixed pose (config start_joint_positions_rad, a training start); every joint must be
+    within start_joint_tolerance_rad of it, as in the step tests."""
+    start = np.asarray(cfg["start_joint_positions_rad"], dtype=float)
+    error = np.asarray(q, dtype=float) - start
+    return {"joint_error_deg": np.degrees(error).round(2).tolist(),
+            "at_start": bool(np.max(np.abs(error)) <= cfg["start_joint_tolerance_rad"])}
 
 
 def cube_report(cube, m):
@@ -224,7 +220,7 @@ def check_loop(args, tracker, gripper, receive, m, summary, out_dir):
         cubes, (gpos, gobj, _) = tracker.latest(), gripper.latest()
         c = cubes["insertive"]
         line = {"gripper_position": gpos, "gripper_on_object": gripper_on_object(gpos, True, m),
-                "start_pose": start_pose_report(q, m, json.loads(args.config.read_text())["limits"])}
+                "start_pose": start_pose_report(q, json.loads(args.config.read_text()))}
         if c["valid"]:
             rel = np.linalg.inv(W) @ F.pos_quat_to_matrix(c["pos"], c["quat"])
             p = rel[:3, 3]
@@ -299,7 +295,7 @@ def policy_loop(args, cfg, limits, m, scale, gmap, tracker, gripper, summary, ou
         q0, qd0 = np.asarray(receive.getActualQ()), np.asarray(receive.getActualQd())
         if np.max(np.abs(qd0)) > 0.01:
             raise SafetyStop("Robot must be stationary at the start")
-        report = start_pose_report(q0, m, limits)
+        report = start_pose_report(q0, cfg)
         summary["start_pose"] = report
         cubes0 = tracker.latest()
         summary["cubes_at_start"] = {k: cube_report(c, m) if c["valid"] else None for k, c in cubes0.items()}
@@ -314,9 +310,9 @@ def policy_loop(args, cfg, limits, m, scale, gmap, tracker, gripper, summary, ou
                 raise SafetyStop(message)
             summary["events"].append("warning: " + message)
         print(json.dumps({"start_pose": report, "cubes": summary["cubes_at_start"], "gripper_position": gpos0}, indent=1))
-        if not report["in_distribution"] and not args.allow_start_outside_training:
-            raise SafetyStop("Start pose is outside the training starts (see start_pose); move to the recommended start "
-                             f"{scene['recommended_start_joint_positions_rad']} or pass --allow-start-outside-training")
+        if not report["at_start"]:
+            raise SafetyStop("Robot is not at the start pose (see start_pose.joint_error_deg); "
+                             "run move_to_start.py --config collection.state_policy.json --execute")
         if not in_workspace(kin.get_ee_pose(q0)[0]):
             raise SafetyStop("Wrist is outside the trained workspace box at the start")
         if execute:
@@ -454,7 +450,6 @@ def main():
                    help="base_link (sim / our kinematics) or ur_base (UR controller Base: getActualTCPPose / pendant)")
     p.add_argument("--output", type=Path, required=True, help="New directory for summary.json and log.npz")
     p.add_argument("--seconds", type=float, default=30.0, help="track / check duration")
-    p.add_argument("--allow-start-outside-training", action="store_true")
     run(p.parse_args())
 
 

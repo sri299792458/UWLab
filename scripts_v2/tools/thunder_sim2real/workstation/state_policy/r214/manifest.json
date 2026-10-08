@@ -827,14 +827,14 @@
    "rows": 1930
   },
   "recommended_start_joint_positions_rad": [
-   0.4924,
-   -2.3011,
-   -2.08,
-   -1.9349,
-   -2.4031,
-   1.6286
+   0.778399,
+   -2.568071,
+   -1.872467,
+   -1.927923,
+   -2.296463,
+   2.327399
   ],
-  "recommended_start_note": "medoid of 3000 sampled Reaching-bank starts; wrist 0.451 m above the table; training Reaching/Near-Object starts have the gripper CLOSED (empty)"
+  "recommended_start_note": "R217 Reaching-bank row 5692: S-W-E-, gripper 5 deg from straight down, wrist (-0.424, -0.323, -0.090) m = centered over the trained cube region, 0.30 m above the table; wrist 3 at 133 deg (47 deg from the +-180 deg wrap). Training Reaching/Near-Object starts have the gripper CLOSED (empty)."
  },
  "arm_joint_range_in_rollouts_rad": {
   "min": [

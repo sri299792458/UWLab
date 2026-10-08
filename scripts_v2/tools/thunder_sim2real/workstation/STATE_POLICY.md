@@ -34,10 +34,11 @@ from the capture time to now, using the logged joint angles).
   reports `inside_trained_region`).
 - **Gripper**: activated on the pendant (the runner never sends activation motion), then **closed and empty**: training
   Reaching / Near-Object starts have the gripper closed. `execute` refuses to start otherwise.
-- **Arm start**: within 0.45 rad (joint-space distance) of a training start; the runner prints the distance and refuses
-  otherwise. The recommended start (`start_joint_positions_rad` in the config) is
-  (28.2, -131.8, -119.2, -110.9, -137.7, 93.3) deg, wrist 0.45 m above the table. Check clearance on the real cell. Bring
-  the arm within 5 deg with the pendant, then `python move_to_start.py --config collection.state_policy.json --execute`.
+- **Arm start**: one fixed pose, `start_joint_positions_rad` in the config = (44.6, -147.1, -107.3, -110.5, -131.6, 133.4) deg.
+  It is a training start (R217 Reaching bank): S-W-E-, gripper 5 deg from straight down, hand centered over the trained cube
+  region 0.30 m above the table, wrist 3 at 133 deg. Every joint must be within 0.02 rad of it. Check clearance and that the
+  arm does not hide the cubes from the L515. Bring the arm within 5 deg with the pendant, then
+  `python move_to_start.py --config collection.state_policy.json --execute`.
 
 ## Steps
 
