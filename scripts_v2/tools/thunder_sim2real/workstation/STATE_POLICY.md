@@ -16,9 +16,11 @@ does everything the earlier ones do. Nothing moves before `execute`, and `execut
 | Gripper action | action[6] < 0 closes, else opens; speed 128, force 0 | as decided |
 | Cubes | bottom cube = tags 10-15, carried cube = tags 20-25 (G1 detector configs) | cube frame = sim cube frame (same aprilcube source) |
 
-Two things are ours, not training's: the safety stops in `collection.state_policy.json` "limits", and latency compensation
-of the held cube (while the gripper is closed on an object, the camera pose of the carried cube is moved with the wrist
-from the capture time to now, using the logged joint angles).
+Three things are ours, not training's: the safety stops in `collection.state_policy.json` "limits", latency compensation
+of the held cube (while the gripper reports holding it, its last camera pose is moved with the wrist from the later of
+capture and grasp to now, using the logged joint angles, with no age limit), and cube face relabelling (`state_policy/cube_symmetry.py`:
+the cubes are physically symmetric, so at the start of a run each cube's frame is relabelled once to +Z up, the bottom
+cube at the +Z-up yaw nearest training's -90 deg; a placement like training's is left unchanged).
 
 ## Setup
 
@@ -29,21 +31,21 @@ from the capture time to now, using the logged joint angles).
   from `getActualTCPPose` / pendant poses (UR controller Base), or `base_link` if computed in the sim / our kinematics
   frame. The two differ by 180 deg about the base z axis, which on Thunder flips up/down; this is what flipped the
   October 6 pull-out direction.
-- **Cubes**: bottom cube (tags 10-15) with **tag 14 (+Z) up**: every training start has the bottom cube +Z up. For first
-  tests also place the carried cube (tags 20-25) with **tag 24 (+Z) up**. Keep both inside the trained region (`track`
-  reports `inside_trained_region`).
+- **Cubes**: bottom cube = tags 10-15, carried cube = tags 20-25, each resting flat on any face (faces are relabelled).
+  The bottom cube's yaw must be within 15 deg of training's after relabelling: `track` reports `bottom_cube_yaw_error_deg`,
+  and dry-run / execute refuse to start beyond +/-15. Keep both inside the trained region (`inside_trained_region`).
 - **Gripper**: activated on the pendant (the runner never sends activation motion), then **closed and empty**: training
   Reaching / Near-Object starts have the gripper closed. `execute` refuses to start otherwise.
-- **Arm start**: one fixed pose, `start_joint_positions_rad` in the config = (44.6, -147.1, -107.3, -110.5, -131.6, 133.4) deg.
-  It is a training start (R217 Reaching bank): S-W-E-, gripper 5 deg from straight down, hand centered over the trained cube
-  region 0.30 m above the table, wrist 3 at 133 deg. Every joint must be within 0.02 rad of it. Check clearance and that the
-  arm does not hide the cubes from the L515. Bring the arm within 5 deg with the pendant, then
+- **Arm start**: one fixed pose, `start_joint_positions_rad` in the config = (15.6, -145.8, -70.3, -144.6, -160.0, 96.0) deg.
+  It is a training start (R214 Reaching start bank, row 7738): S-W-E-, gripper 4 deg from straight down, wrist 0.47 m above
+  the table, wrist 3 at 96 deg, and the arm stays >= 0.12 m from the L515's lines of sight to the whole trained cube region.
+  Every joint must be within 0.02 rad of it. Bring the arm within 10 deg with the pendant, then
   `python move_to_start.py --config collection.state_policy.json --execute`.
 
 ## Steps
 
 ```bash
-# 1) camera only: both cubes detected, bottom_above_table_mm ~ 0, up_face +Z, inside_trained_region true
+# 1) camera only: both cubes detected, bottom_above_table_mm ~ 0, inside_trained_region true, |bottom_cube_yaw_error_deg| <= 15
 python run_state_policy.py --mode track --camera-transform <T.npy> --camera-transform-frame ur_base --output ~/thunder_policy/track1
 ```
 ```bash
@@ -67,7 +69,7 @@ Each run writes `summary.json` (start-pose and cube reports, stop reason, timing
 
 Stops (then torque-to-hold) on: wrist outside the R214 rollout wrist box + 5 cm, wrist lower than 0.11 m above the table
 (training minimum 0.133 m), a joint outside the training range + 0.2 rad, wrist speed > 1.0 m/s or > 4 rad/s, a policy target
-more than 0.3 m outside the box, a stale cube pose (bottom cube 2 s; free carried cube 0.5 s; held cube 3 s), a stale
+more than 0.3 m outside the box, a stale cube pose (bottom cube 10 s; free carried cube 2 s; a held cube has no limit), a stale
 gripper position (0.2 s), a robot-state gap over 6 ms, or 30 s elapsed. R214 moves up to about 1 m/s in sim (R220): lower
 the speed limits for cautious first runs, knowing the policy may then hit them during normal motion.
 

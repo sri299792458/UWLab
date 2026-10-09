@@ -16,10 +16,13 @@ Action semantics are training's: every 0.1 s target = measured wrist pose + scal
 frame), held for 50 robot cycles; gripper closes if action[6] < 0. Each cycle sends its torque first and then runs the
 policy step, so a new target takes effect from the next cycle (2 ms after the state it was computed from).
 
-Our additions (not in training): latency compensation of the HELD cube and the safety stops listed in
-collection.state_policy.json "limits". While the gripper is commanded closed and stopped on an object, the held cube is
-treated as rigidly attached to the wrist between the camera capture and now: T_base_cube(now) = T_base_wrist(now) *
-inv(T_base_wrist(capture)) * T_base_cube(capture), with the wrist pose at capture time from the logged joint angles.
+Our additions (not in training): latency compensation of the HELD cube, cube face relabelling, and the safety stops listed
+in collection.state_policy.json "limits". While the gripper reports holding an object (commanded closed, stopped on
+contact), the carried cube is static until the grasp and rigid with the wrist after it: T_base_cube(now) = T_base_wrist(now)
+* inv(T_base_wrist(t)) * T_base_cube(capture), t = the later of capture and grasp, wrist poses from the logged joint angles.
+A held cube therefore has no age limit (the overhead L515 rarely sees its tags); if the grip is lost it is free again.
+Face relabelling (state_policy/cube_symmetry.py): the cubes are physically symmetric, so each cube's frame is relabelled
+once per run with a fixed cube symmetry to +Z up (bottom cube at the training yaw); a placement like training's is unchanged.
 """
 from __future__ import annotations
 
@@ -41,6 +44,7 @@ import collect_thunder as ct
 from vendor import ur5e_kinematics as kin
 from state_policy import obs as O
 from state_policy import frames as F
+from state_policy import cube_symmetry as CS
 
 HERE = Path(__file__).resolve().parent
 PKG = HERE / "state_policy/r214"
@@ -115,15 +119,33 @@ def cube_report(cube, m):
             "inside_trained_region": inside, "reproj_px": round(cube["reproj_px"], 2), "n_tags": cube["n_tags"]}
 
 
-class CubeState:
-    """Turns the tracker's latest measurements into the cube poses for one policy step (and enforces freshness)."""
+def cube_relabel(cubes, m):
+    """Face relabelling from one tracker reading (state_policy/cube_symmetry.py): ({cube: 4x4 S}, bottom yaw error deg)."""
+    if not all(c["valid"] for c in cubes.values()):
+        raise SafetyStop("Both cubes must be detected at the start")
+    R = {name: F.pos_quat_to_matrix(c["pos"], c["quat"])[:3, :3] for name, c in cubes.items()}
+    S_bottom, S_carried, yaw_error = CS.relabel(R["receptive"], R["insertive"], m["scene_in_base_link"]["world_up"])
+    S = {"receptive": np.eye(4), "insertive": np.eye(4)}
+    S["receptive"][:3, :3], S["insertive"][:3, :3] = S_bottom, S_carried
+    return S, yaw_error
 
-    def __init__(self, limits, latency_compensation):
+
+class CubeState:
+    """Turns the tracker's latest measurements into the cube poses for one policy step (and enforces freshness).
+    relabel: {cube: 4x4 symmetry} fixed for the run (cube_relabel), applied as T @ S to every pose."""
+
+    def __init__(self, limits, latency_compensation, relabel=None):
         self.limits = limits
         self.latency_compensation = latency_compensation
+        self.relabel = relabel
+        self.grasp_t = None      # when the gripper was first seen holding an object (reset when it lets go)
 
     def poses(self, cubes, now, wrist_T_now, wrist_T_at, gripper_closed_on_object):
         out, info = {}, {}
+        if not gripper_closed_on_object:
+            self.grasp_t = None
+        elif self.grasp_t is None:
+            self.grasp_t = now
         for name in ("receptive", "insertive"):
             c = cubes[name]
             if not c["valid"]:
@@ -131,26 +153,31 @@ class CubeState:
             age = now - c["capture_t"]
             T_cap = F.pos_quat_to_matrix(c["pos"], c["quat"])
             attached = False
-            if name == "insertive" and gripper_closed_on_object:
-                dist = np.linalg.norm(T_cap[:3, 3] - wrist_T_now[:3, 3])
-                attached = dist < self.limits["attached_cube_max_wrist_distance_m"]
+            if name == "insertive" and self.grasp_t is not None:
+                # Static until grasped, rigid with the wrist after: carry the last sighting with the wrist from the
+                # later of its capture and the grasp. It was in the hand if it was near the wrist at that time.
+                cube_in_wrist = np.linalg.inv(wrist_T_at(max(c["capture_t"], self.grasp_t))) @ T_cap
+                attached = np.linalg.norm(cube_in_wrist[:3, 3]) < self.limits["attached_cube_max_wrist_distance_m"]
             if attached and self.latency_compensation:
-                T = wrist_T_now @ np.linalg.inv(wrist_T_at(c["capture_t"])) @ T_cap
-                max_age = self.limits["cube_max_age_s"]["insertive_attached"]
+                T = wrist_T_now @ cube_in_wrist
+                max_age = None   # held: valid for as long as the gripper reports holding it
             else:
                 T = T_cap
                 max_age = self.limits["cube_max_age_s"]["receptive" if name == "receptive" else "insertive_free"]
-            if age > max_age:
+            if max_age is not None and age > max_age:
                 raise SafetyStop(f"{name} cube pose is {age:.2f} s old (limit {max_age} s, attached={attached})")
+            if self.relabel is not None:
+                T = T @ self.relabel[name]
             out[name] = F.matrix_to_pos_quat(T)
             info[name] = (age, attached)
         return out, info
 
 
-def gripper_on_object(position, closed_cmd, m):
-    """Closed command and stopped between open and the empty-closed position, i.e. on an object."""
+def gripper_on_object(position, object_status, closed_cmd, m):
+    """Closed command, the gripper reports stopping on contact while closing (Robotiq gOBJ 2), and its position is between
+    open and the empty-closed position, i.e. holding an object."""
     real = m["gripper"]["position_to_finger_joint"]["real_position"]
-    return bool(closed_cmd and real[0] + 20 < position < real[-1] - 10)
+    return bool(closed_cmd and object_status == 2 and real[0] + 20 < position < real[-1] - 10)
 
 
 def run(args):
@@ -169,7 +196,8 @@ def run(args):
                "camera_transform_source": str(args.camera_transform), "camera_transform_frame": args.camera_transform_frame,
                "policy_sha256": m["policy"]["sha256"], "events": []}
     tracker = CubeTracker(T_cam, {"receptive": PKG / m["cubes"]["receptive_detector"],
-                                  "insertive": PKG / m["cubes"]["insertive_detector"]}, **cfg["camera"])
+                                  "insertive": PKG / m["cubes"]["insertive_detector"]}, **cfg["camera"],
+                          preview=args.preview)
     gripper = receive = control = None
     try:
         tracker.start()
@@ -205,6 +233,8 @@ def track_loop(args, tracker, m, summary, out_dir):
             if c["valid"]:
                 line[name]["age_s"] = round(now - c["capture_t"], 3)
                 line[name]["global_time"] = c["global_time"]
+        if all(c["valid"] for c in cubes.values()):
+            line["bottom_cube_yaw_error_deg"] = round(cube_relabel(cubes, m)[1], 1)   # after relabelling; limit +/-15
         print(json.dumps(line), flush=True)
         summary["last"] = line
         tracker.check()
@@ -219,7 +249,7 @@ def check_loop(args, tracker, gripper, receive, m, summary, out_dir):
         W, _, _ = wrist_matrix(q)
         cubes, (gpos, gobj, _) = tracker.latest(), gripper.latest()
         c = cubes["insertive"]
-        line = {"gripper_position": gpos, "gripper_on_object": gripper_on_object(gpos, True, m),
+        line = {"gripper_position": gpos, "gripper_on_object": gripper_on_object(gpos, gobj, True, m),
                 "start_pose": start_pose_report(q, json.loads(args.config.read_text()))}
         if c["valid"]:
             rel = np.linalg.inv(W) @ F.pos_quat_to_matrix(c["pos"], c["quat"])
@@ -297,8 +327,25 @@ def policy_loop(args, cfg, limits, m, scale, gmap, tracker, gripper, summary, ou
             raise SafetyStop("Robot must be stationary at the start")
         report = start_pose_report(q0, cfg)
         summary["start_pose"] = report
-        cubes0 = tracker.latest()
+        def resting_flat(cubes):          # the start reading fixes the face relabelling, so it must be a good one
+            return all(c["valid"] and CS.resting_tilt_deg(F.pos_quat_to_matrix(c["pos"], c["quat"])[:3, :3], up)
+                       <= CS.MAX_RESTING_TILT_DEG for c in cubes.values())
+
+        cubes0, deadline = tracker.latest(), time.monotonic() + 5.0
+        while not resting_flat(cubes0) and time.monotonic() < deadline:
+            tracker.check()             # the camera's first frames come before its exposure settles and tags are found
+            time.sleep(0.05)
+            cubes0 = tracker.latest()
         summary["cubes_at_start"] = {k: cube_report(c, m) if c["valid"] else None for k, c in cubes0.items()}
+        if all(c["valid"] for c in cubes0.values()) and not resting_flat(cubes0):
+            raise SafetyStop(f"No reading within 5 s with both cubes resting flat (tilt <= {CS.MAX_RESTING_TILT_DEG:g} deg); "
+                             "see cubes_at_start up_face_tilt_deg (a single visible tag can give a tilted pose)")
+        cube_state.relabel, yaw_error = cube_relabel(cubes0, m)
+        summary["cube_relabel"] = {"bottom_cube_yaw_error_deg": round(yaw_error, 1),
+                                   **{k: S[:3, :3].astype(int).tolist() for k, S in cube_state.relabel.items()}}
+        if abs(yaw_error) > CS.MAX_BOTTOM_YAW_ERROR_DEG:
+            raise SafetyStop(f"Bottom cube yaw is {yaw_error:+.0f} deg from training (limit +/-15): turn it "
+                             f"{-yaw_error:+.0f} deg about vertical")
         gpos0 = gripper.latest()[0]
         summary["gripper_position_at_start"] = gpos0
         anchors = m["gripper"]["position_to_finger_joint"]["real_position"]
@@ -335,11 +382,11 @@ def policy_loop(args, cfg, limits, m, scale, gmap, tracker, gripper, summary, ou
             (2 ms after this state; the anchor pose is this state, as in training)."""
             tick_started = time.monotonic()
             tracker.check(); gripper.check()
-            gpos, _, gtime = gripper.latest()
+            gpos, gobj, gtime = gripper.latest()
             if host_before - gtime > limits["gripper_max_age_s"]:
                 raise SafetyStop("Gripper position is stale")
             cubes, info = cube_state.poses(tracker.latest(), host_before, W, wrist_T_at,
-                                           gripper_on_object(gpos, bool(st["closed"]), m))
+                                           gripper_on_object(gpos, gobj, bool(st["closed"]), m))
             (rp, rq), (ip, iq) = cubes["receptive"], cubes["insertive"]
             joints = np.concatenate([q, gmap.sim_joints(gpos)])
             obs = history.push(O.frame_terms(st["last_action"], joints, wpos, wquat, ip, iq, rp, rq))
@@ -450,6 +497,8 @@ def main():
                    help="base_link (sim / our kinematics) or ur_base (UR controller Base: getActualTCPPose / pendant)")
     p.add_argument("--output", type=Path, required=True, help="New directory for summary.json and log.npz")
     p.add_argument("--seconds", type=float, default=30.0, help="track / check duration")
+    p.add_argument("--preview", action="store_true",
+                   help="show the L515 image with the detected cubes (drawn in the tracker process, after each frame's poses)")
     run(p.parse_args())
 
 

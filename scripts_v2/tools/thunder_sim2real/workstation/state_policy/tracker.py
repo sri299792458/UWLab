@@ -1,7 +1,8 @@
 """Cube poses from the external L515 color stream with aprilcube (one detector per cube), in a separate process.
 
 Each camera frame: aprilcube CubePoseEstimator.process_frame (its default Kalman filter on, as in the aprilcube API) gives
-the cube pose in the camera optical frame; it is mapped to base_link with the camera transform (frames.load_camera_transform).
+the cube pose in the camera optical frame (translation in millimeters, converted to meters here); it is mapped to base_link
+with the camera transform (frames.load_camera_transform).
 The cube frame is the aprilcube frame (centered; faces +X..-Z carry tags first..last ID), identical to the sim cube frame.
 Results go to shared memory with a sequence counter (seqlock), so the control loop reads them without locks or the
 interpreter lock of this process. Capture time: the frame's global (host-synchronized) timestamp converted to
@@ -20,9 +21,10 @@ CUBES = ("receptive", "insertive")
 
 class CubeTracker:
     def __init__(self, T_base_camera, detector_configs, *, width=1280, height=720, fps=30, serial=None,
-                 enable_filter=True):
+                 enable_filter=True, preview=False):
         self.args = (np.asarray(T_base_camera, dtype=float).tolist(), {k: str(v) for k, v in detector_configs.items()},
                      int(width), int(height), int(fps), serial, bool(enable_filter))
+        self.preview = bool(preview)
         self.data = mp.Array("d", SLOT * len(CUBES), lock=False)
         self.seq = mp.Value("q", 0, lock=False)
         self.frames = mp.Value("q", 0, lock=False)
@@ -35,7 +37,7 @@ class CubeTracker:
         ctx = mp.get_context("spawn")
         self.process = ctx.Process(target=_tracker_main, daemon=True,
                                    args=(*self.args, self.data, self.seq, self.frames, self.intrinsics, self.error,
-                                         self.stop_flag))
+                                         self.stop_flag), kwargs={"preview": self.preview})
         self.process.start()
         deadline = time.monotonic() + timeout_s
         while self.frames.value == 0:
@@ -76,8 +78,27 @@ class CubeTracker:
                 self.process.terminate()
 
 
+def _draw_preview(image, K, coeffs, results, last, capture):
+    """Camera image with each detected cube's axes (40 mm) and a status line per cube; shown after the poses are published."""
+    import cv2
+    vis = image.copy()
+    for i, (name, res) in enumerate(zip(CUBES, results)):
+        seen = res["success"] and res["T"] is not None and not res.get("predicted")
+        if seen:
+            T_mm = np.asarray(res["T"], dtype=float)
+            cv2.drawFrameAxes(vis, K, coeffs, cv2.Rodrigues(T_mm[:3, :3])[0], T_mm[:3, 3], 40.0)
+            status = f"seen ({int(res['n_tags'])} tags)"
+        else:
+            status = f"last seen {capture - last[i, 1]:.1f} s ago" if last[i, 0] else "never seen"
+        label = {"receptive": "bottom cube 10-15", "insertive": "carried cube 20-25"}[name]
+        cv2.putText(vis, f"{label}: {status}", (12, 34 + 34 * i), cv2.FONT_HERSHEY_SIMPLEX, 0.9,
+                    (60, 220, 60) if seen else (40, 40, 230), 2, cv2.LINE_AA)
+    cv2.imshow("L515 cubes (preview)", vis)
+    cv2.waitKey(1)
+
+
 def _tracker_main(T_base_camera, detector_configs, width, height, fps, serial, enable_filter, data, seq, frames,
-                  intrinsics, error, stop_flag):
+                  intrinsics, error, stop_flag, preview=False):
     pipeline = None
     try:
         import aprilcube
@@ -99,6 +120,7 @@ def _tracker_main(T_base_camera, detector_configs, width, height, fps, serial, e
         cam = {"fx": intr.fx, "fy": intr.fy, "cx": intr.ppx, "cy": intr.ppy}
         detectors = [aprilcube.detector(detector_configs[name], cam, dist_coeffs=coeffs, enable_filter=enable_filter)
                      for name in CUBES]
+        K = np.array([[intr.fx, 0.0, intr.ppx], [0.0, intr.fy, intr.ppy], [0.0, 0.0, 1.0]])
         buf = np.frombuffer(data, dtype=np.float64)
         last = np.zeros((len(CUBES), SLOT))   # last MEASURED pose per cube; its capture time ages until re-detected
         while not stop_flag.value:
@@ -110,11 +132,15 @@ def _tracker_main(T_base_camera, detector_configs, width, height, fps, serial, e
             global_time = color.get_frame_timestamp_domain() == rs.timestamp_domain.global_time
             capture = color.get_timestamp() / 1000.0 - (time.time() - time.monotonic()) if global_time else arrival
             image = np.asanyarray(color.get_data())
+            results = []
             for i, det in enumerate(detectors):
                 res = det.process_frame(image, timestamp=capture)
+                results.append(res)
                 # Only tag measurements update the pose; the filter's prediction-only output (no tag seen) does not.
                 if res["success"] and res["T"] is not None and not res.get("predicted"):
-                    pos, quat = matrix_to_pos_quat(T @ np.asarray(res["T"], dtype=float))
+                    T_cam_cube = np.array(res["T"], dtype=float)
+                    T_cam_cube[:3, 3] /= 1000.0   # process_frame's T is in mm (aprilcube world_pose() divides by 1000)
+                    pos, quat = matrix_to_pos_quat(T @ T_cam_cube)
                     last[i] = 0.0
                     last[i, 0], last[i, 1], last[i, 2:5], last[i, 5:9] = 1.0, capture, pos, quat
                     last[i, 9], last[i, 10], last[i, 12], last[i, 13] = (float(res["reproj_error"]), float(res["n_tags"]),
@@ -123,9 +149,17 @@ def _tracker_main(T_base_camera, detector_configs, width, height, fps, serial, e
             buf[:] = last.ravel()
             seq.value += 1          # even: complete
             frames.value += 1
+            if preview:
+                _draw_preview(image, K, coeffs, results, last, capture)
     except BaseException as exc:
         error.value = f"{type(exc).__name__}: {exc}".encode()[:511]
     finally:
+        if preview:
+            try:
+                import cv2
+                cv2.destroyAllWindows()
+            except Exception:
+                pass
         if pipeline is not None:
             try:
                 pipeline.stop()

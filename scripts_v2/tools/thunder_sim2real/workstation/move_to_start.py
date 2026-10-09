@@ -13,7 +13,8 @@ import time
 
 import numpy as np
 
-MAX_INITIAL_ERROR_RAD = np.deg2rad(5.0)
+MAX_INITIAL_ERROR_DEG = 10.0
+MAX_INITIAL_ERROR_RAD = np.deg2rad(MAX_INITIAL_ERROR_DEG)
 MOVE_SPEED_RAD_S = 0.05
 MOVE_ACCEL_RAD_S2 = 0.1
 TARGET_TOLERANCE_RAD = 0.003
@@ -49,7 +50,7 @@ def require_nearby_stationary(q, qd, target):
     # Do not wrap angles: a different joint revolution must not become a long move.
     delta = target - q
     if np.max(np.abs(delta)) > MAX_INITIAL_ERROR_RAD:
-        raise RuntimeError("Refusing move: a joint is more than 5 degrees from the start pose. "
+        raise RuntimeError(f"Refusing move: a joint is more than {MAX_INITIAL_ERROR_DEG:g} degrees from the start pose. "
                            f"Errors (degrees): {np.rad2deg(delta).round(3).tolist()}")
     if np.max(np.abs(qd)) > STATIONARY_SPEED_RAD_S:
         raise RuntimeError("Refusing move: robot is already moving")
@@ -136,7 +137,7 @@ def main():
         move_to_start(config)
     else:
         print(json.dumps({"target_joints_deg": np.rad2deg(target).tolist(),
-                          "max_initial_joint_error_deg": 5.0, "speed_rad_s": MOVE_SPEED_RAD_S,
+                          "max_initial_joint_error_deg": MAX_INITIAL_ERROR_DEG, "speed_rad_s": MOVE_SPEED_RAD_S,
                           "acceleration_rad_s2": MOVE_ACCEL_RAD_S2, "execute": False}, indent=2))
 
 

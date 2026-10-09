@@ -23,10 +23,11 @@ import run_state_policy as rsp  # noqa: E402
 from state_policy import frames as F  # noqa: E402
 from state_policy import obs as O  # noqa: E402
 from state_policy import gripper as G  # noqa: E402
+from state_policy import cube_symmetry as CS  # noqa: E402
 from vendor import ur5e_kinematics as kin  # noqa: E402
 
 FIX = np.load(HERE / "test_data/r214_contract_fixture.npz")
-START = np.array([0.778399, -2.568071, -1.872467, -1.927923, -2.296463, 2.327399])   # configured start (R217 row 5692)
+START = np.array(json.loads((HERE / "workstation/collection.state_policy.json").read_text())["start_joint_positions_rad"])
 UP_Z_TO_BASE_Y = np.array([[1.0, 0, 0], [0, 0, 1.0], [0, -1.0, 0]])     # cube +Z -> base_link +y (world up)
 
 
@@ -113,8 +114,69 @@ class GripperAndFrameTests(unittest.TestCase):
         np.testing.assert_allclose(F.pos_quat_to_matrix(pos, quat), cube_matrix([0.1, 0.2, 0.3]), atol=1e-12)
 
 
+class CubeRelabelTests(unittest.TestCase):
+    UP = np.array([0.0, 1.0, 0.0])
+
+    def start_rotation(self, name, e):
+        return F.pos_quat_to_matrix(FIX[f"{name}_pos"][e, 0], FIX[f"{name}_quat"][e, 0])[:3, :3]
+
+    def test_symmetries(self):
+        self.assertEqual(len(CS.SYMMETRIES), 24)
+        self.assertEqual(len({S.tobytes() for S in CS.SYMMETRIES}), 24)
+
+    def test_resting_tilt(self):
+        R = self.start_rotation("rec", 0)
+        for Q in CS.SYMMETRIES:                  # flat on any face
+            self.assertLess(CS.resting_tilt_deg(R @ Q, self.UP), 1.0)
+        a = np.radians(35.0)                     # tipped 35 deg about base_link x (the dry7 single-tag reading)
+        tip = np.array([[1, 0, 0], [0, np.cos(a), -np.sin(a)], [0, np.sin(a), np.cos(a)]])
+        self.assertAlmostEqual(CS.resting_tilt_deg(tip @ R, self.UP), 35.0 + CS.resting_tilt_deg(R, self.UP), delta=1.0)
+
+    def test_training_placements_are_unchanged_and_any_face_up_recovers_them(self):
+        for e in range(4):
+            R = self.start_rotation("rec", e)
+            S, _, error = CS.relabel(R, self.start_rotation("ins", 1), self.UP)
+            np.testing.assert_array_equal(S, np.eye(3))
+            self.assertLessEqual(abs(error), CS.MAX_BOTTOM_YAW_ERROR_DEG)
+            for Q in CS.SYMMETRIES:              # the same physical cube with its tags on different faces
+                S, _, _ = CS.relabel(R @ Q, self.start_rotation("ins", 1), self.UP)
+                np.testing.assert_allclose(R @ Q @ S, R, atol=1e-12)
+        for e in (1, 3):                         # carried cube +Z up in these starts: label kept
+            S = CS.relabel(self.start_rotation("rec", 0), self.start_rotation("ins", e), self.UP)[1]
+            np.testing.assert_array_equal(S, np.eye(3))
+        R = self.start_rotation("ins", 0)        # carried cube on its side: relabelled +Z up
+        S = CS.relabel(self.start_rotation("rec", 0), R, self.UP)[1]
+        self.assertGreater((R @ S)[:, 2] @ self.UP, 0.99)
+
+
+class HeldCubeTests(unittest.TestCase):
+    def test_held_cube_follows_wrist_from_grasp_without_age_limit(self):
+        limits = json.loads((HERE / "workstation/collection.state_policy.json").read_text())["limits"]
+        cs = rsp.CubeState(limits, True)
+        W_grasp = np.eye(4); W_grasp[:3, 3] = [-0.5, -0.40, 0.0]
+        W_now = W_grasp.copy(); W_now[1, 3] += 0.10                           # lifted 10 cm after the grasp
+        wrist_T_at = lambda t: W_grasp if t <= 1.0 else W_now
+        def cubes(now):                                                       # carried cube last seen at t = 0.5, on the table
+            rec = dict(valid=True, capture_t=now - 0.1, pos=np.array([-0.3, -0.59, 0.1]), quat=np.array([1.0, 0, 0, 0]))
+            ins = dict(valid=True, capture_t=0.5, pos=np.array([-0.5, -0.59, 0.0]), quat=np.array([1.0, 0, 0, 0]))
+            return {"receptive": rec, "insertive": ins}
+        cs.poses(cubes(1.0), 1.0, W_grasp, wrist_T_at, True)                  # grasp first reported at t = 1.0
+        out, info = cs.poses(cubes(20.0), 20.0, W_now, wrist_T_at, True)      # 19.5 s unseen, still held
+        self.assertTrue(info["insertive"][1])
+        np.testing.assert_allclose(out["insertive"][0], [-0.5, -0.49, 0.0], atol=1e-12)
+        with self.assertRaises(rsp.SafetyStop):                               # grip lost: a free cube, 19.5 s stale
+            cs.poses(cubes(20.0), 20.0, W_now, wrist_T_at, False)
+
+    def test_holding_needs_the_gripper_object_detection(self):
+        m = rsp.load_manifest()
+        self.assertTrue(rsp.gripper_on_object(95, 2, True, m))                # stopped on contact while closing
+        self.assertFalse(rsp.gripper_on_object(95, 0, True, m))               # still moving through mid-range
+        self.assertFalse(rsp.gripper_on_object(226, 3, True, m))              # closed empty
+
+
 class FakeTracker:
     stale_after = None
+    bottom_yaw_deg = 0.0
 
     def __init__(self, T_base_camera, configs, **kwargs):
         self.calls = 0
@@ -134,7 +196,9 @@ class FakeTracker:
         now = time.monotonic()
         capture = now - 0.04 if FakeTracker.stale_after is None or self.calls < FakeTracker.stale_after else now - 5.0
         base = dict(valid=True, capture_t=capture, reproj_px=0.5, n_tags=2, predicted=False, arrival_t=now, global_time=True)
-        rec = F.matrix_to_pos_quat(cube_matrix([-0.45, -0.5935, 0.05]))
+        a = np.radians(FakeTracker.bottom_yaw_deg)                          # about the cube's +Z = world up
+        turn = np.eye(4); turn[:3, :3] = [[np.cos(a), -np.sin(a), 0], [np.sin(a), np.cos(a), 0], [0, 0, 1]]
+        rec = F.matrix_to_pos_quat(cube_matrix([-0.45, -0.5935, 0.05]) @ turn)
         ins = F.matrix_to_pos_quat(cube_matrix([-0.40, -0.5935, -0.10]))
         return {"receptive": dict(base, pos=rec[0], quat=rec[1]), "insertive": dict(base, pos=ins[0], quat=ins[1])}
 
@@ -164,10 +228,11 @@ class FakeGripper:
 
 
 class MockedRunTests(unittest.TestCase):
-    def run_mode(self, mode, q0=START, stale_after=None, seconds=1.0):
+    def run_mode(self, mode, q0=START, stale_after=None, seconds=1.0, bottom_yaw_deg=0.0):
         cfg = json.loads((HERE / "workstation/collection.state_policy.json").read_text())
         cfg["limits"]["max_episode_s"] = seconds
         FakeTracker.stale_after = stale_after
+        FakeTracker.bottom_yaw_deg = bottom_yaw_deg
         FakeGripper.instances = []
         clock = [0.0]
         cycle = lambda: int(np.floor(clock[0] / 0.002 + 1e-9))
@@ -200,7 +265,7 @@ class MockedRunTests(unittest.TestCase):
             stack.enter_context(patch("builtins.print"))
             out = Path(d) / "run"
             rsp.run(SimpleNamespace(mode=mode, config=cfg_path, camera_transform=cam, camera_transform_frame="base_link",
-                                    output=out, seconds=1.0))
+                                    output=out, seconds=1.0, preview=False))
             summary = json.loads((out / "summary.json").read_text())
             log = dict(np.load(out / "log.npz"))
         return summary, log, control
@@ -223,6 +288,15 @@ class MockedRunTests(unittest.TestCase):
         np.testing.assert_allclose(log["tick_obs"][0], O.ObservationHistory().push(terms))
         np.testing.assert_allclose(log["tick_obs"][1][O.HISTORY * 6:O.HISTORY * 6 + 7 * 4], 0.0)   # 4 older prev-action slots
         np.testing.assert_allclose(log["tick_obs"][1][O.HISTORY * 6 + 7 * 4:O.HISTORY * 6 + 7 * 5], log["tick_action"][0])
+        # The fake bottom cube (yaw 0) is relabelled to the training yaw (-90) before the policy sees it.
+        self.assertEqual(summary["cube_relabel"]["bottom_cube_yaw_error_deg"], 0.0)
+        R = F.pos_quat_to_matrix(log["tick_cubes"][0, 0, :3], log["tick_cubes"][0, 0, 3:])[:3, :3]
+        self.assertAlmostEqual(CS.yaw_deg(R, np.array([0.0, 1.0, 0.0])), -90.0, places=6)
+
+    def test_bottom_cube_far_from_training_yaw_refused(self):
+        summary, _, control = self.run_mode("execute", bottom_yaw_deg=30.0)
+        self.assertIn("Bottom cube yaw is +30 deg", summary["stop_reason"])
+        control.directTorque.assert_not_called()
 
     def test_execute_commands_torque_gripper_and_hands_off(self):
         summary, log, control = self.run_mode("execute")
@@ -260,6 +334,8 @@ class TrackerProcessLogicTests(unittest.TestCase):
         import multiprocessing as mp
         from state_policy import tracker as TR
         T_cam_cube = cube_matrix([0.05, -0.02, 0.60])                       # cube 0.6 m in front of the camera
+        T_cam_cube_mm = T_cam_cube.copy()
+        T_cam_cube_mm[:3, 3] *= 1000.0                                      # aprilcube process_frame reports millimeters
         T_base_cam = F.pos_quat_to_matrix([0.2, -0.1, 0.4], [0.9238795, 0.3826834, 0.0, 0.0])
         frames_seen = []
 
@@ -269,7 +345,7 @@ class TrackerProcessLogicTests(unittest.TestCase):
             def process_frame(self, image, timestamp=None):
                 frames_seen.append(timestamp)
                 if self.ok and len(frames_seen) <= 4:                           # receptive seen in the first 2 frames only
-                    return {"success": True, "T": T_cam_cube, "reproj_error": 0.3, "n_tags": 2, "predicted": False}
+                    return {"success": True, "T": T_cam_cube_mm, "reproj_error": 0.3, "n_tags": 2, "predicted": False}
                 return {"success": False, "T": None, "reproj_error": float("inf"), "n_tags": 0, "predicted": True}
 
         stop = mp.Value("i", 0, lock=False)

@@ -81,10 +81,10 @@ class MoveToStartTests(unittest.TestCase):
         self.control_factory.assert_not_called()
 
     def test_far_or_different_revolution_is_rejected_before_control(self):
-        for delta in (np.deg2rad(5.01), 2*np.pi):
+        for delta in (np.deg2rad(10.01), 2*np.pi):
             self.q = self.target.copy()
             self.q[0] += delta
-            with self.subTest(delta=delta), self.assertRaisesRegex(RuntimeError, "more than 5 degrees"):
+            with self.subTest(delta=delta), self.assertRaisesRegex(RuntimeError, "more than 10 degrees"):
                 self.run_move()
         self.control_factory.assert_not_called()
 
@@ -99,10 +99,10 @@ class MoveToStartTests(unittest.TestCase):
 
     def test_position_is_checked_again_after_connecting_control(self):
         def changed_pose(*args):
-            self.q[0] += np.deg2rad(10.0)
+            self.q[0] += np.deg2rad(12.0)
             return self.control
         self.control_factory.side_effect = changed_pose
-        with self.assertRaisesRegex(RuntimeError, "more than 5 degrees"):
+        with self.assertRaisesRegex(RuntimeError, "more than 10 degrees"):
             self.run_move()
         self.control.moveJ.assert_not_called()
         self.control.stopScript.assert_called_once()
