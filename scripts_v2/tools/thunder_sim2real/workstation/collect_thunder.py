@@ -125,27 +125,58 @@ def make_plan(config):
     vector(config, "payload_cog_m", 3)
     vector(config, "start_joint_positions_rad", 6)
     vector(config, "joint_excursion_limit_rad", 6, positive=True)
-    amps = vector(config, "amplitudes_m_rad", 6)
-    if np.any(amps < 0) or not np.any(amps > 0):
-        raise ValueError("Choose nonnegative excitation amplitudes, with at least one nonzero axis")
+    if "segments" in config:
+        check_segments(config)
+    else:
+        amps = vector(config, "amplitudes_m_rad", 6)
+        if np.any(amps < 0) or not np.any(amps > 0):
+            raise ValueError("Choose nonnegative excitation amplitudes, with at least one nonzero axis")
     for key in ("motion_stiffness", "motion_damping_ratio", "torque_max"):
         vector(config, key, 6, positive=True)
     if np.any(vector(config, "torque_max", 6) > [150, 150, 150, 28, 28, 28]):
         raise ValueError("torque_max exceeds the UWLab UR5e limits")
     if config.get("gripper_configuration") != "open_empty":
         raise ValueError("This fitting setup expects the gripper open, with no held object")
-    duration = float(config["duration_s"])
-    f0, f1 = float(config["f0_hz"]), float(config["f1_hz"])
-    if not np.isfinite([duration, f0, f1]).all() or duration < 5 or not 0 < f0 <= f1 < 250:
-        raise ValueError("Use duration >= 5 seconds and 0 < f0 <= f1 < 250 Hz")
+    if "segments" not in config:
+        duration = float(config["duration_s"])
+        f0, f1 = float(config["f0_hz"]), float(config["f1_hz"])
+        if not np.isfinite([duration, f0, f1]).all() or duration < 5 or not 0 < f0 <= f1 < 250:
+            raise ValueError("Use duration >= 5 seconds and 0 < f0 <= f1 < 250 Hz")
     tolerance = float(config["start_joint_tolerance_rad"])
     if not np.isfinite(tolerance) or tolerance <= 0:
         raise ValueError("start_joint_tolerance_rad must be positive")
     return generate_offsets(config)
 
 
+SEGMENT_MAX_FREQUENCY_HZ = 3.0                        # Thunder's safe excitation bandwidth (user, October 9)
+SEGMENT_MAX_AMPLITUDES = np.array([0.1, 0.15, 0.1, 0.25, 0.5, 0.5])   # the R187 full-amplitude recording (base x,y,z m; rad)
+
+
+def check_segments(config):
+    """A segmented excitation: a list of chirps run back to back in one recording, each with the pinned construction
+    below (2 s ramp in, 3 s ramp out, so every segment starts and ends at the start pose). Each segment must stay within
+    the safe bandwidth and within the amplitudes of the recorded full-amplitude chirp, axis by axis."""
+    segments = config["segments"]
+    if not isinstance(segments, list) or not segments:
+        raise ValueError("segments must be a nonempty list")
+    for key in ("duration_s", "f0_hz", "f1_hz", "amplitudes_m_rad"):
+        if key in config:
+            raise ValueError(f"Use {key} inside each segment, not at the top level, for a segmented excitation")
+    for i, seg in enumerate(segments):
+        duration, f0, f1 = float(seg["duration_s"]), float(seg["f0_hz"]), float(seg["f1_hz"])
+        if not np.isfinite([duration, f0, f1]).all() or duration < 5 or not 0 < f0 <= f1 <= SEGMENT_MAX_FREQUENCY_HZ:
+            raise ValueError(f"segment {i}: use duration >= 5 s and 0 < f0 <= f1 <= {SEGMENT_MAX_FREQUENCY_HZ} Hz")
+        amps = vector(seg, "amplitudes_m_rad", 6)
+        if np.any(amps < 0) or not np.any(amps > 0) or np.any(amps > SEGMENT_MAX_AMPLITUDES + 1e-12):
+            raise ValueError(f"segment {i}: amplitudes must be nonnegative, not all zero, and within "
+                             f"{SEGMENT_MAX_AMPLITUDES.tolist()}")
+
+
 def generate_offsets(config):
-    """The exact command waveform, shared by the collector and lab preview."""
+    """The exact command waveform, shared by the collector and lab preview. With "segments", the chirps are run back
+    to back; without, the single pinned chirp (unchanged)."""
+    if "segments" in config:
+        return np.concatenate([generate_offsets(segment) for segment in config["segments"]])
     duration = float(config["duration_s"])
     f0, f1 = float(config["f0_hz"]), float(config["f1_hz"])
     amps = np.asarray(config["amplitudes_m_rad"], dtype=float)

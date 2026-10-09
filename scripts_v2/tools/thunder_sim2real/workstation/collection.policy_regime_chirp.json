@@ -1,0 +1,127 @@
+{
+  "robot_ip": "10.33.55.89",
+  "payload_mass_kg": 1.04,
+  "payload_cog_m": [
+    -0.002,
+    0.001,
+    0.047
+  ],
+  "polyscope_version": "5.26.1.140514",
+  "gripper_configuration": "open_empty",
+  "start_joint_tolerance_rad": 0.02,
+  "motion_stiffness": [
+    1000,
+    1000,
+    1000,
+    50,
+    50,
+    50
+  ],
+  "motion_damping_ratio": [
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0
+  ],
+  "torque_max": [
+    150,
+    150,
+    150,
+    28,
+    28,
+    28
+  ],
+  "robot_base_quaternion_world_wxyz": [
+    0.5,
+    0.5,
+    0.5,
+    0.5
+  ],
+  "hardware_settings_source": {
+    "method": "Read-only live RTDE and dashboard queries",
+    "timestamp_utc": "2026-09-19T15:44:00.116231+00:00",
+    "payload_status": "Controller-configured values; not a new physical mass/CoG measurement",
+    "dashboard_report": "dashboard-readonly.json",
+    "rtde_report": "current-state.json"
+  },
+  "joint_excursion_limit_rad": [
+    0.1511,
+    0.2007,
+    0.2458,
+    0.2319,
+    0.3252,
+    0.422
+  ],
+  "simulation_review_status": "policy_regime_geometry_pass_physical_run_not_collected",
+  "start_joint_positions_rad": [
+    0.483857,
+    -2.73887,
+    -1.235572,
+    -3.021673,
+    -2.504662,
+    2.542553
+  ],
+  "segments": [
+    {
+      "name": "envelope_sweep_to_3Hz",
+      "duration_s": 30.0,
+      "f0_hz": 0.1,
+      "f1_hz": 3.0,
+      "amplitudes_m_rad": [
+        0.03,
+        0.045,
+        0.03,
+        0.125,
+        0.25,
+        0.25
+      ]
+    },
+    {
+      "name": "breakaway_slow_to_1Hz",
+      "duration_s": 20.0,
+      "f0_hz": 0.1,
+      "f1_hz": 1.0,
+      "amplitudes_m_rad": [
+        0.02,
+        0.03,
+        0.02,
+        0.05,
+        0.1,
+        0.1
+      ]
+    }
+  ],
+  "notes": "R231 policy-regime excitation (draft, simulation review in progress). One run, one start pose, two chirps back to back with the pinned construction (2 s ramp in, 3 s ramp out, axes 60 deg apart). Sized from the deployed envelope, not from the R187 recording: (1) 0.1-3 Hz (user safety cap; covers the ~1.5-2.5 Hz closed-loop poles and the policy's motion), 30 s, translations 0.3x and rotations 0.5x the R187 amplitudes, so tracking errors reach about the deployment error clip (0.05 m / 0.3 rad) and wrist speeds about the policy's p99 (~60-70 deg/s); the R187 recording exceeded the clip on 70% (translation) / 52% (rotation) of samples. (2) 0.1-1 Hz at 0.2x (2.9-5.7 deg rotations, the policy's 2-6 deg strokes), 20 s, wrist stall torques up to ~5 N m so they cross the ~3 N m fitted breakaway (at 0.1x the R187 model only touched it). Why: R229 found the R187 model moves wrist 1 / wrist 3 6-13x more than the real arm in the policy regime. Start pose: medoid real R214 near-table configuration (R230) raised by IK to a 0.20 m grasp-centre height (same orientation and arm shape; real policy p90 0.18 m). Same controller as the R187 recording.",
+  "joint_excursion_limit_basis": {
+    "method": "Maximum absolute excursion of the native R187-model simulation and the ideal-tracking requested path, plus five degrees per joint",
+    "observed_max_rad": [
+      0.0639,
+      0.1134,
+      0.1585,
+      0.1446,
+      0.238,
+      0.3348
+    ],
+    "allowance_rad": 0.08726646259971647,
+    "scope": "Existing excursion stop guard; not a stopping-distance guarantee."
+  },
+  "simulation_review": {
+    "report": "R231 (datasets/umi_reset_from_defaults_20260911/231_wrist_regime_excitation_20261009)",
+    "model": "R187 fit_seed3_delay5 (the R214 training arm model; over-moves wrists 1/3 in this regime per R229, so real motion will be smaller)",
+    "sphere_check": "clear at every 2 ms state; world margin 52.6 mm, self margin 15.1 mm",
+    "source_hull_check_simulated": "clear; obstacle margin 71.2 mm after buffers, moving self gap 16.0 mm",
+    "source_hull_check_requested_path": "25000/25000 solved, within joint limits True, clear; obstacle margin 71.2 mm, moving self gap 15.6 mm",
+    "collision_model_note": "Sysid lab scene and hand collision model (same as R182); not the exact current official-hand build."
+  },
+  "prediction_max_joint_speed_deg_s": [
+    30.9,
+    16.0,
+    20.0,
+    43.9,
+    57.5,
+    48.1
+  ],
+  "prediction_model": "R187 fit_seed3_delay5"
+}
