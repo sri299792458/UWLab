@@ -1,0 +1,7 @@
+35e5cd3f422ba4a0f18d2f39f9e1f9489176824432f6b5afcd951fc720350216  ./.gitattributes
+16c6f675b2cc5d39c41d567b19a26500dd4b8d826a0eeb7bef6d302438b8da5f  ./README.md
+b279cd008d45862fdaff9ef7b22049e61ab4a12e2f5b613445f21a7ac75b0515  ./recording/collection.json
+b90cce1e311a6870a8cbf6fcced6904c4e797f13fd1586efbe3bc916bb0a9bf8  ./recording/collector.log
+0126f4a43d995341e1957f6465a9be641017eda172d95cf0942c32346a2cf045  ./recording/recording_summary.json
+8f216b959b0ecc2f215d79f60e4926dc84ca5e2929236dc979e3b01789123018  ./recording/thunder-fit.pt
+7d11a95ebc73f26efb79f4b42d12987f50565133c87553ee7f4ff419047d189b  ./recording/validation.txt

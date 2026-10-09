@@ -1,0 +1,2 @@
+# Store this small reviewed raw recording directly; the repository LFS budget is exhausted.
+recording/thunder-fit.pt -filter -diff -merge -text

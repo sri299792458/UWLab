@@ -1,0 +1,91 @@
+{
+  "completed": true,
+  "samples": 25000,
+  "timing": {
+    "samples": 25000,
+    "robot_span_s": 49.998000000137836,
+    "duplicate_intervals": 0,
+    "intervals_over_2p4ms": 0,
+    "max_interval_s": 0.0020000003278255463
+  },
+  "initial_joint_error_deg_max": 0.001537911184308223,
+  "peak_joint_speed_deg_s": [
+    21.8,
+    12.71,
+    18.85,
+    32.48,
+    44.77,
+    41.61
+  ],
+  "r187_prediction_peak_joint_speed_deg_s": [
+    30.9,
+    16.0,
+    20.0,
+    43.9,
+    57.5,
+    48.1
+  ],
+  "joint_excursion_deg": [
+    3.21,
+    2.38,
+    3.23,
+    7.13,
+    8.45,
+    8.31
+  ],
+  "joint_excursion_guard_deg": [
+    8.66,
+    11.5,
+    14.08,
+    13.29,
+    18.63,
+    24.18
+  ],
+  "max_abs_torque_nm": [
+    27.35,
+    18.66,
+    16.88,
+    4.84,
+    5.79,
+    5.26
+  ],
+  "torque_limit_nm": [
+    150,
+    150,
+    150,
+    28,
+    28,
+    28
+  ],
+  "samples_at_torque_limit": 0,
+  "host_sample_to_command_ms": {
+    "max": 1.241,
+    "p99": 0.904
+  },
+  "host_command_interval_ms": {
+    "min": 1.277,
+    "max": 2.695,
+    "p99": 2.327,
+    "over_2p4": 118
+  },
+  "cleanup_errors": [],
+  "gap_events": 0,
+  "direct_torque_params": {
+    "viscous_scale": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "coulomb_scale": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ]
+  }
+}
