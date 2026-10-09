@@ -1,0 +1,73 @@
+{
+  "robot_ip": "10.33.55.89",
+  "polyscope_version": "5.26.1.140514",
+  "payload_mass_kg": 1.04,
+  "payload_cog_m": [
+    -0.002,
+    0.001,
+    0.047
+  ],
+  "start_joint_positions_rad": [
+    0.272496,
+    -2.544273,
+    -1.227111,
+    -2.524585,
+    -2.7922,
+    1.67543
+  ],
+  "motion_stiffness": [
+    1000,
+    1000,
+    1000,
+    50,
+    50,
+    50
+  ],
+  "motion_damping_ratio": [
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0
+  ],
+  "torque_max": [
+    150,
+    150,
+    150,
+    28,
+    28,
+    28
+  ],
+  "gripper": {
+    "speed": 128,
+    "force": 0,
+    "start": "closed"
+  },
+  "camera": {
+    "width": 1280,
+    "height": 720,
+    "fps": 30,
+    "serial": "f1380660",
+    "enable_filter": true
+  },
+  "latency_compensation": true,
+  "limits": {
+    "max_episode_s": 16.0,
+    "tcp_speed_stop_m_s": 1.0,
+    "tcp_angular_speed_stop_rad_s": 4.0,
+    "wrist_box_margin_m": 0.05,
+    "target_extra_margin_m": 0.3,
+    "min_wrist_height_above_table_m": 0.11,
+    "joint_range_margin_rad": 0.2,
+    "attached_cube_max_wrist_distance_m": 0.25,
+    "cube_max_age_s": {
+      "receptive": 10.0,
+      "insertive_free": 2.0
+    },
+    "gripper_max_age_s": 0.2,
+    "max_state_interval_s": 0.006
+  },
+  "notes": "First execute test (2026-10-09): the committed collection.state_policy.json with max_episode_s = 16 s (R214's training episode length). R214 deployment (run_state_policy.py). Gains, scale and payload match training / the R187 sysid setup. Limits are our safety stops, not training settings: wrist box = R214 sim rollout wrist range + margin; min wrist height 0.11 m above the table (training minimum 0.133 m); Speed stops: R214 moves up to ~1 m/s in sim (R220 p99 per-step motion 64-102 mm); lower them for cautious first runs. Cube ages: the bottom cube is static and often hidden by the arm while stacking (10 s); a free carried cube must be re-detected within 2 s (hidden by the fingers while grasping); a held cube (gripper reports stopping on it while closing) is carried with the wrist from its last sighting (latency_compensation) with no age limit, since the overhead L515 rarely sees its tags; if the grip is lost it is a free cube again (2 s). Start pose: a Reaching-family training start (R214 start bank row 7738, family ObjectAnywhereEEAnywhere), (15.6, -145.8, -70.3, -144.6, -160.0, 96.0) deg: S-W-E-, gripper 4 deg from straight down, wrist 0.47 m above the table, wrist 3 at 96 deg; chosen so the arm is >= 0.12 m from every L515 line of sight to the trained cube region (the previous start, R217 row 5692, hid a third of it). The runner requires every joint within start_joint_tolerance_rad of it; move_to_start.py takes the arm there.",
+  "start_joint_tolerance_rad": 0.02
+}
