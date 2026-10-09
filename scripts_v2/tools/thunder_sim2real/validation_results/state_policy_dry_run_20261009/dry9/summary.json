@@ -1,0 +1,195 @@
+{
+ "mode": "dry-run",
+ "config": {
+  "robot_ip": "10.33.55.89",
+  "polyscope_version": "5.26.1.140514",
+  "payload_mass_kg": 1.04,
+  "payload_cog_m": [
+   -0.002,
+   0.001,
+   0.047
+  ],
+  "start_joint_positions_rad": [
+   0.272496,
+   -2.544273,
+   -1.227111,
+   -2.524585,
+   -2.7922,
+   1.67543
+  ],
+  "motion_stiffness": [
+   1000,
+   1000,
+   1000,
+   50,
+   50,
+   50
+  ],
+  "motion_damping_ratio": [
+   1.0,
+   1.0,
+   1.0,
+   1.0,
+   1.0,
+   1.0
+  ],
+  "torque_max": [
+   150,
+   150,
+   150,
+   28,
+   28,
+   28
+  ],
+  "gripper": {
+   "speed": 128,
+   "force": 0,
+   "start": "closed"
+  },
+  "camera": {
+   "width": 1280,
+   "height": 720,
+   "fps": 30,
+   "serial": "f1380660",
+   "enable_filter": true
+  },
+  "latency_compensation": true,
+  "limits": {
+   "max_episode_s": 30.0,
+   "tcp_speed_stop_m_s": 1.0,
+   "tcp_angular_speed_stop_rad_s": 4.0,
+   "wrist_box_margin_m": 0.05,
+   "target_extra_margin_m": 0.3,
+   "min_wrist_height_above_table_m": 0.11,
+   "joint_range_margin_rad": 0.2,
+   "attached_cube_max_wrist_distance_m": 0.25,
+   "cube_max_age_s": {
+    "receptive": 10.0,
+    "insertive_free": 2.0
+   },
+   "gripper_max_age_s": 0.2,
+   "max_state_interval_s": 0.006
+  },
+  "notes": "R214 deployment (run_state_policy.py). Gains, scale and payload match training / the R187 sysid setup. Limits are our safety stops, not training settings: wrist box = R214 sim rollout wrist range + margin; min wrist height 0.11 m above the table (training minimum 0.133 m); Speed stops: R214 moves up to ~1 m/s in sim (R220 p99 per-step motion 64-102 mm); lower them for cautious first runs. Cube ages: the bottom cube is static and often hidden by the arm while stacking (10 s); a free carried cube must be re-detected within 2 s (hidden by the fingers while grasping); a held cube (gripper reports stopping on it while closing) is carried with the wrist from its last sighting (latency_compensation) with no age limit, since the overhead L515 rarely sees its tags; if the grip is lost it is a free cube again (2 s). Start pose: a Reaching-family training start (R214 start bank row 7738, family ObjectAnywhereEEAnywhere), (15.6, -145.8, -70.3, -144.6, -160.0, 96.0) deg: S-W-E-, gripper 4 deg from straight down, wrist 0.47 m above the table, wrist 3 at 96 deg; chosen so the arm is >= 0.12 m from every L515 line of sight to the trained cube region (the previous start, R217 row 5692, hid a third of it). The runner requires every joint within start_joint_tolerance_rad of it; move_to_start.py takes the arm there.",
+  "start_joint_tolerance_rad": 0.02
+ },
+ "camera_transform_base_link": [
+  [
+   -0.02635726827090057,
+   0.9174593572635718,
+   -0.39695544104950836,
+   -0.15820745311735257
+  ],
+  [
+   -0.059809976662077435,
+   -0.39782933140083165,
+   -0.9155078316261687,
+   0.12233843579113685
+  ],
+  [
+   -0.9978617444821589,
+   -0.0003883898572256128,
+   0.06535891716010345,
+   -0.2671378193185404
+  ],
+  [
+   0.0,
+   0.0,
+   0.0,
+   1.0
+  ]
+ ],
+ "camera_transform_source": "/home/srinivas/thunder_policy/camera/T_base_l515_20261008.json",
+ "camera_transform_frame": "ur_base",
+ "policy_sha256": "8c3f20aae572a645bf95cfcc362575f22674fd5117bc303e47ed196b6ddd8107",
+ "events": [],
+ "start_pose": {
+  "joint_error_deg": [
+   0.21,
+   0.0,
+   -0.09,
+   0.12,
+   0.1,
+   -0.06
+  ],
+  "at_start": true
+ },
+ "cubes_at_start": {
+  "receptive": {
+   "pos_m": [
+    -0.5297,
+    -0.5932,
+    -0.1353
+   ],
+   "bottom_above_table_mm": 0.3,
+   "up_face": "-X",
+   "up_face_tilt_deg": 1.5,
+   "inside_trained_region": true,
+   "reproj_px": 0.21,
+   "n_tags": 1
+  },
+  "insertive": {
+   "pos_m": [
+    -0.6715,
+    -0.5926,
+    0.0544
+   ],
+   "bottom_above_table_mm": 1.0,
+   "up_face": "+Z",
+   "up_face_tilt_deg": 0.5,
+   "inside_trained_region": true,
+   "reproj_px": 0.83,
+   "n_tags": 2
+  }
+ },
+ "cube_relabel": {
+  "bottom_cube_yaw_error_deg": 7.0,
+  "receptive": [
+   [
+    0,
+    0,
+    -1
+   ],
+   [
+    0,
+    -1,
+    0
+   ],
+   [
+    -1,
+    0,
+    0
+   ]
+  ],
+  "insertive": [
+   [
+    1,
+    0,
+    0
+   ],
+   [
+    0,
+    1,
+    0
+   ],
+   [
+    0,
+    0,
+    1
+   ]
+  ]
+ },
+ "gripper_position_at_start": 227.0,
+ "stop_reason": "max_episode_s",
+ "cycles": 15000,
+ "policy_steps": 300,
+ "failure": null,
+ "max_tick_compute_ms": 1.5289419970940799,
+ "timing": {
+  "samples": 15000,
+  "robot_span_s": 29.998000000137836,
+  "duplicate_intervals": 0,
+  "intervals_over_2p4ms": 0,
+  "max_interval_s": 0.0020000003278255463
+ }
+}

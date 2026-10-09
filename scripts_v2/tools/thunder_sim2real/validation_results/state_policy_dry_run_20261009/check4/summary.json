@@ -1,0 +1,144 @@
+{
+ "mode": "check",
+ "config": {
+  "robot_ip": "10.33.55.89",
+  "polyscope_version": "5.26.1.140514",
+  "payload_mass_kg": 1.04,
+  "payload_cog_m": [
+   -0.002,
+   0.001,
+   0.047
+  ],
+  "start_joint_positions_rad": [
+   0.778399,
+   -2.568071,
+   -1.872467,
+   -1.927923,
+   -2.296463,
+   2.327399
+  ],
+  "motion_stiffness": [
+   1000,
+   1000,
+   1000,
+   50,
+   50,
+   50
+  ],
+  "motion_damping_ratio": [
+   1.0,
+   1.0,
+   1.0,
+   1.0,
+   1.0,
+   1.0
+  ],
+  "torque_max": [
+   150,
+   150,
+   150,
+   28,
+   28,
+   28
+  ],
+  "gripper": {
+   "speed": 128,
+   "force": 0,
+   "start": "closed"
+  },
+  "camera": {
+   "width": 1280,
+   "height": 720,
+   "fps": 30,
+   "serial": "f1380660",
+   "enable_filter": true
+  },
+  "latency_compensation": true,
+  "limits": {
+   "max_episode_s": 30.0,
+   "tcp_speed_stop_m_s": 1.0,
+   "tcp_angular_speed_stop_rad_s": 4.0,
+   "wrist_box_margin_m": 0.05,
+   "target_extra_margin_m": 0.3,
+   "min_wrist_height_above_table_m": 0.11,
+   "joint_range_margin_rad": 0.2,
+   "attached_cube_max_wrist_distance_m": 0.25,
+   "cube_max_age_s": {
+    "receptive": 2.0,
+    "insertive_free": 0.5,
+    "insertive_attached": 3.0
+   },
+   "gripper_max_age_s": 0.2,
+   "max_state_interval_s": 0.006
+  },
+  "notes": "R214 deployment (run_state_policy.py). Gains, scale and payload match training / the R187 sysid setup. Limits are our safety stops, not training settings: wrist box = R214 sim rollout wrist range + margin; min wrist height 0.11 m above the table (training minimum 0.133 m); Speed stops: R214 moves up to ~1 m/s in sim (R220 p99 per-step motion 64-102 mm); lower them for cautious first runs. Cube ages: the bottom cube is static (2 s), a free carried cube must be re-detected within 0.5 s, a held cube is propagated with the wrist (latency_compensation) for up to 3 s. Start pose: a Reaching-family training start from the R217 banks (row 5692), S-W-E-, gripper 5 deg from straight down, hand centered over the trained cube region 0.30 m above the table; (44.6, -147.1, -107.3, -110.5, -131.6, 133.4) deg. The runner requires every joint within start_joint_tolerance_rad of it; move_to_start.py takes the arm there. Check clearance and the camera's view of the cubes on the real cell.",
+  "start_joint_tolerance_rad": 0.02
+ },
+ "camera_transform_base_link": [
+  [
+   -0.02635726827090057,
+   0.9174593572635718,
+   -0.39695544104950836,
+   -0.15820745311735257
+  ],
+  [
+   -0.059809976662077435,
+   -0.39782933140083165,
+   -0.9155078316261687,
+   0.12233843579113685
+  ],
+  [
+   -0.9978617444821589,
+   -0.0003883898572256128,
+   0.06535891716010345,
+   -0.2671378193185404
+  ],
+  [
+   0.0,
+   0.0,
+   0.0,
+   1.0
+  ]
+ ],
+ "camera_transform_source": "/home/srinivas/thunder_policy/camera/T_base_l515_20261008.json",
+ "camera_transform_frame": "ur_base",
+ "policy_sha256": "8c3f20aae572a645bf95cfcc362575f22674fd5117bc303e47ed196b6ddd8107",
+ "events": [],
+ "last": {
+  "gripper_position": 95.0,
+  "gripper_on_object": true,
+  "start_pose": {
+   "joint_error_deg": [
+    -9.76,
+    -8.42,
+    65.37,
+    -149.34,
+    20.48,
+    -135.86
+   ],
+   "at_start": false
+  },
+  "held_cube_in_wrist_m": [
+   -0.0068,
+   -0.0117,
+   0.1916
+  ],
+  "training_median": [
+   -0.0006,
+   0.0009,
+   0.1923
+  ],
+  "training_p05": [
+   -0.0037,
+   -0.0232,
+   0.1843
+  ],
+  "training_p95": [
+   0.0024,
+   0.0265,
+   0.2004
+  ],
+  "consistent_with_training_grasps": true,
+  "age_s": 0.213
+ }
+}

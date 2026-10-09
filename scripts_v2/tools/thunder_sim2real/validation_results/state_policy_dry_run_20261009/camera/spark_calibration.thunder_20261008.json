@@ -1,0 +1,231 @@
+{
+  "version": "1.0",
+  "timestamp": "2026-10-08T18:15:24.221495",
+  "charuco_config": {
+    "squares_x": 6,
+    "squares_y": 9,
+    "square_length": 0.03,
+    "marker_length": 0.022,
+    "dictionary": "DICT_5X5_50"
+  },
+  "tcp_frame_assumption": "tool_flange",
+  "poses_file": "data_pipeline/configs/calibration_poses.thunder_20261008.local.json",
+  "cameras": {
+    "/spark/cameras/thunder/wrist_1": {
+      "sensor_key": "/spark/cameras/thunder/wrist_1",
+      "serial_number": "130322273305",
+      "intrinsics": {
+        "camera_matrix": [
+          [
+            431.40667724609375,
+            0.0,
+            315.4774169921875
+          ],
+          [
+            0.0,
+            430.9008483886719,
+            238.31890869140625
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "distortion_coeffs": [
+          -0.054637737572193146,
+          0.05644075945019722,
+          0.0005788877606391907,
+          0.0010281120194122195,
+          -0.018191879615187645
+        ],
+        "image_size": [
+          640,
+          480
+        ],
+        "source": "realsense_factory_calibration"
+      },
+      "type": "hand_eye",
+      "hand_eye_calibration": {
+        "success": true,
+        "reference_frame": "tool_flange",
+        "robot_pose_source": "rtde_actual_tcp_pose",
+        "num_pose_pairs": 15,
+        "method": "CALIB_HAND_EYE_TSAI",
+        "rotation_matrix": [
+          [
+            -0.9967406591087389,
+            -0.0767456813462221,
+            -0.024862801012372267
+          ],
+          [
+            0.07897653412294324,
+            -0.8654249889862291,
+            -0.49477499481694986
+          ],
+          [
+            0.01645495479800125,
+            -0.49512593229691504,
+            0.8686653818529357
+          ]
+        ],
+        "translation_vector": [
+          0.012536249665665723,
+          0.08995191965304077,
+          0.02622734229352485
+        ],
+        "rotation_vector": [
+          -0.006667473967568969,
+          -0.7849975479717213,
+          2.9585720451285513
+        ],
+        "target_pose_consistency": {
+          "reference_frame": "robot_base",
+          "mean_transform": [
+            [
+              -0.010565256150508462,
+              -0.9999421426550903,
+              0.002021559996923994,
+              0.7270790570597818
+            ],
+            [
+              -0.003933314547280187,
+              0.0020632159042432707,
+              0.9999901360397535,
+              0.6036523232382113
+            ],
+            [
+              -0.9999364501802834,
+              0.010557200503897746,
+              -0.003954885380665907,
+              -0.03030090367940371
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "translation_std_m": [
+            0.001707880300508425,
+            0.004111623590691178,
+            0.0030800149077306743
+          ],
+          "rotation_error_mean_deg": 0.5377785607904466,
+          "rotation_error_std_deg": 0.3737682498885256
+        },
+        "reprojection_error_mean_px": 0.184962393327365,
+        "reprojection_error_std_px": 0.09071601568797528
+      }
+    },
+    "/spark/cameras/world/scene_1": {
+      "sensor_key": "/spark/cameras/world/scene_1",
+      "serial_number": "f1380660",
+      "intrinsics": {
+        "camera_matrix": [
+          [
+            597.0170288085938,
+            0.0,
+            327.60223388671875
+          ],
+          [
+            0.0,
+            597.042724609375,
+            240.29771423339844
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "distortion_coeffs": [
+          0.13949772715568542,
+          -0.4636940360069275,
+          -0.0003899063740391284,
+          -0.00045536953257396817,
+          0.4163708984851837
+        ],
+        "image_size": [
+          640,
+          480
+        ],
+        "source": "realsense_factory_calibration"
+      },
+      "type": "scene",
+      "extrinsics": {
+        "success": true,
+        "reference_frame": "thunder_base",
+        "reference_camera": "/spark/cameras/thunder/wrist_1",
+        "num_samples": 15,
+        "rotation_matrix": [
+          [
+            0.02635726827090057,
+            -0.9174593572635718,
+            0.39695544104950836
+          ],
+          [
+            0.059809976662077435,
+            0.39782933140083165,
+            0.9155078316261687
+          ],
+          [
+            -0.9978617444821589,
+            -0.0003883898572256128,
+            0.06535891716010345
+          ]
+        ],
+        "translation_vector": [
+          0.15820745311735257,
+          -0.12233843579113685,
+          -0.2671378193185404
+        ],
+        "rotation_vector": [
+          -0.8662199599342694,
+          1.3191652702857855,
+          0.9242643253916012
+        ],
+        "base_to_camera_samples": {
+          "mean_transform": [
+            [
+              0.02635726827090057,
+              -0.9174593572635718,
+              0.39695544104950836,
+              0.15820745311735257
+            ],
+            [
+              0.059809976662077435,
+              0.39782933140083165,
+              0.9155078316261687,
+              -0.12233843579113685
+            ],
+            [
+              -0.9978617444821589,
+              -0.0003883898572256128,
+              0.06535891716010345,
+              -0.2671378193185404
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "translation_std_m": [
+            0.004612869837744116,
+            0.0035551994874145946,
+            0.003942360057298825
+          ],
+          "rotation_error_mean_deg": 0.5359569007445756,
+          "rotation_error_std_deg": 0.37762406126211656
+        },
+        "reprojection_error_mean_px": 0.1443431118906861,
+        "reprojection_error_std_px": 0.012071054587348138
+      }
+    }
+  },
+  "reference_wrist_camera": "/spark/cameras/thunder/wrist_1",
+  "coordinate_frame": "thunder_base"
+}
